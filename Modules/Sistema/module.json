@@ -1,0 +1,13 @@
+{
+    "name": "Sistema",
+    "alias": "sistema",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Sistema\\Providers\\SistemaServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

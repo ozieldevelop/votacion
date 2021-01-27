@@ -1,0 +1,13 @@
+{
+    "name": "Votacion",
+    "alias": "votacion",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Votacion\\Providers\\VotacionServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

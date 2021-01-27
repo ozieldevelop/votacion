@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Sistema de votaciones">
+  <meta name="author" content="coprofesionales.com.pa">
+  <meta name="csrf-token" content="{{ csrf_token() }}">	
+
+  <link rel="shortcut icon" href="../../favicon.ico">
+  <title>PAPELETA :: Sistema de Votaci&oacute;n :: Cooperativa Profesionales</title>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+  <link href="../../css/flag-icon.min.css" rel="stylesheet">
+  <link href="../../font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../../css/simple-line-icons.css" rel="stylesheet">
+  <link href="../../css/style_custom.css" rel="stylesheet">
+
+
+
+    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
+
+	
+  <script src="../../js/herramientas.js"></script>
+
+  <link rel="stylesheet" href="../../css/lolibox.min.css"/>
+  <script src="../../js/lobibox.js"></script>
+
+
+  <link href="../../css/bootstrap.min.css" rel="stylesheet">
+  
+  
+    <script>
+
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+  
+    </script>
+
+	
+	<style>
+      @font-face {
+        font-family: "Ordinary";
+        src: url('../../fonts/big_noodle_titling.ttf');
+      }
+	</style>
+	
+	<script>
+	
+		function Verificar()
+		{
+			//con esto se identifica si se presiono la tecla F5
+			var tecla=window.event.keyCode;
+			//console.log(tecla);
+			if (tecla==116) {
+				  event.keyCode=0;
+				  event.returnValue=false;      
+				  return false;
+			}
+		}
+
+
+		function nobackbutton(){
+
+
+		   window.location.hash="no-back-button";
+
+
+		   window.location.hash="Again-No-back-button" //chrome
+
+
+		   window.onhashchange=function(){window.location.hash="no-back-button";}
+			
+
+		}
+	</script>
+</head>
+
+<body onload="nobackbutton();" class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-hidden"   onKeyDown="javascript:Verificar()">
+  <header class="app-header navbar">
+
+	
+	     <input type="text" class="form-control col-lg-6" id="elfiltro" placeholder="BUSCAR AQUÍ"  style="font-family: Impact;width: 36%;"/> <br/>
+	 
+
+    <ul class="nav navbar-nav ml-auto">
+
+      <li class="nav-item dropdown">
+
+        <div class="dropdown-menu dropdown-menu-right">
+          <div class="dropdown-header text-center">
+            <strong>Account</strong>
+          </div>
+          <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> Updates<span class="badge badge-info">42</span></a>
+          <a class="dropdown-item" href="#"><i class="fa fa-envelope-o"></i> Messages<span class="badge badge-success">42</span></a>
+          <a class="dropdown-item" href="#"><i class="fa fa-tasks"></i> Tasks<span class="badge badge-danger">42</span></a>
+          <a class="dropdown-item" href="#"><i class="fa fa-comments"></i> Comments<span class="badge badge-warning">42</span></a>
+          <div class="dropdown-header text-center">
+            <strong>Settings</strong>
+          </div>
+          <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-wrench"></i> Settings</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-usd"></i> Payments<span class="badge badge-secondary">42</span></a>
+          <a class="dropdown-item" href="#"><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
+          <div class="divider"></div>
+          <a class="dropdown-item" href="#"><i class="fa fa-shield"></i> Lock Account</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-lock"></i> Logout</a>
+        </div>
+      </li>
+    </ul>
+    <button class="navbar-toggler aside-menu-toggler" type="button">
+	  <label style="margin-left: 51px;color:#629d6b;font-family: Impact;font-size: 28px;">Votos:</label><label id="contadorSeleccionados" style="font-weight: bold;color:#000;font-family: Impact;font-size: 28px;">(0)</label>
+      <span class="navbar-toggler-icon"></span>
+    </button>
+     
+	<script>
+							var tiempoCena = localStorage.getItem('xccok');
+	</script>
+		
+  </header>
+
+  <div class="app-body">
+    
+		@yield('content')
+    
+
+  </div>
+
+  <footer class="app-footer">
+
+  </footer>
+
+<script src="../../js/app2.js"></script>
+<script src="../../js/movildetect.js"></script>
+
+@yield('page-script')
+
+</body>
+</html>
