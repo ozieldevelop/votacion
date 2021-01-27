@@ -1,2 +1,2 @@
-# votacion
+# votación
 sistema de votación
