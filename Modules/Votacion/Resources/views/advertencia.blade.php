@@ -17,6 +17,12 @@
 
 localStorage.setItem("lasboletas{{ $ideven }}",[]);
 
+
+
+setTimeout(function(){ window.location.href = 'http://www.cooprofesionales.com.pa' ; }, 3000);
+
+localStorage.setItem('coopesisvot{{ $ideven }}','1');
+
 </script>
 
 @endsection

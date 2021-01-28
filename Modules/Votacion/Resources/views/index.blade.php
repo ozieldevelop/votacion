@@ -127,11 +127,10 @@ var max_votos = 0;
 var datos='';
 var aspirtantesall = '';
 
-$(function () {
-
       $.ajax({
         url: '{{ url("votacion/verificaparticipacion")}}'
         , method: 'GET'
+
         , success: function(result){
 				if(result>0)
 					{
@@ -139,8 +138,6 @@ $(function () {
 					}
         }
       });
-
-});
 
 
 $(function () {
@@ -727,9 +724,12 @@ function votosxarea()
 				$('.navbar-toggler').trigger( "click" );
 			
 		}	
-
-	//var cat = localStorage.getItem('xccok');
-	//	
+	/*
+	var cat = localStorage.getItem('coopesisvot{{ $ideven }}');
+	if(cat==1){
+		location.href = '{{ url("votacion/contenedordetalle")}}';
+	}
+	*/
 
 	
 	

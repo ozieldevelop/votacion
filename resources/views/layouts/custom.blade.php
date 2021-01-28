@@ -87,7 +87,7 @@
   <header class="app-header navbar">
 
 		 <div style="width:100%;background:#5b6542;text-align: center;color:white;font-size: 28px;font-weight: bold;"> {{ $nombreevento }}  </div>
-	     <input type="text" class="form-control col-lg-6" id="elfiltro" placeholder="INGRESE EL N&Uacute;MERO DE CLIENTE O NOMBRE PARA BUSCAR EN LA LISTA DE CANDIDATOS"  style="font-family: Impact;width: 36%;"/> <br/>
+	     <input type="text" class="form-control col-lg-6" id="elfiltro" placeholder="INGRESE EL N&Uacute;MERO DE CLIENTE O NOMBRE PARA BUSCAR EN LA LISTA DE CANDIDATOS"  style="font-family: arial;width: 36%;"/> <br/>
 	 
 
     <ul class="nav navbar-nav ml-auto">

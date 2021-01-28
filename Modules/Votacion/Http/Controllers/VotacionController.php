@@ -581,7 +581,10 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
     {
 		$usuario = $request->session()->get('cldoc');
 	    $id_evento = $request->session()->get('idevendesc');
-
+		
+		//$usuario = $request->input('cldoc');
+		//$id_evento = $request->input('idevendesc');
+		
 		$xdato = DB::select("select *  from votantes where id_evento=".$id_evento." and (cast(aes_decrypt(`asociado`,'xyz123') as char charset utf8mb4)=".$usuario.")");
 
 									

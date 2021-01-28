@@ -44,6 +44,10 @@
 <script>
 
 
+
+
+
+
 function imprimir()
 {
 		var lasPapeletas = JSON.parse(localStorage.getItem("lasboletas{{ $id_evento }}"));
