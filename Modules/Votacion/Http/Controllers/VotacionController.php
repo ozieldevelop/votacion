@@ -273,7 +273,7 @@ class VotacionController extends Controller
 			   $osi = json_decode($files);
 
 			   $resultadoid = DB::select( "call prc_registrar_asistencia (?,?,?)" ,array(GeneralHelper::getRealIP(),$id_evento,$usuario));
-
+			   DB::statement( "update votantes set json_data=? where id= ?" ,array($files,$resultadoid[0]->ultimoid));
                $canti = count($osi)-1;
                for ($i = 0; $i <= $canti; $i++) {
 						//dd($osi[$i]->{'num_cliente'});

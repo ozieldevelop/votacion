@@ -396,7 +396,8 @@ function PapeletasIniciales(textolike){
 
         , success: function(result){
 				 aspirtantesall = result;
-				 
+				 localStorage.setItem("aspirantes{{ $ideven }}",JSON.stringify (aspirtantesall));
+
 				 	//document.getElementById('output').innerHTML = JSON.stringify( aspirtantesall, null, '   ' );
 				//console.log(Papeletas);
 				if(Papeletas.length<=0){	
@@ -649,7 +650,7 @@ function newVoto(dato,id_area,area)
         , method: 'GET'
         , success: function(result){
 			   var datoz = result;
-				  Papeletas.push({ "id_delegado": datoz[0].id_delegado,"num_cliente": datoz[0].num_cliente,"nombre": datoz[0].nombre,"apellido": datoz[0].apellido,"id_area": id_area,"area":area   });
+				  Papeletas.push({ "id_delegado": datoz[0].id_delegado,"num_cliente": datoz[0].num_cliente,"nombre": datoz[0].nombre,"apellido": datoz[0].apellido,"id_area": id_area,"area":area,"tipo": '',"foto": ''   });
 				  localStorage.setItem("lasboletas{{ $ideven }}",JSON.stringify (Papeletas));
 				  renderizarselecciones();
         }
@@ -735,8 +736,9 @@ function votosxarea()
 
 
 	localStorage.setItem("lasboletas{{ $ideven }}",[]);
+	localStorage.setItem("aspirantes{{ $ideven }}",[]);
 	
-	console.log(Papeletas);
+	
 	PapeletasIniciales('');
 	//pintarpapeletas();
 		

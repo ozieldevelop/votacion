@@ -45,6 +45,7 @@
 function imprimir()
 {
 		var lasPapeletas = JSON.parse(localStorage.getItem("lasboletas{{ $id_evento }}"));
+		console.log(lasPapeletas);
 		
 							$.ajax({
 								url: '{{ url("votacion/coopexe3")}}'  
@@ -92,7 +93,7 @@ function visualizarselecciones()
 	{
 //alert('contenedor vacio2');
 			lasPapeletas = JSON.parse(localStorage.getItem("lasboletas{{ $id_evento }}"));
-		  
+		  	console.log(lasPapeletas);
 			$.ajax({
 			 url: '{{ url("votacion/categoriaslist") }}' 
 			, data: { 'campos': JSON.stringify(lasPapeletas) }
@@ -113,7 +114,31 @@ function visualizarselecciones()
 						  for (var i = 0; i < TodosValoresEntradostemp.length; i++){  
 					 
 							//html += "<li><b style='font-family: Ordinary;font-size: 32px;'> "+ lasPapeletas[i].apellido +'  '  + lasPapeletas[i].nombre + "</b></li>";
-							html += "<a href='#' class='list-group-item list-group-item-action'><i class='fa fa-book fa-fw' aria-hidden='true'></i>&nbsp;"+ TodosValoresEntradostemp[i].apellido + " "  + TodosValoresEntradostemp[i].nombre + "</a>";
+							
+
+							html += "<label style='font-size: 28px'><i class='fa fa-book fa-fw' aria-hidden='true'></i>"+ TodosValoresEntradostemp[i].nombre + " "  + TodosValoresEntradostemp[i].apellido+ "</label>";
+							
+							@if($tipo == 2)
+								var iddel = (TodosValoresEntradostemp[i].id_delegado);
+							    var valoresfiltro = $.grep(losaspirantes, function (n, i) {
+											return (n.id_delegado == iddel );
+								});		
+								//console.log( valoresfiltro );
+								
+								if(valoresfiltro.length<0)
+								{
+									elavatar = "../../images/logo-footer.png";
+								}
+								else
+								{
+									elavatar = valoresfiltro[0]['tipo']+"base64,"+valoresfiltro[0]['foto'];
+								} 
+
+								//elavatar = "../../images/logo-footer.png";
+								html +="<img   class='img-fluid rounded-circle mx-auto d-block avatardisplay' style='margin-right: unset !important;margin-top: -47px;width: 54px;height:54px;cursor:pointer' src='"+elavatar+"'>";
+
+							@endif 							
+
 
 						  }
 						  html+="</div>";  
@@ -126,12 +151,13 @@ function visualizarselecciones()
 		  });
 	}
 }
-	
+	var losaspirantes = '';
 	
 $( document ).ready(function() {
 
 	visualizarselecciones();
-		  
+	losaspirantes = JSON.parse(localStorage.getItem("aspirantes{{ $id_evento }}")); 
+	console.log(losaspirantes);
 	//validando();		  
 });	
 
