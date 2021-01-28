@@ -12,6 +12,7 @@
 	
 	
 	<div class="row">
+					<label style="color:black;font-weight: bold;margin-left: 17px;">Valide su selección de candidatos en esta pantalla. Si desea corregir algo de clic al bot&oacute;n "Regresar". Para confirmar su voto de clic al bot&oacute;n de "Votar".</label>
 
 			        <div class="col-md-12 DirectivosDir">
   
@@ -20,6 +21,7 @@
 					</div>  
   
 	</div>
+	
 	<div class="row col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="col text-center">
 				  <div class="  d-flex justify-content-center" style="margin-left: 37px;">

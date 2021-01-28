@@ -145,7 +145,7 @@ class VotacionController extends Controller
 										// consulto si ya realizo su votacion 
 
 
-										return view('votacion::index')->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] );	 										
+										return view('votacion::index')->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] );	 										
 									}
 								}
 								else
@@ -349,14 +349,14 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 
     public function previa(Request $request)
     {
-        try
+        try 
         {
 			$id_evento = $request->session()->get('idevendesc');
 			//dd($id_evento);
 			//$categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$id_evento. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");	
 			$results = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$id_evento.'');
 	
-			return view('votacion::previa')->with('id_evento', $id_evento )->with('tipo', $results[0]->tipo)->with('nombre', $results[0]->nombre)->with('maxvotos', $results[0]->maxvotos);
+			return view('votacion::previa')->with('ideven ', $id_evento )->with('id_evento', $id_evento )->with('tipo', $results[0]->tipo)->with('nombre', $results[0]->nombre)->with('maxvotos', $results[0]->maxvotos);
 			
         } catch (Exception $e) 
 		{
@@ -521,7 +521,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 						  <br />
 						  <div class="container box" style="width: 970px;">
 						
-							<h1>'.  $time. ';  Gracias por participar! <br/>   '.$registrosenvio->NOMBRE .' -  '.$documento_resultados[0]->nombre .'</h1>
+							<h1>Agradecemos tu participaci&oacute;n en el evento  '. $documento_resultados[0]->nombre  .'</h1>
 
 			
 						

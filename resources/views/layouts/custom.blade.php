@@ -86,8 +86,8 @@
 <body onload="nobackbutton();" class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-hidden"   onKeyDown="javascript:Verificar()">
   <header class="app-header navbar">
 
-	
-	     <input type="text" class="form-control col-lg-6" id="elfiltro" placeholder="BUSCAR AQUÍ"  style="font-family: Impact;width: 36%;"/> <br/>
+		 <div style="width:100%;background:#5b6542;text-align: center;color:white;font-size: 28px;font-weight: bold;"> {{ $nombreevento }}  </div>
+	     <input type="text" class="form-control col-lg-6" id="elfiltro" placeholder="INGRESE EL N&Uacute;MERO DE CLIENTE O NOMBRE PARA BUSCAR EN LA LISTA DE CANDIDATOS"  style="font-family: Impact;width: 36%;"/> <br/>
 	 
 
     <ul class="nav navbar-nav ml-auto">
@@ -116,7 +116,7 @@
       </li>
     </ul>
     <button class="navbar-toggler aside-menu-toggler" type="button">
-	  <label style="margin-left: 51px;color:#629d6b;font-family: Impact;font-size: 28px;">Votos:</label><label id="contadorSeleccionados" style="font-weight: bold;color:#000;font-family: Impact;font-size: 28px;">(0)</label>
+	  <label style="margin-left: 51px;color:#629d6b;font-family: Impact;font-size: 16px;">Cantidad de candidatos seleccionados:</label><label id="contadorSeleccionados" style="font-weight: bold;color:#000;font-family: Impact;font-size: 28px;">(0)</label>
       <span class="navbar-toggler-icon"></span>
     </button>
      
@@ -127,7 +127,7 @@
   </header>
 
   <div class="app-body">
-    
+
 		@yield('content')
     
 

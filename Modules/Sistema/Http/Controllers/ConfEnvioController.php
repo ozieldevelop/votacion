@@ -506,7 +506,7 @@ class ConfEnvioController extends Controller
 						  <br />
 						  <div class="container box" style="width: 970px;">
 						
-							<h1>'.  $time. ';  bienvenido   '.$registrosenvio->NOMBRE .' a '.$documento_resultados[0]->asunto .'</h1>
+							<h1>'.  $time. '<br/> Te invitamos a el siguiente evento : &nbsp; '.$documento_resultados[0]->asunto .' </h1>
 
 							<p>'.  $documento_resultados[0]->texto .'</p>
 

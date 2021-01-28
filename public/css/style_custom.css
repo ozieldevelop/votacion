@@ -160,7 +160,7 @@ b,
 strong {
   font-weight: bolder; 
   font-style: italic;
-  font-size: 27px;
+  font-size: 18px;
 }
 
 small {
@@ -10361,7 +10361,7 @@ base-chart.chart {
   position: relative;
   -ms-flex-direction: row;
       flex-direction: row;
-  height: 55px;
+  height: 90px;
   padding: 0;
   margin: 0;
   background-color: #fff;

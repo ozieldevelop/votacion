@@ -1,7 +1,7 @@
 @extends('layouts.custom')
 
 @section('content')
-
+	<br/><br/>
    <main class="main">
 			<section id="cover" class="min-vh-200">
 			  <div id="cover-caption">
@@ -18,11 +18,11 @@
 		  </section>
 
 		  <div class="container-fluid">
-			  <div class="animated fadeIn">
+			  <div class="animated fadeIn" style="margin-top: 41px;">
 					
-					<label style="color:black;font-weight: bold;">{{ $nombreevento }} </label>
+					<label style="color:black;font-weight: bold;">Seleccione el candidato por el cual desea votar.</label>
 					@if($tipoevent == 1)
-					<label style="color:red;font-weight: bold;"> L&iacute;mite  {{ $max_votos }} de votos  </label>
+					<label style="color:red;font-weight: bold;"> Puede escoger hasta {{ $max_votos }} candidatos </label>
 					@endif
 			  
 			  		<div class="row DirectivosDir">
@@ -42,18 +42,17 @@
 				
 				
 			</div>	
-		  <div class="row col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<div class="col text-center">
-			  <button class="btn btn-primary" onclick="siguientepaso()" style="height:130px;width: 80%;font-size:34px">SIGUIENTE</button>
+
+			<div class="text-center">
+			  <button class="btn btn-primary" onclick="siguientepaso()" style="height:130px;width: 100%;font-size:34px">SIGUIENTE</button>
 			</div>
 			
 			
 			<div id="output">
 
-</div>	
+			</div>	
 
-		  </div>
-		  
+
 		  
 		  
 		</div>
@@ -400,13 +399,14 @@ function PapeletasIniciales(textolike){
 
 				 	//document.getElementById('output').innerHTML = JSON.stringify( aspirtantesall, null, '   ' );
 				//console.log(Papeletas);
-				if(Papeletas.length<=0){	
+				/*if(Papeletas.length<=0){	
 					var datoz = result;
 				}
 				else{
 					 var datoz = Papeletas;
-				}
-				//console.log(datoz);
+				}*/
+				var datoz = result;
+				console.log(datoz);
 				//return false;
 
                 var html = '';
@@ -427,7 +427,7 @@ function PapeletasIniciales(textolike){
 					{
 				
 							if(aa==1){
-								titulo ='Delegados';
+								titulo ='Candidatos a Delegados';
 							}else if(aa==2){
 								titulo ='Junta de Directores';
 							}else if(aa==3){
@@ -438,7 +438,7 @@ function PapeletasIniciales(textolike){
 
 							
 						html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team"><div class="card "><div class="card-header bg-info" style="text-align: center;"><b>';
-						html += titulo + ' <br/> (Selecciones : <label id="totales_'+  aa  +'"> '+0+'</label> )</b> </div><div class="row">';
+						html += titulo + ' <br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'"> '+0+'</label> )</b> </div><div class="row">';
 						
 	
 						for (var ii = 0; ii < datosencabezado.length; ii++)
@@ -467,7 +467,12 @@ function PapeletasIniciales(textolike){
 							@if($tipoevent == 2)
 								html +="<img   class='img-fluid rounded-circle mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
 							@endif
-								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["nombre"]+"</p><p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+"</p><p style='text-align: center;font-size: 17px;'>"+titulo+"</p></div></div></div>";
+								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["nombre"]+"</p><p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+"</p><p style='text-align: center;font-size: 17px;'>";
+							@if($tipoevent == 2)
+								html +=titulo;
+							@endif								
+								
+								html +="</p></div></div></div>";
 
 
 						}
@@ -479,7 +484,7 @@ function PapeletasIniciales(textolike){
 				}
         $('.DirectivosDir').html(html);
 		renderizarselecciones();
-		     terminar_espere();  
+		terminar_espere();  
      }
 
    });
@@ -536,7 +541,7 @@ function PapeletasFiltradas(textolike)
 					{
 				
 							if(aa==1){
-								titulo ='Delegados';
+								titulo ='Candidatos a Delegados';
 							}else if(aa==2){
 								titulo ='Junta de Directores';
 							}else if(aa==3){
@@ -547,7 +552,7 @@ function PapeletasFiltradas(textolike)
 
 							
 						html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team"><div class="card "><div class="card-header bg-info" style="text-align: center;"><b>';
-						html +=  titulo + '<br/> (Selecciones : <label id="totales_'+  aa  +'">'+0+'</label> ) </b></div><div class="row">';
+						html +=  titulo + '<br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'">'+0+'</label> ) </b></div><div class="row">';
 						
 	
 						for (var ii = 0; ii < datosencabezado.length; ii++)
@@ -603,15 +608,7 @@ function visualizarselecciones()
     var conteo = 0;
     $("#contenedorAspirantes").html(html);
 	
-	/*
-	var Papeletastex = JSON.parse(localStorage.getItem("lasboletas{{ $ideven }}"));
-	console.log(Papeletastex);
 
-	if(Papeletastex.length>0){
-			
-		Papeletas = JSON.parse(localStorage.getItem("lasboletas{{ $ideven }}"));
-
-	}	*/
 
 	
     $.each(Papeletas, function (index, item) {
@@ -734,12 +731,27 @@ function votosxarea()
 	//var cat = localStorage.getItem('xccok');
 	//	
 
+	
+	
+	var Papeletastex = localStorage.getItem("lasboletas{{ $ideven }}");
+	console.log(Papeletastex);
 
-	localStorage.setItem("lasboletas{{ $ideven }}",[]);
+
+	if(Papeletastex.length>0){
+		Papeletas = JSON.parse(Papeletastex);
+		console.log(Papeletas);
+		PapeletasIniciales('');		
+	}
+	else{
+		PapeletasIniciales('');	
+	}
+	
+	//renderizarselecciones();
+	//localStorage.setItem("lasboletas{{ $ideven }}",[]);
 	localStorage.setItem("aspirantes{{ $ideven }}",[]);
 	
 	
-	PapeletasIniciales('');
+	
 	//pintarpapeletas();
 		
   });

@@ -1,6 +1,6 @@
 <!--extends('votacion::layouts.master')-->
 
-@extends('layouts.laprevia')
+@extends('layouts.laadvertencia') 
 
 @section('content')
 
