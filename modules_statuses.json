@@ -1,4 +1,5 @@
 {
     "Sistema": true,
-    "Votacion": true
+    "Votacion": true,
+    "Cliente": true
 }
