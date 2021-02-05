@@ -2,6 +2,11 @@
 
 @section('content')
 
+<!--iframe allow="microphone; camera" style="border: 0; height: 100%; left: 0; position: absolute; top: 0; width: 100%;" src="https://zoom.us/wc/join/96214394151" frameborder="0"></iframe-->
+
+
+
+
 
   <style>
   

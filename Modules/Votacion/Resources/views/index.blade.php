@@ -227,13 +227,15 @@ function avatardisplayFn(id,id_area,areaetiqueta)
 				, method: 'GET'
 				, success: function(result){
 					datos = result;
-					limitevotos = (datos[0].maxvotos)-1;			
+					limitevotos = (datos[0].maxvotos)-1;		
+          //var aaa= JSON.stringify(Papeletas);
+          Papeletas = Papeletas || [];
 						if(Papeletas.length <= limitevotos){
 							
 			@endif	
 					var tempcodcliente = parseInt(id);
-
-					
+          //var aaa= JSON.stringify(Papeletas);
+          Papeletas = Papeletas || [];
 					var TodosValoresEntrados = $.grep(Papeletas, function (n, i) {
 								return (n.id_delegado == tempcodcliente && n.id_area == id_area );
 					});
@@ -258,7 +260,7 @@ function avatardisplayFn(id,id_area,areaetiqueta)
 					  Swal.fire({
 						position: 'center',
 						icon: 'warning',
-						title: 'Ya has utilizado tu cantidad m&aacute;xima de votos; elimina alguno si deseas relamente esta opci&oacute;n',
+						title: 'Ha alcanzado la cantidad m&aacute;xima de votos para este tipo de votaci&oacute;n',
 						showConfirmButton: false,
 						allowOutsideClick: true,
 						timer: 34500
@@ -395,13 +397,13 @@ function PapeletasIniciales(textolike){
 				 localStorage.setItem("aspirantes{{ $ideven }}",JSON.stringify (aspirtantesall));
 
 				 	//document.getElementById('output').innerHTML = JSON.stringify( aspirtantesall, null, '   ' );
-				//console.log(Papeletas);
-				/*if(Papeletas.length<=0){	
+				Papeletas = Papeletas || [];
+				if(Papeletas.length<=0){	
 					var datoz = result;
 				}
 				else{
 					 var datoz = Papeletas;
-				}*/
+				}
 				var datoz = result;
 				console.log(datoz);
 				//return false;
@@ -617,9 +619,10 @@ function visualizarselecciones()
       conteo++;
   });
     $("#contenedorAspirantes").append(html);
-
-    if(Papeletas.length>=0){
-      $('#contadorSeleccionados').html('('+Papeletas.length+')'); 
+    Papeletas = Papeletas || [];
+    if(Papeletas!=""){
+      //console.log(Papeletas);
+      $('#contadorSeleccionados').html('('+ Papeletas.length+')'); 
     }
     else
     {
@@ -637,13 +640,15 @@ function renderizarselecciones(){
 function newVoto(dato,id_area,area)
 {
 	$('#papeletacard_'+dato+'_'+id_area).attr('class','card seleccionadocard');
-
+    Papeletas = Papeletas || [];
+  
       $.ajax({
         url:  '{{ url("votacion/coopexe2")}}'
         , data: { indice: dato }
         , method: 'GET'
         , success: function(result){
 			   var datoz = result;
+          //console.log(datoz);
 				  Papeletas.push({ "id_delegado": datoz[0].id_delegado,"num_cliente": datoz[0].num_cliente,"nombre": datoz[0].nombre,"apellido": datoz[0].apellido,"id_area": id_area,"area":area,"tipo": '',"foto": ''   });
 				  localStorage.setItem("lasboletas{{ $ideven }}",JSON.stringify (Papeletas));
 				  renderizarselecciones();
@@ -698,7 +703,9 @@ function votosxarea()
 	
 	for (var aa = 1; aa < 5; aa++)
 	{
-		//console.log(Papeletas);
+		console.log(Papeletas);
+    //var aaa= JSON.stringify(Papeletas);
+     Papeletas = Papeletas || [];
 		var datosencabezado = $.grep(Papeletas, function (n, i) {
 			return (n.id_area == aa );
 		});
@@ -712,7 +719,7 @@ function votosxarea()
 		else{
 			$('#totales_'+aa).html(0);	
 		}
-
+   
 	}
 
 }
@@ -733,11 +740,13 @@ function votosxarea()
 
 	
 	
-	var Papeletastex = localStorage.getItem("lasboletas{{ $ideven }}");
-	console.log(Papeletastex);
+	var Papeletastex1 = localStorage.getItem("lasboletas{{ $ideven }}");
+
+	//console.log(Papeletastex);
 
 
-	if(Papeletastex.length>0){
+	if(Papeletastex1!=""){
+    var Papeletastex = localStorage.getItem("lasboletas{{ $ideven }}");
 		Papeletas = JSON.parse(Papeletastex);
 		console.log(Papeletas);
 		PapeletasIniciales('');		

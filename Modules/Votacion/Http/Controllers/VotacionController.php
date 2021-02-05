@@ -101,7 +101,7 @@ class VotacionController extends Controller
 											cast(aes_decrypt(`e`.`nombre`,'xyz123') as char charset utf8mb4) AS `voto_nombre`,
 											cast(aes_decrypt(`e`.`apellido`,'xyz123') as char charset utf8mb4) AS `voto_apellido`
 											from `votos` `e` 
-											INNER JOIN votantes AS b ON e.idvotante = e.idvotante
+											INNER JOIN votantes AS b ON e.idvotante = b.id
 											INNER JOIN conf_areas AS c ON e.id_area = c.id_area
 											WHERE 
 											cast(aes_decrypt(`b`.`asociado`,'xyz123') as char charset utf8mb4) = ".$cldoc. " 
@@ -113,7 +113,7 @@ class VotacionController extends Controller
 											`e`.`id_area` AS `voto_id_area`,
 											`c`.`area_etiqueta` AS `voto_area_etiqueta`
 											from `votos` `e` 
-											INNER JOIN votantes AS b ON e.idvotante = e.idvotante
+											INNER JOIN votantes AS b ON e.idvotante = b.id
 											INNER JOIN conf_areas AS c ON e.id_area = c.id_area
 											WHERE cast(aes_decrypt(`b`.`asociado`,'xyz123') as char charset utf8mb4) = ".$cldoc. " 
 											AND `e`.`id_evento` = ".$idevendesc. " 
@@ -537,7 +537,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 						}
 						else
 						{
-								$correenviar = $categoriaspapeletas[0]["CORREO"];
+								$correenviar = $registrosenvio->CORREO;
 						}	
 				  
 						$details =[

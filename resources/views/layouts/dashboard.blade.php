@@ -12,10 +12,10 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta content="Responsive admin theme build on top of Bootstrap 4" name="description" />
     <meta content="Themesdesign" name="author" />
-    <link rel="shortcut icon" href="../../assets/images/favicon.ico">
+    <link rel="shortcut icon" href="../../images/favicon.ico">
 
     <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="../../assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
+
     <link href="../../assets/css/icons.css" rel="stylesheet" type="text/css">
     <link href="../../assets/css/style.css" rel="stylesheet" type="text/css">
 	<link href="../../css/simple-line-icons.css" rel="stylesheet" type="text/css">
@@ -238,7 +238,7 @@
     <script src="../../assets/js/jquery.min.js"></script>
     <script src="../../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/js/jquery.slimscroll.js"></script>
-    <script src="../../assets/js/waves.min.js"></script>
+
 
     <!-- App js -->
     <script src="../../assets/js/app.js"></script>

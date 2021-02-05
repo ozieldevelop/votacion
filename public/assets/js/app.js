@@ -94,7 +94,7 @@
         this.initActiveMenu();
         this.initComponents();
         this.initFullScreen();
-        Waves.init();
+        //Waves.init();
     },
 
     //init

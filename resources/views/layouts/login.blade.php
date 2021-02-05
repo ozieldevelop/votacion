@@ -11,7 +11,7 @@
     <meta content="CooperativaRLdesign" name="author" />
 	<meta name="csrf-token" content="{{ csrf_token() }}">	
 		
-    <link rel="shortcut icon" href="../../assets/images/favicon.ico">
+    <link rel="shortcut icon" href="../../images/favicon.ico">
 
     <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="../../assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
