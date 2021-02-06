@@ -122,7 +122,7 @@ class VotacionController extends Controller
 
 
 										$mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
-										$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Ya realizó su voto para este evento</div>";
+										$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Ya realiz&oacute; su voto para este evento</div>";
 										return view('votacion::datosvotacion')->with('mensaje', $mensaje)->with('nombre', $resultsxx[0]->nombre)->with('ideven', $idevendesc)->with('areas', $areas)->with('detalles', $detalles);									
 									}
 									else
@@ -151,7 +151,7 @@ class VotacionController extends Controller
 								else
 								{
 									$mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
-									$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Periodo no está dentro del rango habilitado</div>";
+									$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Periodo no est&aacute; dentro del rango habilitado</div>";
 									return view('votacion::advertencia')->with('mensaje', $mensaje)->with('nombre', $resultsxx[0]->nombre)->with('ideven', $idevendesc);
 								}
 							}
@@ -169,10 +169,10 @@ class VotacionController extends Controller
 					$mensaje = "";
 					$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
 					if($idevendesc==0){
-						$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Identifición de evento no fue reconocido</div>";
+						$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Identifici&oacute;n de evento no fue reconocido</div>";
 					}
 					if($cldoc==0){
-						$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Identifición de su número de invitación</div> ";
+						$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Identifici&oacute;n de su número de invitaci&oacute;n</div> ";
 					}
 
 					
@@ -541,7 +541,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 						}	
 				  
 						$details =[
-							'title' => "Participación en Votación",
+							'title' => "Participaci&oacute;n en Votaci&oacute;n",
 							'body' => '',
 							'num_cliente' => $registrosenvio->CLDOC,
 							'nombre' => $registrosenvio->NOMBRE,
@@ -567,7 +567,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 			
 				$results = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$id_evento.'');
 		
-				$mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Su votaci&oacute;n se realizado con &eacute;xito</h3></div>";
+				$mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Su votaci&oacute;n se ha realizado con &eacute;xito</h3></div>";
 				$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Gracias por su participaci&oacute;n</div>";
 				return view('votacion::advertencia')->with('mensaje', $mensaje)->with('nombre', $results[0]->nombre)->with('ideven', $id_evento);
         } catch (Exception $e) 
@@ -629,7 +629,7 @@ $resultsxx = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$ide
 
 
 		$mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
-		$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Ya realizó su voto para este evento</div>";
+		$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Ya realiz&oacute; su voto para este evento</div>";
 		return view('votacion::datosvotacion')->with('mensaje', $mensaje)->with('nombre', $resultsxx[0]->nombre)->with('ideven', $idevendesc)->with('areas', $areas)->with('detalles', $detalles);									
 
 

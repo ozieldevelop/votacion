@@ -246,12 +246,29 @@ class ConfEnvioController extends Controller
 						
 							<h1>'.  $time. ';  bienvenido   '.$registrosenvio->NOMBRE .' a '.$documento_resultados[0]->asunto .'</h1>
 
-							<p>'.  $documento_resultados[0]->texto .'</p>
 
-							
 
 				
-							 <a href="http://cooperativa.eaguilars.com/votacion/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> <img src="'.url('/images').'/accede.png"></a></p>
+							 <a href="http://cooperativa.eaguilars.com/cliente/registro/evento/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> 
+               
+               
+               
+               '.  $documento_resultados[0]->texto .'
+               
+               
+               
+               
+               
+               </a>
+               
+               
+               
+               
+               
+               
+               
+               
+               </p>
 						  </div>
 						 </body>
 						</html>';
@@ -508,12 +525,16 @@ class ConfEnvioController extends Controller
 						
 							<h1>'.  $time. '<br/> Te invitamos a el siguiente evento : &nbsp; '.$documento_resultados[0]->asunto .' </h1>
 
-							<p>'.  $documento_resultados[0]->texto .'</p>
-
-							
 
 				
-							 <a href="http://cooperativa.eaguilars.com/votacion/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> <img src="'.url('/images').'/accede.png"></a></p>
+							 <a href="http://cooperativa.eaguilars.com/cliente/registro/evento/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> 
+                  '.  $documento_resultados[0]->texto .'
+               </a>
+               
+               
+               
+               
+               </p>
 						  </div>
 						 </body>
 						</html>';

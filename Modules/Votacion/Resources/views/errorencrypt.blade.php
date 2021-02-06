@@ -1,4 +1,4 @@
-@extends('layouts.custom')
+@extends('layouts.login')
 
 @section('content')
 <div class="container">
@@ -8,9 +8,9 @@
                 <h1 class="display-4">Link no v&aacute;lido.</h1>
                 <p class="lead">Debe regresar a la votación o consultar con el administrador de la plataforma.</p>
                 <hr class="my-4">
-                <p class="lead">
+                <!--p class="lead">
                     <a class="btn btn-success btn-lg" href="#" role="button" onclick="atras()">Regresar</a>
-                  </p>
+                </p-->
 
               </div>
         </div>

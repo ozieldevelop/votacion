@@ -13,4 +13,11 @@
 
 Route::prefix('cliente')->group(function() {
     Route::get('/', 'ClienteController@index');
+  
+      Route::prefix('registro')->group(function() {
+          Route::get('/evento', 'ClienteController@inscripcion');
+      });
+  
+  
+  
 });
