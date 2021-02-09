@@ -71,6 +71,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	Route::get('/listareventosdrop', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@listareventosdrop'] );		
 	
 	Route::get('/dataeventosseleccionespecifica', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@dataeventosseleccionespecifica'] );		
+  
+
 	
 	Route::get('/cargaraspirantesconfvota', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@cargaraspirantesconfvota'] );		
 	

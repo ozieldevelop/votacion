@@ -85,6 +85,9 @@ class ConfVotacionController extends Controller
                   return json(array('error'=> $e->getMessage()));
            }
      }	
+  
+
+  
 	 
      public function eliminaraspiranteevento(Request $request)
      {

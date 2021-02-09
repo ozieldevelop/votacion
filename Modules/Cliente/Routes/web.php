@@ -13,6 +13,9 @@
 
 Route::prefix('cliente')->group(function() {
     Route::get('/', 'ClienteController@index');
+    Route::get('/entorno', 'ClienteController@index');
+    Route::get('/alldatadirectivos', ['uses' => 'ClienteController@alldatadirectivos'] );	
+  
   
       Route::prefix('registro')->group(function() {
           Route::get('/evento', 'ClienteController@inscripcion');

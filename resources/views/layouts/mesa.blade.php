@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../../plugins/codemirror/codemirror.css">
   <link rel="stylesheet" href="../../plugins/codemirror/theme/monokai.css">
   
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <!-- Site wrapper -->
@@ -65,120 +66,15 @@
           <img src="../../images/logo-cooperativa.png" class="img-circle elevation-2" alt="User Image">
         </div-->
         <div class="info">
-          <a href="#" class="d-block">{{ $trato }} . {{ $nombre }} </a>
+          <a href="#" class="d-block"> Usuarios en l&iacute;nea </a>
         </div>
       </div>
 
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-       
-          
-          <li class="nav-header"> EN L&Iacute;NEA  </li>
-          
-          <!--li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-                Descargables
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Unavailable</p>
-                </a>
-              </li>
-             
-            </ul>
-          </li-->
-          
-            <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-              <p class="text">Important</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-warning"></i>
-              <p>DR. xxxx ASPIRANTE</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li>        
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li>     
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li>               
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li> 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li>  
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-warning"></i>
-              <p>DR. xxxx ASPIRANTE</p>
-            </a>
-          </li>          
-          
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li>        
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li>     
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li>               
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li> 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-success"></i>
-             <p>DR. xxxx </p>
-            </a>
-          </li>           
-          
-          
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" id="usuarioslinea">
+
+        </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -192,7 +88,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Bienvenido!</h1>
+            <h1> {{ $nombreevento }} </h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -257,6 +153,10 @@
 <script src="../../plugins/codemirror/mode/xml/xml.js"></script>
 <script src="../../plugins/codemirror/mode/htmlmixed/htmlmixed.js"></script>  
 <script src="../../plugins/codemirror/addon/runmode/runmode.js"></script>    
+  
+  
+
+  
   
   
 @yield('page-script')  

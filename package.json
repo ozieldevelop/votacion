@@ -22,6 +22,18 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
-        "@zoomus/websdk": "^1.8.6"
+        "@zoomus/websdk": "^1.8.6",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "express.io": "^1.1.13",
+        "http": "0.0.1-security",
+        "ioredis": "^4.22.0",
+        "lodash.where": "^3.1.0",
+        "moment": "^2.29.1",
+        "mysql": "^2.18.1",
+        "redis": "^3.0.2",
+        "redis-server": "^1.2.2",
+        "socket.io": "^3.1.1"
     }
 }

@@ -13,7 +13,7 @@ use Modules\Sistema\Entities\aspiranteModel;
 
 use Modules\Sistema\Entities\votantesModel;
 use Modules\Sistema\Entities\votosModel;
-
+use Modules\Sistema\Entities\vtaspiranteModel;
 
 use App\Services\GeneralHelper;
 use App\Models\Votantes;
@@ -60,16 +60,16 @@ class ClienteController extends Controller
 
 				$resultsxx = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$idevendesc.'');
 
-        ///dd($resultsxx);
+
         
 				if($cldoc>0 && $idevendesc>0)
-				{
+				{     
 
 					// si todo va bien 
 				
 							$results = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$idevendesc)->get();
 							
-
+                
 							if (count($results) >0 )
 							{
 								
@@ -141,8 +141,23 @@ class ClienteController extends Controller
 										$categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$idevendesc. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");
 
 										$listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= ".$idevendesc. " and  a.estado=1 order by a.apellido asc");									
+                    
+               
+                    $datosfoto = DB::select("SELECT * FROM directivos where num_cliente=".$cldoc."");
 
-										return view('cliente::tablero')->with('aspirantes', $listadoaspirantes)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] )->with('f_inicia', $results2[0]["rangofecha1"] )->with('f_termina', $results2[0]["rangofecha2"] )->with('num_cliente', $cldoc )->with('ocupacion', trim($datoscliente[0]->ocupacion) )->with('profesion', trim($datoscliente[0]->profesion) )->with('trato', trim($datoscliente[0]->trato) )->with('nombre', trim($datoscliente[0]->nombre) )->with('agencia', trim($datoscliente[0]->agencia) );	 										
+  									if (count($datosfoto) >0 )
+									  {  
+                      $tienefoto = 1;
+                      $tipo = $datosfoto[0]->tipo;
+                      $foto =  $datosfoto[0]->foto;
+                    }
+                    else
+                    {
+                      $tienefoto = 0;
+                      $tipo = "data:image/png;";
+                      $foto = "../../images/logo-footer.png";                    
+                    }
+										return view('cliente::tablero')->with('tienefoto', $tienefoto)->with('tipo', $tipo)->with('foto', $foto)->with('aspirantes', $listadoaspirantes)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] )->with('f_inicia', $results2[0]["rangofecha1"] )->with('f_termina', $results2[0]["rangofecha2"] )->with('num_cliente', $cldoc )->with('ocupacion', trim($datoscliente[0]->ocupacion) )->with('profesion', trim($datoscliente[0]->profesion) )->with('trato', trim($datoscliente[0]->trato) )->with('nombre', trim($datoscliente[0]->nombre) )->with('agencia', trim($datoscliente[0]->agencia) );	 										
 									//}
 								}
 								else
@@ -187,6 +202,21 @@ class ClienteController extends Controller
       //return view('cliente::tablero');
     }
 
+       public function alldatadirectivos(Request $request)
+     {
+           try
+           {
+				   $evento = $request->input('evento');
+           $data = vtaspiranteModel::select(['id_evento','id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'])->where('id_evento',$evento)->get();
+
+				   return $data;
+                   //return json_decode(json_encode($data),true);
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+           }
+     }	
+
+  
   
     public function inscripcion(Request $request)
     {
