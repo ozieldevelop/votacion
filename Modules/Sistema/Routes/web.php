@@ -114,5 +114,12 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	Route::post('/reinsertar', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@reinsertar'] );
 	Route::post('/fnreenviarnoti', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@fnreenviarnoti'] );
 	
+  
+
+  
+  
 });
+
+
+    
 

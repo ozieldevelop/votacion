@@ -12,7 +12,8 @@
 */
 
 Route::prefix('votacion')->group(function() {
-    Route::get('/', 'VotacionController@index');
+  
+  Route::get('/', 'VotacionController@index');
 	
 	Route::get('/coopexe2', 'VotacionController@coopexe2');
 
@@ -24,7 +25,7 @@ Route::prefix('votacion')->group(function() {
 	
 	Route::get('/gruposvoletasfiltradas', 'VotacionController@gruposvoletasfiltradas');
 
-    Route::get('/previa', 'VotacionController@previa');
+  Route::get('/previa', 'VotacionController@previa');
 	
 	Route::get('/categoriaslist', 'VotacionController@categoriaslist'); 
 	

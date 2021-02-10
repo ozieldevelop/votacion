@@ -249,7 +249,7 @@ class ConfEnvioController extends Controller
 
 
 				
-							 <a href="http://cooperativa.eaguilars.com/cliente/registro/evento/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> 
+							 <a href="http://cooperativa.eaguilars.com/cliente/inscripcion?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> 
                
                
                
