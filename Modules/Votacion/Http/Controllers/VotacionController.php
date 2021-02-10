@@ -36,31 +36,24 @@ class VotacionController extends Controller
      */
     public function index(Request $request)
     {
-		try
-           {
-				Auth::logout();
-				$request->session()->flush();
-				
-				$cldoc_temp = $request->input('wget');
-				
-				$ideven = $request->input('id_evento');
-				
+		  try
+        {
+				  //Auth::logout();
+				  //$request->session()->flush();
+        
+       // dd(auth()->user());
+        
+				  $cldoc_temp = $request->input('wget');
+			    $ideven = $request->input('id_evento');
 
-				
-				
-				$cldoc_temp = isset($cldoc_temp) ? urldecode($cldoc_temp) : 0 ;
-				$cldoc= GeneralHelper::lara_desencriptar( $cldoc_temp );	
-				//$cldoc= 1;
+				  $cldoc_temp = isset($cldoc_temp) ? urldecode($cldoc_temp) : 0 ;
+				  $cldoc= GeneralHelper::lara_desencriptar( $cldoc_temp );	
 
-				
-				$ideven = isset($ideven) ? urldecode($ideven) : 0 ;
-				$idevendesc=  GeneralHelper::lara_desencriptar( $ideven );	
-				//$idevendesc= 5;
-				
- 
-				//dd($cldoc."<br/>". $idevendesc  );
+				  $ideven = isset($ideven) ? urldecode($ideven) : 0 ;
+				  $idevendesc=  GeneralHelper::lara_desencriptar( $ideven );	
 
-				$resultsxx = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$idevendesc.'');
+
+				  $resultsxx = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$idevendesc.'');
 
 
 				if($cldoc>0 && $idevendesc>0)
@@ -127,6 +120,10 @@ class VotacionController extends Controller
 									}
 									else
 									{
+                    
+                    
+                    Auth::loginUsingId(3);
+                    
 										// SI EL RANGO DE FECHA ESTA DENTRO DE LO PARAMETRIZADO AVANZA
 										$request->session()->put('cldoc', $cldoc);
 										$request->session()->put('idevendesc', $idevendesc);
@@ -144,7 +141,7 @@ class VotacionController extends Controller
 
 										// consulto si ya realizo su votacion 
 
-
+          
 										return view('votacion::index')->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] );	 										
 									}
 								}
@@ -351,15 +348,14 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
     {
         try 
         {
-			$id_evento = $request->session()->get('idevendesc');
-			//dd($id_evento);
-			//$categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$id_evento. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");	
-			$results = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$id_evento.'');
+			    $id_evento = $request->session()->get('idevendesc');
+			    $results = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$id_evento.'');
 	
-			return view('votacion::previa')->with('ideven ', $id_evento )->with('id_evento', $id_evento )->with('tipo', $results[0]->tipo)->with('nombre', $results[0]->nombre)->with('maxvotos', $results[0]->maxvotos);
+			    return view('votacion::previa')->with('ideven ', $id_evento )->with('id_evento', $id_evento )->with('tipo', $results[0]->tipo)->with('nombre', $results[0]->nombre)->with('maxvotos', $results[0]->maxvotos);
 			
-        } catch (Exception $e) 
-		{
+        } 
+        catch (Exception $e) 
+		    {
                   return json(array('error'=> $e->getMessage()));
         }
     }	

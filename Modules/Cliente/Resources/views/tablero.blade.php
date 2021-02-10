@@ -1,68 +1,10 @@
-@extends('layouts.mesa')
+@extends('cliente::layouts.master_tablero')
+
 
 @section('content')
 
-        <div class="col-sm-12 col-md-6 col-lg-6">
-            <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
-                <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle"
-                       src="@if ($tienefoto ==1) {{ $tipo.$foto}}  @else {{ $foto }}  @endif"
-                       alt="User profile picture">
-                </div>
-
-                <h3 class="profile-username text-center">{{ $trato }} . {{ $nombre }}</h3>
-
-                <p class="text-muted text-center">ENCUESTA PREVIA A EL EVENTO </p>
-
-                <ul class="list-group list-group-unbordered mb-3">
-
-                  <li class="list-group-item">
-                    <b style="color:blue">Asistir&aacute;s al evento?</b> <label   class="float-right"><input type="checkbox"> </label>
-                  </li>                
-                  <li class="list-group-item">
-                    <b>Confirmanos si serás parte del grupo de :</b>
-                  </li>
-                  <li class="list-group-item">
-                    <b style="color:blue">Candidatos a Delegados</b> <label   class="float-right"><input type="checkbox"> </label>
-                  </li>    
-                  <li class="list-group-item">
-                    <b style="color:blue">Junta de Directores</b> <label   class="float-right"><input type="checkbox"> </label>
-                  </li>  
-                  <li class="list-group-item">
-                    <b style="color:blue">Junta de Vigilancia</b> <label   class="float-right"><input type="checkbox"> </label>
-                  </li>     
-                  <li class="list-group-item">
-                    <b style="color:blue">Comité de Crédito</b> <label   class="float-right"><input type="checkbox"> </label>
-                  </li>                   
-
-                </ul>
-
-                <a href="#" class="btn btn-primary btn-block"><b>Cambiar Imagen de perfil</b></a>
-                    <button type="button" class="btn btn-block btn-success">Acceder a Reuni&oacute;n</button>
-                    <a type="button" href="#" class="btn btn-block btn-warning">Votaci&oacute;n</a>
-                    <button type="button" class="btn btn-block btn-secondary disabled">Bot&oacute;n no habilitado para persistencia</button>                    
-              </div>
-            </div>
-       </div>  
-
-    <div class="col-sm-12 col-md-6 col-lg-6">     
-            <div class="card">
-              <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Aspirantes Postulados</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Descargas</a></li>
-                </ul>
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content">
-                  <div class="active tab-pane" id="activity">
-
-
-                    
-                    
-                    
-<div id="carouselExampleIndicators" class="carousel slide align-items-center justify-content-center" data-ride="carousel">
+    <div class="col-sm-12 col-md-12 col-lg-12">   
+                 <div id="carouselExampleIndicators" class="carousel slide align-items-center justify-content-center" data-ride="carousel" >
                   <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -84,7 +26,29 @@
                     <span class="sr-only">Next</span>
                   </a>
                 </div>
+     </div>                               
+
+
+    <div class="col-sm-12 col-md-12 col-lg-12">     
+            <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Aspirantes Postulados</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Descargas</a></li>
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="active tab-pane" id="activity">
+
+
+         <a href="#" class="btn btn-primary btn-block"><b>Cambiar Imagen de perfil</b></a>
+     <button type="button" class="btn btn-block btn-primary" disabled>Acceder a Reuni&oacute;n</button>
+     <a type="button" href="#" class="btn btn-block btn-primary">Votaci&oacute;n</a>
+     <button type="button" class="btn btn-block btn-primary disabled">Bot&oacute;n no habilitado para persistencia</button>                    
                     
+                    
+
                     
                     
                     
@@ -161,6 +125,7 @@
 
 
       <div class="col-sm-12 col-md-12 col-lg-12">
+        <br />
           <div class="card card-outline card-info">
             <div class="card-header">
               <h3 class="card-title">
@@ -178,26 +143,11 @@
             
             </div>
           </div>
+        <br />
      </div>
 
 
 
-      <div class="col-sm-12 col-md-12 col-lg-12">
-          <div class="card card-outline card-info">
-            <div class="card-header">
-              <h3 class="card-title">
-                
-              </h3>
-            </div>
-            <!-- /.card-header -->
-            <div id="DirectivosDir">
-
-            </div>
-            <div class="card-footer">
-            
-            </div>
-          </div>
-     </div>
 
 
 @endsection
@@ -274,7 +224,7 @@
                                      var  activo ='';
                                     }
                                     //html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+ (datoz[i]["nombre"].substring(0, 10)) +' '+ (datoz[i]["apellido"].substring(0, 10))  +' <div class="card-actions"><a href="#" class="btn-setting" onclick="adminAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-wrench"></i></a> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
-                                     html +='<div class="carousel-item '+activo+' "><div class="card card-widget widget-user shadow-lg"><div class="widget-user-header text-white" style="background: url(../dist/img/photo1.png) center center;"><h3 class="widget-user-username">'+ (datoz[i]["nombre"].substring(0, 10)) +' '+ (datoz[i]["apellido"].substring(0, 10))  +' </h3><h5 class="widget-user-desc">DR.</h5></div><div class="widget-user-image"><img class="img-circle" src="'+ elavatar +'" alt="User Avatar"></div><div class="card-footer"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 border-right"><div class="description-block"><h5 class="description-header">Info: XXXXXXXXXXXXXXXX</h5><span class="description-text"># '+ datoz[i]['num_cliente'] +'</span></div></div></div></div></div></div>';
+                                     html +='<div class="carousel-item '+activo+' "><div class="card card-widget widget-user shadow-lg"><div class="widget-user-header text-white" style="background: url(../dist/img/photo1.png) center center;"><h2 class="widget-user-username" style="font-size:43px !important">'+ (datoz[i]["trato"].substring(0, 10))  +' '+ (datoz[i]["nombre"].substring(0, 10)) +' '+ (datoz[i]["apellido"].substring(0, 10))  +' </h2></div><div class="widget-user-image"><img class="img-circle" src="'+ elavatar +'" alt="User Avatar"></div><div class="card-footer"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 border-right"><div class="description-block"><h5 class="description-header">'+ (datoz[i]["ocupacion"].substring(0, 10)) +' '+ (datoz[i]["profesion"].substring(0, 10)) +'</h5><span class="description-text"># '+ datoz[i]['num_cliente'] +'</span></div></div></div></div></div></div>';
                                   }
                               
                               
@@ -287,7 +237,7 @@
 
           }
       
-      
+      /*
           $(function () {
             $(document).on('click', '[data-toggle="lightbox"]', function(event) {
               event.preventDefault();
@@ -302,6 +252,7 @@
               $(this).addClass('active');
             });
           });
+      */
 
         CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
               mode: "htmlmixed",
@@ -344,7 +295,8 @@
            //console.log(param);
            //console.log(modelo);
            // param.push(modelo);
-            var parametros = ({ 'num_cliente' : modelo.num_cliente,'nombre' : modelo.nombre,'agencia' : modelo.agencia  });
+            var parametros = ({ 'num_cliente' : modelo.num_cliente,'nombre' : modelo.nombre,'agencia' : modelo.agencia,'sala' : {{ $id_evento }} ,'name_evento' : encodeURI('{{ $nombreevento }}')   });
+            //console.log(parametros);
            // var parametros = JSON.parse(modelotrue);
             socket.emit('join', parametros, function(err) {
 

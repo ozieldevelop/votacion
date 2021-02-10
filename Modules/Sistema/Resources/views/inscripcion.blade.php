@@ -1,44 +1,33 @@
-@extends('cliente::layouts.master')
-
+@extends('layouts.invitacion')
 
 @section('content')
+
 
         <div class="col-sm-12 col-md-6 col-lg-12">
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
                   <img class="profile-user-img img-fluid img-circle"
-                       src="../../images/logo-footer.png"
+                       src="@if ($tienefoto ==1) {{ $tipo.$foto}}  @else {{ $foto }}  @endif"
                        alt="User profile picture">
                 </div>
 
                 <h3 class="profile-username text-center">{{ $trato }} . {{ $nombre }}</h3>
 
-                <p class="text-muted text-center">ENCUESTA PREVIA DE ASISTENCIA - {{ $nombreevento }}</p> <p class="text-muted text-center">DIA DEL EVENTO {{ $f_inicia }}</p>
+                <p class="text-muted text-center">ENCUESTA PREVIA A EL EVENTO - DIA DEL EVENTO {{ $f_inicia }}</p>
 
                 <ul class="list-group list-group-unbordered mb-3">
 
                   <li class="list-group-item">
-                    <b style="color:blue">Confirmar tu disponibilidad para asistir al evento ! </b> 
-                    
-                    @if($tipoevent==1)
-                    <label   class="float-right" style="display:none">
-                    <input type="checkbox" id="laasisobjeto" class="asistire_class">  
-                    </label>
-                    @endif
-                    
-                  </li>      
-                  
-                    @if($tipoevent==2)
-                        <li class="list-group-item">
-                          <b>Nos gustar&iacute;a saber si deseas ser parte de alguno de estos grupos :</b>
-                        </li>
-                    @endif                  
-
+                    <b style="color:blue">Asistir&aacute;s al evento?</b> <label   class="float-right"><input type="checkbox" id="laasisobjeto" class="asistire_class">  </label>
+                  </li>                
+                  <li class="list-group-item">
+                    <b>Confirmanos si ser&aacute;s parte del grupo de :</b>
+                  </li>
                   
                   
                   @if($tipoevent==1)
-                  <li class="list-group-item" style="display:none">
+                  <li class="list-group-item">
                     <b style="color:blue">Candidatos a Delegados</b> <label   class="float-right"><input type="checkbox" id="candidatodele" class="candidatodele_class"></label>
                   </li>  
                   @else
@@ -49,17 +38,18 @@
                     <b style="color:blue">Junta de vigilancia</b> <label   class="float-right"><input type="checkbox"  id="juntavigi" class="juntavigi_class">  </label>
                   </li>     
                   <li class="list-group-item">
-                    <b style="color:blue">Comit&eacute; de cr&eacute;dito</b> <label   class="float-right"><input type="checkbox"  id="comite_credi" class="comite_credi_class">  </label>
+                    <b style="color:blue">Comitr&eacute; de cr&eacute;dito</b> <label   class="float-right"><input type="checkbox"  id="comite_credi" class="comite_credi_class">  </label>
                   </li>   
                   @endif
                 </ul>
 
-                <button type="button" class="btn btn-block btn-success" onclick="guardarasistencia()">REGISTRARME MI ASISTENCIA EN EL EVENTO</button>
+                <button type="button" class="btn btn-block btn-success" onclick="guardarasistencia()">REGISTRARSE</button>
         
               </div>
             </div>
        </div> 
 
+----- {{ csrf_token() }}
       <div class="col-sm-12 col-md-12 col-lg-12">
           <div class="card card-outline card-info">
             <div class="card-header">
@@ -134,8 +124,8 @@
     'trato':'{{ $trato }}',
     'nombre':'{{ $nombre }}',
     'agencia':'{{ $agencia }}',
-    'asistire': 1,
-    'f_asistire_regis':formatDate(),
+    'asistire': 0,
+    'f_asistire_regis':'',
     'soy_aspirante': 0,
     'cantidato_delegado': 0,
     'junta_directores': 0,
@@ -168,15 +158,15 @@
                   // VALIDAR QUE 
                 
                     $.ajax({
-                      url: '{{ url("cliente/inscripcion/guardaasistencia")}}',
+                      url: '{{ url("cliente/registro/guardaasistencia")}}',
                       data: { datos : JSON.stringify(modelo)  },
-                      method: 'get',
+                      method: 'post',
                       headers: {
                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                       },
                       success: function(result){
                           lobibox_emergente('success','top right',true,'actualizado.');
-                          setTimeout(function(){ location.reload();  }, 2000);
+                          //setTimeout(function(){ location.reload();  }, 2000);
                       },
                       error: function (r) {
                           //lobibox_emergente('success','top right',true,'de seguro error.');
@@ -348,7 +338,6 @@ function formatDate() {
 </script>
 @stop	   
   
-
 
 
 

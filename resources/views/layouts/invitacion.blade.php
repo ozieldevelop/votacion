@@ -27,7 +27,6 @@
     <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script-->
   
 
-  
 	  <link rel="stylesheet" href="../../plugins/codemirror/codemirror.css">
     <link rel="stylesheet" href="../../plugins/codemirror/theme/monokai.css">
 
@@ -44,9 +43,7 @@
     </script>
 	
   
-     <link rel="stylesheet" href="{{ asset('css/lolibox.css') }}">
-    <script src="{{ asset('js/lobibox.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+  
 </head>
 
 <body >
@@ -61,19 +58,47 @@
                     <div>
                         <a href="/" class="logo" style="line-height: 28px;">
                             <span class="logo-light">
-                                    <i class="mdi mdi-folder-open-outline"></i>{{ $nombreevento }}
+                                    <i class="mdi mdi-folder-open-outline"></i>{{ $nombreevento }} 
 								
                             </span> <br/> 
 							
                         </a>
                     </div>
-
+                    <!-- End Logo-->
 
                     <div class="menu-extras topbar-custom navbar p-0">
-
+                        <!--ul class="list-inline d-none d-lg-block mb-0">
+                            <li class="hide-phone app-search float-left">
+                                <form role="search" class="app-search">
+                                    <div class="form-group mb-0">
+                                        <input type="text" class="form-control" placeholder="Search..">
+                                        <button type="submit"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul-->
 
                         <ul class="navbar-right ml-auto list-inline float-right mb-0">
+                            <!-- language-->
+                            <!--li class="dropdown notification-list list-inline-item d-none d-md-inline-block">
+                                <a class="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                    <img src="../../assets/images/flags/us_flag.jpg" class="mr-2" height="12" alt="" /> English <span class="mdi mdi-chevron-down"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated language-switch">
+                                    <a class="dropdown-item" href="#"><img src="../../assets/images/flags/french_flag.jpg" alt="" height="16" /><span> French </span></a>
+                                    <a class="dropdown-item" href="#"><img src="../../assets/images/flags/spain_flag.jpg" alt="" height="16" /><span> Spanish </span></a>
+                                    <a class="dropdown-item" href="#"><img src="../../assets/images/flags/russia_flag.jpg" alt="" height="16" /><span> Russian </span></a>
+                                    <a class="dropdown-item" href="#"><img src="../../assets/images/flags/germany_flag.jpg" alt="" height="16" /><span> German </span></a>
+                                    <a class="dropdown-item" href="#"><img src="../../assets/images/flags/italy_flag.jpg" alt="" height="16" /><span> Italian </span></a>
+                                </div>
+                            </li-->
 
+                            <!-- full screen -->
+                            <!--li class="dropdown notification-list list-inline-item d-none d-md-inline-block">
+                                <a class="nav-link waves-effect" href="#" id="btn-fullscreen">
+                                    <i class="mdi mdi-arrow-expand-all noti-icon"></i>
+                                </a>
+                            </li-->
                         </ul>
 
                     </div>
