@@ -17,8 +17,10 @@ Route::prefix('cliente')->group(function() {
     Route::get('/alldatadirectivos', ['uses' => 'ClienteController@alldatadirectivos'] );	
   
   
-  Route::prefix('registro')->group(function() {
-      Route::get('/evento', 'ClienteController@inscripcion');
-  });
-
+      Route::prefix('registro')->group(function() {
+          Route::get('/evento', 'ClienteController@inscripcion');
+      });
+  
+  
+  
 });
