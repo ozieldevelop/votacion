@@ -12,7 +12,7 @@
 */
 
 Route::prefix('cliente')->group(function() {
-  
+
   
     Route::get('/', 'ClienteController@index');
   
@@ -25,7 +25,6 @@ Route::prefix('cliente')->group(function() {
               Route::get('/guardaasistencia', 'ClienteController@guardaasistencia');
           });
 
-  
 });
 
 
