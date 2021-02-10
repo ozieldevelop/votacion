@@ -11,19 +11,20 @@
 |
 */
 
-Route::prefix('cliente')->group(function() {
+Route::prefix('cliente')->group(function() 
+{
 
-  
     Route::get('/', 'ClienteController@index');
-  
+
     Route::get('/dashboard', 'ClienteController@dashboard');
 
-   Route::get('/alldatadirectivos', 'ClienteController@alldatadirectivos');
+    Route::get('/alldatadirectivos', 'ClienteController@alldatadirectivos');
 
-          Route::prefix('inscripcion')->group(function() {
+    Route::prefix('inscripcion')->group(function() {
               Route::get('/', 'ClienteController@index');
               Route::get('/guardaasistencia', 'ClienteController@guardaasistencia');
-          });
+    });
+
 
 });
 
