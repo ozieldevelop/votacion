@@ -195,7 +195,16 @@
             'f_asistire_regis':'',
             'soy_aspirante':''
           };
-
+      
+      
+          function haybloqueo()
+          {
+            var parametros = {
+              sala : {{ $id_evento }} 
+            }
+            socket.emit('atencion', parametros, function(err) { });      
+          }
+      
       
           function evaluarasignararea()
           {
@@ -210,21 +219,30 @@
                                   var datoz = result;
                                   var html = '';
                                   var elavatar = ''
+                                  var tempcss ='';
+                              
                                   for (var i = 0; i < datoz.length; i++)
                                   {
-                                    if( datoz[i]['foto'] === undefined || datoz[i]['foto'] === null ) {
-                                      elavatar = "./images/logo-footer.png";
-                                    }
-                                    else{
-                                      elavatar = datoz[i]['tipo']+"base64,"+datoz[i]['foto'];
-                                    }		
+	                                  tempcss ='';
                                     if(i==0){
                                       var  activo ='active';
                                     }else{
                                      var  activo ='';
                                     }
-                                    //html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+ (datoz[i]["nombre"].substring(0, 10)) +' '+ (datoz[i]["apellido"].substring(0, 10))  +' <div class="card-actions"><a href="#" class="btn-setting" onclick="adminAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-wrench"></i></a> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
-                                     html +='<div class="carousel-item '+activo+' "><div class="card card-widget widget-user shadow-lg"><div class="widget-user-header text-white" style="background: url(../dist/img/photo1.png) center center;"><h2 class="widget-user-username" style="font-size:43px !important">'+ (datoz[i]["trato"].substring(0, 10))  +' '+ (datoz[i]["nombre"].substring(0, 10)) +' '+ (datoz[i]["apellido"].substring(0, 10))  +' </h2></div><div class="widget-user-image"><img class="img-circle" src="'+ elavatar +'" alt="User Avatar"></div><div class="card-footer"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 border-right"><div class="description-block"><h5 class="description-header">'+ (datoz[i]["ocupacion"].substring(0, 10)) +' '+ (datoz[i]["profesion"].substring(0, 10)) +'</h5><span class="description-text"># '+ datoz[i]['num_cliente'] +'</span></div></div></div></div></div></div>';
+                                    @if( $tipoevent == 1 )
+                                             elavatar = "../images/logo-footer.png";
+                                             tempcss ='background: #fff;';
+                                    @else
+                                            if( datoz[i]['foto'] === undefined || datoz[i]['foto'] === null ) {
+                                              elavatar = "../images/logo-footer.png";
+                                              tempcss ='background: #fff;';
+                                            }
+                                            else{
+                                              elavatar = datoz[i]['tipo']+"base64,"+datoz[i]['foto'];
+                                              tempcss ='';
+                                            }	                                   
+                                    @endif
+                                     html +='<div class="carousel-item '+activo+' "><div class="card card-widget widget-user shadow-lg"><div class="widget-user-header text-white" style="background: url(../dist/img/photo1.png) center center;"><h2 class="widget-user-username" style="font-size:43px !important">'+ (datoz[i]["trato"].substring(0, 10))  +' '+ (datoz[i]["nombre"].substring(0, 10)) +' '+ (datoz[i]["apellido"].substring(0, 10))  +' </h2></div><div class="widget-user-image"><img style="background:#fff !important;" class="img-circle" src="'+ elavatar +'" alt="User Avatar"></div><div class="card-footer"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 border-right"><div class="description-block"><h5 class="description-header">'+ (datoz[i]["ocupacion"].substring(0, 10)) +' '+ (datoz[i]["profesion"].substring(0, 10)) +'</h5><span class="description-text"># '+ datoz[i]['num_cliente'] +'</span></div></div></div></div></div></div>';
                                   }
                               
                               
@@ -308,7 +326,24 @@
             });
 
 
+                  socket.on('bloquearexplorer',() => {
 
+                     alert('AQUI LES DOY ACCION A TODOS');
+
+                  });        
+
+                  socket.on('serviciomensajedirecto',(parametros) => {
+
+                     alert('AQUI LES BLOQUEO' + parametros,mensaje);
+
+                  });   
+      
+                  socket.on('serviciomensajesala',(parametros) => {
+
+                     alert('AQUI LES BLOQUEO' + parametros,mensaje);
+
+                  });       
+      
           });
 
           socket.on('disconnect', function() {
@@ -325,8 +360,15 @@
             });
             $('#usuarioslinea').html(ol);
           });
-      
+  
+          socket.on('serviciomensajedirecto', function(parametros) {
+            alert('serviciomensajedirecto: '+parametros.mensaje);
+          });
 
+          socket.on('serviciomensajesala', function(parametros) {
+            alert('serviciomensajesala: '+parametros.mensaje);
+          });
+      
     </script>
 
 

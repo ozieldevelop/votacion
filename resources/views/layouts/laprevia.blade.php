@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <meta content="Responsive admin theme build on top of Bootstrap 4" name="description" />
-    <meta content="CooperativaRLdesign" name="author" />
-	<meta name="csrf-token" content="{{ csrf_token() }}">	
+    <meta content="www.cooprofesionales.com.pa" name="description" />
+    <meta content="cooprofesionales" name="author" />
+	  <meta name="csrf-token" content="{{ csrf_token() }}">	
 		
     <link rel="shortcut icon" href="../../images/favicon.ico">
 

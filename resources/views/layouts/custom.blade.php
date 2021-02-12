@@ -5,8 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Sistema de votaciones">
-  <meta name="author" content="coprofesionales.com.pa">
+    <meta content="www.cooprofesionales.com.pa" name="description" />
+    <meta content="cooprofesionales" name="author" />
   <meta name="csrf-token" content="{{ csrf_token() }}">	
 
   <link rel="shortcut icon" href="../../favicon.ico">

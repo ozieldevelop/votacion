@@ -12,8 +12,8 @@
     
 
     <title>{{ $nombreevento }} </title>
-    <meta content="Responsive admin theme build on top of Bootstrap 4" name="description" />
-    <meta content="CooperativaRLdesign" name="author" />
+    <meta content="www.cooprofesionales.com.pa" name="description" />
+    <meta content="cooprofesionales" name="author" />
 
 		
     <link rel="shortcut icon" href="../../images/favicon.ico">

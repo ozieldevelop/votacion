@@ -10,8 +10,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">	
 	
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <meta content="Responsive admin theme build on top of Bootstrap 4" name="description" />
-    <meta content="Themesdesign" name="author" />
+    <meta content="www.cooprofesionales.com.pa" name="description" />
+    <meta content="cooprofesionales" name="author" />
     <link rel="shortcut icon" href="../../images/favicon.ico">
 
     <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -214,7 +214,6 @@
     <div class="wrapper">
         <div class="container-fluid">
 <br/>
-
           
           
           
