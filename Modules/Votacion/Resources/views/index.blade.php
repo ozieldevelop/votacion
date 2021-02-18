@@ -568,7 +568,7 @@ function PapeletasFiltradas(textolike)
 							}   
 							
 
-							html +=" <div class='cuadritovotante col-12 col-xs-12 col-sm-12 col-md-4 col-lg-3' style='cursor:pointer' ";
+							html +=" <div class='cuadritovotante col-12 col-xs-12 col-sm-12 col-md-8 col-lg-4' style='cursor:pointer' ";
 							
 							var aa1 =datosencabezado[ii]['id_delegado'];
 							var aa2 =datosencabezado[ii]['id_area'];

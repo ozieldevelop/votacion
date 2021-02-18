@@ -49,6 +49,7 @@
      <link rel="stylesheet" href="{{ asset('css/lolibox.css') }}">
     <script src="{{ asset('js/lobibox.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+  <script src="{{ url('plugins/gdb/jquery.gdb.js') }}"></script>
 </head>
 
 <body >

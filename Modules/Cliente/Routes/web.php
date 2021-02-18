@@ -11,20 +11,23 @@
 |
 */
 
-Route::prefix('cliente')->group(function() {
+Route::prefix('cliente')->group(function() 
+{
 
-  
     Route::get('/', 'ClienteController@index');
-  
     Route::get('/dashboard', 'ClienteController@dashboard');
-
-   Route::get('/alldatadirectivos', 'ClienteController@alldatadirectivos');
-
-          Route::prefix('inscripcion')->group(function() {
+    Route::get('/alldatadirectivos', 'ClienteController@alldatadirectivos');
+    Route::post('upload', array( 'uses' => 'ClienteController@upload'));
+    Route::get('cargaadjuntosScreenListar', array( 'uses' => 'ClienteController@cargaadjuntosScreenListar')); 
+  
+  
+    Route::prefix('inscripcion')->group(function() {
               Route::get('/', 'ClienteController@index');
               Route::get('/guardaasistencia', 'ClienteController@guardaasistencia');
-          });
+    });
+  
 
+  
 });
 
 

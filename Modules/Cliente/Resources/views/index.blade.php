@@ -6,7 +6,7 @@
         <div class="col-sm-12 col-md-6 col-lg-12">
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
-                <div class="text-center">
+                <div class="text-center" >
                   <img class="profile-user-img img-fluid img-circle"
                        src="../../images/logo-footer.png"
                        alt="User profile picture">
@@ -16,10 +16,10 @@
 
                 <p class="text-muted text-center">ENCUESTA PREVIA DE ASISTENCIA - {{ $nombreevento }}</p> <p class="text-muted text-center">DIA DEL EVENTO {{ $f_inicia }}</p>
 
-                <ul class="list-group list-group-unbordered mb-3">
+                <ul class="list-group list-group-unbordered mb-3"  id="widget1">
 
                   <li class="list-group-item">
-                    <b style="color:blue">Confirmar tu disponibilidad para asistir al evento ! </b> 
+                    <b>Confirmar tu disponibilidad para asistir al evento; completando este formulario ! </b> 
                     
                     @if($tipoevent==1)
                     <label   class="float-right" style="display:none">
@@ -29,6 +29,47 @@
                     
                   </li>      
                   
+                  <!--li class="list-group-item">
+                    <b style="color:blue">Digita tu n&uacute;mero de cliente</b><b style="color:red">*</b><input type="text"  id="veri_num_cliente"  name="veri_num_cliente" class="form-control float-right col-sm-12 col-md-6 col-lg-6" value="" /> 
+                  </li>  
+                  
+                  <li class="list-group-item">
+                    <b style="color:blue">Indicanos tu fecha de nacimiento</b><b style="color:red">*</b><input type="text"  id="veri_fecha_nacimiento"  name="veri_fecha_nacimiento" class="form-control float-right col-sm-12 col-md-6 col-lg-6" value="" />  
+                  </li-->  
+                  
+                  <li class="list-group-item">
+                    
+                    
+                       
+                    <b style="color:blue" class=" float-left">Ingresa tu cuenta de correo con la que utilizas la plataforma zoom</b><b style="color:red">*</b>
+                    
+                    <div class="input-group col-sm-12 col-md-4 col-lg-4 float-right ">
+                            <div class="input-group-prepend">
+                                  <span class="input-group-text">@</span>
+                            </div>
+                            <input type="text"  id="veri_zoom_email_01" data-bindto="parametros.veri_zoom_email_01"  name="veri_zoom_email_01" class="form-control "  value="" /> 
+        
+                    </div>
+                    
+                    
+                  </li>  
+                  
+                  <li class="list-group-item">
+
+                    <b style="color:blue" class=" float-left">Confirma la cuenta de correo de zoom</b><b style="color:red">*</b>
+                    
+                    <div class="input-group col-sm-12 col-md-4 col-lg-4 float-right ">
+                            <div class="input-group-prepend">
+                                  <span class="input-group-text">@</span>
+                            </div>
+                            <input type="text"  id="veri_zoom_email_02" data-bindto="parametros.veri_zoom_email_02"  name="veri_zoom_email_02" class="form-control "  value="" /> 
+        
+                    </div>
+                    
+                    
+                  </li>  
+                  
+
                     @if($tipoevent==2)
                         <li class="list-group-item">
                           <b>Nos gustar&iacute;a saber si deseas ser parte de alguno de estos grupos :</b>
@@ -60,8 +101,8 @@
             </div>
        </div> 
 
-      <div class="col-sm-12 col-md-12 col-lg-12">
-          <div class="card card-outline card-info">
+<div class="col-sm-12 col-md-12 col-lg-12">
+       <div class="card card-outline card-info">
             <div class="card-header">
               <h3 class="card-title">
                 DEVELOPER
@@ -77,26 +118,22 @@
             <div class="card-footer">
             
             </div>
-          </div>
-     </div>
-
-
+      </div>
+</div>
 
 <div class="col-12" style="display:none">            
-            <div class="card card-primary">
-              <div class="card-header">
+     <div class="card card-primary">
+           <div class="card-header">
                 <h4 class="card-title"> {{ $nombreevento }} </h4>
-              </div>
-              <div class="card-body ">
+           </div>
+           <div class="card-body ">
          
               <div style="width:100%" id="output">
                   &nbsp;
               </div>
-  
-    
-              </div>
-              
-              </div>
+
+           </div>
+      </div>
 </div>
 
 @endsection
@@ -111,9 +148,7 @@
     mode: "htmlmixed",
     theme: "monokai"    
   });
-  
-  
-  
+
   /*
   CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
       mode: "htmlmixed",
@@ -140,12 +175,29 @@
     'cantidato_delegado': 0,
     'junta_directores': 0,
     'junta_vigilancia': 0,
-    'comite_credito': 0
+    'comite_credito': 0,
+    'veri_zoom_email_01': '',
+    'veri_zoom_email_02': ''
   };
      
 
 	function guardarasistencia()
 	{
+    
+     // VALIDAR QUE CUENTAS DE CORREO ESCRITAS SEAN IGUALES y QUE NO ESTEN EN BLANCO
+    if( modelo.veri_zoom_email_01=='' || modelo.veri_zoom_email_01.length ==0 ){
+        lobibox_emergente('warning','top center',true,'Cuenta de email 1 es requerida.');
+      return false;
+    }
+  
+    if( modelo.veri_zoom_email_02=='' || modelo.veri_zoom_email_02.length ==0 ){
+        lobibox_emergente('warning','top center',true,'Cuenta de email 2 es requerida.');
+      return false;
+    }      
+       
+    if( (modelo.veri_zoom_email_01!='' && modelo.veri_zoom_email_02!='') && (modelo.veri_zoom_email_01.trim() == modelo.veri_zoom_email_02.trim())   )
+    {
+    
      Swal.fire({
              title: 'Esta a un paso; para registrar tu participación',
              text: "Se procederá a guardar este registro.",
@@ -165,7 +217,7 @@
                 {
                   //alert($('meta[name="csrf-token"]').attr('content'));
                   
-                  // VALIDAR QUE 
+
                 
                     $.ajax({
                       url: '{{ url("cliente/inscripcion/guardaasistencia")}}',
@@ -176,7 +228,7 @@
                       },
                       success: function(result){
                           lobibox_emergente('success','top right',true,'actualizado.');
-                          setTimeout(function(){ location.reload();  }, 2000);
+                          //setTimeout(function(){ location.reload();  }, 2000);
                       },
                       error: function (r) {
                           //lobibox_emergente('success','top right',true,'de seguro error.');
@@ -184,9 +236,17 @@
                           console.log(r);
                       }
                     });
-                    //*/
+
                 }
         });
+      
+      
+      }
+    else
+      {
+        lobibox_emergente('warning','top center',true,'Verifique que las cuendas de email escritas sean iguales.');
+        
+      }
 	}
   
   
@@ -222,7 +282,8 @@
    
 
   
-function formatDate() {
+function formatDate() 
+{
     var d = new Date(),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -233,11 +294,9 @@ function formatDate() {
 
     return [year, month, day].join('-');
 }
-  
-  
-  
- function asistire_class_fn()
-  {
+
+function asistire_class_fn()
+{
           var elf = document.getElementById('laasisobjeto').checked;
         
               if(elf)
@@ -251,9 +310,8 @@ function formatDate() {
               }
   }
   
-
- function candidatodele_class_fn()
-  {
+function candidatodele_class_fn()
+{
           var elf = document.getElementById('candidatodele').checked;
           console.log(elf);
               if(elf)
@@ -266,7 +324,7 @@ function formatDate() {
   }
 
  function juntadire_class_fn()
-  {
+{
           var elf = document.getElementById('juntadire').checked;
           console.log(elf);
               if(elf)
@@ -278,9 +336,8 @@ function formatDate() {
               }
   }
 
-  
- function juntavigi_class_fn()
-  {
+function juntavigi_class_fn()
+{
           var elf = document.getElementById('juntavigi').checked;
           console.log(elf);
               if(elf)
@@ -290,11 +347,10 @@ function formatDate() {
               else {
                           modelo.junta_vigilancia = 0;
               }
-  }
+ }
   
-  
- function comite_credi_class_fn()
-  {
+function comite_credi_class_fn()
+{
           var elf = document.getElementById('comite_credi').checked;
           console.log(elf);
               if(elf)
@@ -304,46 +360,48 @@ function formatDate() {
               else {
                           modelo.comite_credito = 0;
               }
-  }
-  
-  
-  
-  $( document ).ready(function() {
-       visualizarparametros();
-    
+ }
+
+$( document ).ready(function() 
+{
+      visualizarparametros();
 
       $(".asistire_class").change(function(){
             asistire_class_fn();
           visualizarparametros();
-   
       });
-    
     
       $(".candidatodele_class").change(function(){
             candidatodele_class_fn();
           visualizarparametros();
-   
       });
 
       $(".juntadire_class").change(function(){
             juntadire_class_fn();
           visualizarparametros();
-   
       });
     
       $(".juntavigi_class").change(function(){
           juntavigi_class_fn();
           visualizarparametros();
-   
       });    
     
-       $(".comite_credi_class").change(function(){
+      $(".comite_credi_class").change(function(){
            comite_credi_class_fn();
           visualizarparametros();
-   
       });      
+  
+ });     
+  
+  $(function() {
     
-  });     
+     var gdb1=new GDB({parametros: modelo},{rootElementSelectorString: '#widget1',
+          modelChangeCallback: function(e){
+            //console.log(modelo);
+             editor.setValue(JSON.stringify(modelo,undefined,2));
+          }
+      });
+  });
   
 </script>
 @stop	   

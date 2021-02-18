@@ -142,7 +142,7 @@ class VotacionController extends Controller
 										// consulto si ya realizo su votacion 
 
           
-										return view('votacion::index')->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] );	 										
+										return view('votacion::index')->with('enlace', $request->all() )->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] );	 										
 									}
 								}
 								else

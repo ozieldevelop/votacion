@@ -14,6 +14,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
+   
 
                   
                   <button class="btn btn-success" onclick="bloquearpantallasala(1)"> BOT&Oacute;N ENVIAR ACCION A TODOS LOS PERTENECIENTES A SALA CAPITULAR </button>
@@ -26,7 +27,11 @@
             </div>
         </div>
 
-  
+ 	<div class="col-md-12" >
+
+		<iframe style="width:100%;height:600px" src="http://eaguilars.com:9999/meeting.html?name=Q0ROMS45LjBXaW4xMCNjaHJvbWUvODcuMC40MjgwLjY2&mn=7330814308&email=ZWFndWlsYXJzQGdtYWlsLmNvbQ%3D%3D&pwd=5gBJnD&role=0&lang=en-US&signature=LU03cFpoTkJTY2F2Sm05QWM5SzFOUS43MzMwODE0MzA4LjE2MTM0MTg3MzUxOTEuMC5RMVd1dGU1a1dtWnU5Tk9XMVFCbnNVME1IeVhPSnVpY0xTcy9panRmdWE4PQ&china=0&apiKey=-M7pZhNBScavJm9Ac9K1NQ" sandbox="allow-pointer-lock allow-popups allow-scripts allow-same-origin" allow="microphone; camera;"></iframe>
+		
+	</div> 
 @section('page-script')
 
 
