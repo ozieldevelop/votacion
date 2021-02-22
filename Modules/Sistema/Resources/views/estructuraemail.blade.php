@@ -44,16 +44,7 @@
   <br />
   <div class="container box" style="width: 970px;">
 
-    <h1>{{ $details['title'] }}</h1>
-
-    <p>{{ $details['body'] }}</p>
-
-	<p>{{ $details['nombre'] }}</p>
-	
-	
-   <p>encriptado : {!! $oyetu->lara_encriptar( $details['num_cliente'] )  !!}</p>
-
-   <p>desencriptado :  {!! $oyetu->lara_desencriptar( $oyetu->lara_encriptar( $details['num_cliente'] )  )  !!}</p>
+{{$contenido}}
    
    
   </div>

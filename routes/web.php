@@ -21,3 +21,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+
+Route::get('pruebamail', 'App\Http\Controllers\HomeController@pruebamail')->name('pruebamail');
+
+

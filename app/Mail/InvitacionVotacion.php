@@ -28,14 +28,34 @@ class InvitacionVotacion extends Mailable
      */
     public function build()
     {
-        /*
-		return $this->subject('Invitación')
-            ->markdown('sistema::estructuraemail')
-            ->from('aguilarsantos12@gmail.com');
-		*/	
+      
+	      return $this->view('sistema::estructuraemail')
+                    ->with([
+                        'contenido' => $this->details,
+                        'orderPrice' => 'ed2'
+                    ]);
+      
+      
+        $this->withSwiftMessage(function ($message) {
+            $message->getHeaders()->addTextHeader(
+                'Custom-Header', 'Header Value'
+            );
+        });   
+      
+      
+       /*return $this->from('digital@cooprofesionales.com.pa')
+                ->view('sistema::estructuraemail');*/
+      
+      /* return $this->view('sistema::estructuraemail')
+                ->text('sistema::estructuraemail');    
+      
+      */
+ 
+      
+	     /*	*/	
 			
 			//dd($this->details);
-			
+			/*
 			$contenido = '<!DOCTYPE html>
 			<html>
 			 <head>
@@ -97,7 +117,7 @@ class InvitacionVotacion extends Mailable
 			$message->subject($this->details['title']);
 			$message->setBody($this->body, 'text/html');
 		});
-
+  */
 
         //return $this->markdown('sistema.invitacionvotacion');
     }

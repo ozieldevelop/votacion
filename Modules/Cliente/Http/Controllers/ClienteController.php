@@ -235,6 +235,7 @@ class ClienteController extends Controller
               $referenciafoto = DB::select("SELECT id_delegado as id_sec,COUNT(num_cliente) AS existencia , num_cliente as cldoc,CASE WHEN foto IS NULL THEN 0 WHEN foto IS NOT NULL THEN 1 END AS tienefoto,foto,tipo from directivos WHERE num_cliente = ".$cldoc. " ");
               
               $xdato = DB::select("select * from asistencia where id_evento=".$idevendesc." and num_cliente=".$cldoc."  ");
+             // dd( $xdato);
  
 									if ( $xdato[0]->asistire == 1  )
 									{  
@@ -267,9 +268,11 @@ class ClienteController extends Controller
               
               //echo "<br/>".$direccionimagenperfil."<br/>";
               
+              //
+
               $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> ".trim($datoscliente[0]->trato)."&nbsp;". trim($datoscliente[0]->nombre)."</div>";
               Auth::loginUsingId(3);  
-              return view('cliente::confirmada_asistencia_asamblea')->with('periactico', $periactico )->with('cldoc', $cldoc )->with('existecuentazoom', $existecuentazoom )->with('cuentazoom', $cuentazoom )->with('foto', $direccionimagenperfil )->with('enlace', $request->all() )->with('mensaje', $mensaje)->with('nombreevento', trim($results[0]["nombre"]))->with('tipoevent', $results[0]["tipo"] )->with('id_evento', $idevendesc )->with('f_inicia', $results[0]["rangofecha1"] )->with('f_termina', $results[0]["rangofecha2"] )->with('num_cliente', $cldoc )->with('ocupacion', trim($datoscliente[0]->ocupacion) )->with('profesion', trim($datoscliente[0]->profesion) )->with('trato', trim($datoscliente[0]->trato) )->with('nombre', trim($datoscliente[0]->nombre) )->with('agencia', trim($datoscliente[0]->agencia) );	 										                
+              return view('cliente::confirmada_asistencia_asamblea')->with('id_asistencia',$xdato[0]->id_asistencia)->with('soy_aspirante',$xdato[0]->soy_aspirante)->with('cantidato_delegado',$xdato[0]->cantidato_delegado)->with('junta_directores',$xdato[0]->junta_directores)->with('junta_vigilancia',$xdato[0]->junta_vigilancia)->with('comite_credito',$xdato[0]->comite_credito)->with('veri_zoom_email',$xdato[0]->veri_zoom_email)->with('periactico', $periactico )->with('cldoc', $cldoc )->with('existecuentazoom', $existecuentazoom )->with('cuentazoom', $cuentazoom )->with('foto', $direccionimagenperfil )->with('enlace', $request->all() )->with('mensaje', $mensaje)->with('nombreevento', trim($results[0]["nombre"]))->with('tipoevent', $results[0]["tipo"] )->with('id_evento', $idevendesc )->with('f_inicia', $results[0]["rangofecha1"] )->with('f_termina', $results[0]["rangofecha2"] )->with('num_cliente', $cldoc )->with('ocupacion', trim($datoscliente[0]->ocupacion) )->with('profesion', trim($datoscliente[0]->profesion) )->with('trato', trim($datoscliente[0]->trato) )->with('nombre', trim($datoscliente[0]->nombre) )->with('agencia', trim($datoscliente[0]->agencia) );	 										                
             }
 				}
 				else
@@ -497,7 +500,7 @@ class ClienteController extends Controller
           $files = $request->input('datos');
           $osi = json_decode($files);   
       
-      
+          $retorno="";
 
             
           // obtengo los datos del evento
@@ -522,7 +525,7 @@ class ClienteController extends Controller
     if (count($xdato)==0 )
 		{  
         // SI NO EXISTE LO INSERTO
-        DB::statement("INSERT INTO asistencia (id_evento, tipoevent,  num_cliente, nombre, agencia, asistire, f_asistire_regis, soy_aspirante, cantidato_delegado, junta_directores, junta_vigilancia, comite_credito,veri_zoom_email) VALUES (".$osi->id_evento.",".$osi->tipoevent.",".$osi->num_cliente.",'".$osi->nombre."','".$osi->agencia."',".$osi->asistire.",'".$osi->f_asistire_regis."',".$osi->soy_aspirante.",".$osi->cantidato_delegado.",".$osi->junta_directores.",".$osi->junta_vigilancia.",".$osi->comite_credito.",'".$osi->veri_zoom_email_01."')");
+        DB::statement("INSERT INTO asistencia (id_evento, tipoevent,  num_cliente, nombre, agencia, asistire, f_asistire_regis, soy_aspirante, cantidato_delegado, junta_directores, junta_vigilancia, comite_credito,veri_zoom_email,asistire) VALUES (".$osi->id_evento.",".$osi->tipoevent.",".$osi->num_cliente.",'".$osi->nombre."','".$osi->agencia."',".$osi->asistire.",'".$osi->f_asistire_regis."',".$osi->soy_aspirante.",".$osi->cantidato_delegado.",".$osi->junta_directores.",".$osi->junta_vigilancia.",".$osi->comite_credito.",'".$osi->veri_zoom_email_01."',1)");
     }
     else{
      // EN CASO DE EXISTIR LO ACTUALIZO - EN TERORIA NO DEBE EXISTIR AQUI YA QUE LA PERSONA UNA VEZ REGISTRADO SOLO TIENE ACCESO PARA ENTRAR EN EL DASHBOARD
@@ -571,6 +574,7 @@ class ClienteController extends Controller
               }
               else
               {
+                  DB::statement("DELETE from evento_directivos where id_evento = ".$osi->id_evento." and id_delegado=".$id_directivo."");
                  if($osi->junta_directores==1){
                       DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (".$osi->id_evento.", ".$id_directivo.", 2)" );
                  }
@@ -581,7 +585,7 @@ class ClienteController extends Controller
                       DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (".$osi->id_evento.", ".$id_directivo.", 4)" );
                  }            
               }
-
+              $retorno =$id_directivo;
           }
           else
           {
@@ -596,7 +600,8 @@ class ClienteController extends Controller
                  }
                  if($osi->comite_credito==1){
                       DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (".$osi->id_evento.", ".$xdato2[0]->id_delegado.", 4)" );
-                 }    
+                 }  
+            $retorno =$xdato2[0]->id_delegado;
 
            }
     }
@@ -801,7 +806,7 @@ class ClienteController extends Controller
 							$message->subject($details["title"]);
 							$message->setBody($details["contenido"] , 'text/html');
 						});		        
-
+        return $retorno;
 
     }
   

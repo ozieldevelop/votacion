@@ -82,7 +82,7 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	
 	Route::post('/lookimage', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@lookimage'] );	
 	
-	Route::post('/saveimage', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@saveimage'] );
+	Route::post('/saveimageanddatos', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@saveimageanddatos'] );
 	
 	Route::post('/actualizarestadoaspirante', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@actualizarestadoaspirante'] );	
   

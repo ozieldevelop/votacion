@@ -168,7 +168,7 @@ class ConfVotacionController extends Controller
 	 }																		   
 		
 
-     public function saveimage(Request $request)
+     public function saveimageanddatos(Request $request)
      {
            try
            {

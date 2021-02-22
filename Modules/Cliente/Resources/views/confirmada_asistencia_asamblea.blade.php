@@ -135,12 +135,12 @@
 
                
      
-                @if($existecuentazoom==0)
-                <a type="button" href="#" onclick="guardarasistencia()" class="btn btn-block btn-success" >CONFIRMA TU ASISTENCIA AQUI</a>
-                @endif   
+            
+                <a type="button" href="#" onclick="guardarasistencia()" class="btn btn-block btn-success" >ACTUALIZA Y CONFIRMA TU ASISTENCIA AQUI</a>
+               
                 
                  @if($existecuentazoom==1 && $periactico)
-                 <a type="button" href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-success" >INGRESAR EN PANEL</a>
+                 <a type="button" href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-warning" >INGRESAR EN PANEL</a>
                 @endif          
                 
               </div>
@@ -196,7 +196,7 @@
         </div>
   
         <!-- Modal footer -->
-        <div class="modal-footer">
+        <div class="modal-footer" style="display:none">
                   <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="saveImagen()">2: Guardar Cambios</button>
         </div>
   
@@ -228,6 +228,7 @@
   
   
   var modelo = {
+    'id_asistencia':'{{ $id_asistencia }}',
     'id_evento':'{{ $id_evento }}',
     'tipoevent':'{{ $tipoevent }}',
     'nombre_evento':'{{ $nombreevento }}',
@@ -241,19 +242,20 @@
     'agencia':'{{ $agencia }}',
     'asistire': 1,
     'f_asistire_regis':moment().format('YYYY-MM-DD HH:mm:ss'),
-    'soy_aspirante': 0,
-    'cantidato_delegado': 0,
-    'junta_directores': 0,
-    'junta_vigilancia': 0,
-    'comite_credito': 0,
-    'veri_zoom_email_01': '',
-    'veri_zoom_email_02': ''
+    'soy_aspirante':'{{ $soy_aspirante }}',
+    'cantidato_delegado':'{{ $cantidato_delegado }}',
+    'junta_directores':'{{ $junta_directores }}',
+    'junta_vigilancia':'{{ $junta_vigilancia }}',
+    'comite_credito': '{{ $comite_credito }}',
+    'veri_zoom_email_01' :'{{ $veri_zoom_email }}',
+    'veri_zoom_email_02':'{{ $veri_zoom_email }}',
+    'cambioimagen' : 0
   };
      
 
 	function guardarasistencia()
 	{
-
+///   
          // VALIDAR QUE CUENTAS DE CORREO ESCRITAS SEAN IGUALES y QUE NO ESTEN EN BLANCO
     if( modelo.veri_zoom_email_01=='' || modelo.veri_zoom_email_01.length ==0 ){
         lobibox_emergente('warning','top center',true,'Cuenta de email 1 es requerida.');
@@ -284,8 +286,6 @@
 
                         if (result.isConfirmed) 
                         {
-                          //alert($('meta[name="csrf-token"]').attr('content'));
-
 
 
                             $.ajax({
@@ -297,7 +297,18 @@
                               },
                               success: function(result){
                                   lobibox_emergente('success','top right',true,'actualizado.');
-                                  setTimeout(function(){ location.reload();  }, 2000);
+                                  var retorno = (result).length;
+                                  //alert(result);
+                                 
+                                  if(modelo.cambioimagen==1 && retorno!='' ){
+                                    saveImagen(result);
+                                  }
+                                else
+                                  {
+                                      setTimeout(function(){ location.reload();  }, 2000);
+                                  }
+                                
+                                 // 
                               },
                               error: function (r) {
                                   //lobibox_emergente('success','top right',true,'de seguro error.');
@@ -320,6 +331,72 @@
   
   
   
+function asistire_class_fn()
+{
+          var elf = document.getElementById('laasisobjeto').checked;
+        
+              if(elf)
+              {
+                          modelo.asistire = 1;
+                          modelo.f_asistire_regis=formatDate();
+              }
+              else {
+                          modelo.asistire = 0;
+                          modelo.f_asistire_regis='';
+              }
+  }
+  
+function candidatodele_class_fn()
+{
+          var elf = document.getElementById('candidatodele').checked;
+          console.log(elf);
+              if(elf)
+              {
+                          modelo.cantidato_delegado = 1;
+              }
+              else {
+                          modelo.cantidato_delegado = 0;
+              }
+  }
+
+ function juntadire_class_fn()
+{
+          var elf = document.getElementById('juntadire').checked;
+          console.log(elf);
+              if(elf)
+              {
+                          modelo.junta_directores = 1;
+              }
+              else {
+                          modelo.junta_directores = 0;
+              }
+  }
+
+function juntavigi_class_fn()
+{
+          var elf = document.getElementById('juntavigi').checked;
+          console.log(elf);
+              if(elf)
+              {
+                          modelo.junta_vigilancia = 1;
+              }
+              else {
+                          modelo.junta_vigilancia = 0;
+              }
+ }
+  
+function comite_credi_class_fn()
+{
+          var elf = document.getElementById('comite_credi').checked;
+          console.log(elf);
+              if(elf)
+              {
+                          modelo.comite_credito = 1;
+              }
+              else {
+                          modelo.comite_credito = 0;
+              }
+ }
   
   
   
@@ -333,10 +410,11 @@
   
   
   
-function saveImagen()
+function saveImagen(id_directivo)
 {
 
-
+  
+  
               var imagenconten = $('#outputimage').attr('src');
               var imagencon = imagenconten.split('base64,');
               //console.log(imagencon[0]);
@@ -344,8 +422,8 @@ function saveImagen()
               var formato = imagencon[0];
      
 							$.ajax({
-								url: '{{ url("sistema/saveimage")}}',
-								data: {"aspiranteidBD": 1, "llimagen": llimagen, "formato": formato},
+								url: '{{ url("sistema/saveimageanddatos")}}',
+								data: {"aspiranteidBD": id_directivo, "llimagen": llimagen, "formato": formato},
 								method: 'post',
 								headers: {
 									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -361,7 +439,6 @@ function saveImagen()
 									console.log("ERROR");
 								}
 							});
-
 }
 
   
@@ -438,7 +515,12 @@ function encodeImageFileAsURL(ftype){
     }
 }
   
-  
+function bytesToSize(bytes) {
+   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+   if (bytes == 0) return '0 Byte';
+   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
   
   function beforeSubmit() {
 
@@ -472,8 +554,16 @@ function encodeImageFileAsURL(ftype){
             return false
         }
 
-
-        encodeImageFileAsURL(ftype);
+          $("#output").html("<b>IMAGEN ACEPTADA</b>");
+          $('#myModal').modal('hide');
+          //localStorage.setItem("cambioimagen",1);
+          modelo.cambioimagen = 1;
+          visualizarparametros();
+          encodeImageFileAsURL(ftype);
+      
+											Lobibox.notify('info', {
+												msg: 'Recuerda presionar el boton de actualizar en la parte inferior de la página.'
+											});	      
     }
     else {
         //Output error to older unsupported browsers that doesn't support HTML5 File API
@@ -482,10 +572,48 @@ function encodeImageFileAsURL(ftype){
     }
 }
   
+ function visualizarparametros()
+ {
+    @if($tipoevent==1)
+
+       if(modelo.cantidato_delegado == 0  )
+       {
+          modelo.soy_aspirante=0;
+       }
+       else{
+          modelo.soy_aspirante=1;
+       }
+    @else
+
+       if(modelo.junta_directores == 0 && modelo.junta_vigilancia == 0 && modelo.comite_credito == 0 )
+       {
+          modelo.soy_aspirante=0;
+       }
+       else{
+          modelo.soy_aspirante=1;
+       }   
+    @endif
+   
+   
+   
+   editor.setValue(JSON.stringify(modelo,undefined,2));
+    //document.querySelector('.codemirror').CodeMirror.setValue(JSON.stringify(modelo,undefined,2));
+    // var aaaa =  JSON.stringify(modelo,undefined,2);
+   //$('#output').html(aaaa);
+ }  
+  
+  
+  //var cambioimagen = 0;
   
   $( document ).ready(function() {
   
+    
+   //var terminal = localStorage.getItem("cambioimagen");
+       
+    
+    
      $("#submit-btn").click(function () {
+       
         beforeSubmit();
     });
     $("#outputCode").focus(function() {
@@ -502,8 +630,35 @@ function encodeImageFileAsURL(ftype){
     });  
     
     
-
+      $(".juntadire_class").change(function(){
+            juntadire_class_fn();
+          visualizarparametros();
+      });
     
+      $(".juntavigi_class").change(function(){
+          juntavigi_class_fn();
+          visualizarparametros();
+      });    
+    
+      $(".comite_credi_class").change(function(){
+           comite_credi_class_fn();
+          visualizarparametros();
+      });   
+    
+     //localStorage.setItem("cambioimagen",cambioimagen);
+     editor.setValue(JSON.stringify(modelo,undefined,2));
+    
+
+    if(modelo.junta_directores == 1){
+      $("#juntadire").prop('checked', true);
+    }
+    if(modelo.junta_vigilancia == 1){
+      $("#juntavigi").prop('checked', true);
+    }    
+     if(modelo.comite_credito == 1){
+      $("#comite_credi").prop('checked', true);
+    }   
+
     
   });     
   

@@ -7,8 +7,34 @@
 
 
 
+                             
+
+
+    <div class="col-sm-12 col-md-12 col-lg-12">     
+      
+     <button type="button" class="btn btn-block btn-primary" disabled> Acceder a Reuni&oacute;n</button>
+     <a type="button" href="{{ env('APP_URL', './') }}/votacion/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-primary">Votaci&oacute;n</a>
+      
+     <br/><br/>
+      
+            <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Aspirantes Postulados</a></li>
+                  <!--li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Descargas</a></li-->
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="active tab-pane" id="activity">
+
+
+ 
+     <!--button type="button" class="btn btn-block btn-primary disabled">Bot&oacute;n no habilitado para persistencia</button-->                    
+                    
+                    
     <div class="col-sm-12 col-md-12 col-lg-12">   
-                 <div id="carouselExampleIndicators" class="carousel slide align-items-center justify-content-center" data-ride="carousel"  style="display:none">
+                 <div id="carouselExampleIndicators" class="carousel slide align-items-center justify-content-center" data-ride="carousel"  >
                   <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -30,35 +56,12 @@
                     <span class="sr-only">Next</span>
                   </a>
                 </div>
-     </div>                               
-
-
-    <div class="col-sm-12 col-md-6 col-lg-5">     
-            <div class="card">
-              <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Aspirantes Postulados</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Descargas</a></li>
-                </ul>
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content">
-                  <div class="active tab-pane" id="activity">
-
-        @if( $tipoevent == 2 )
-         <a href="#" class="btn btn-primary btn-block"><b>Cambiar Imagen de perfil</b></a>
-        @endif
-     <button type="button" class="btn btn-block btn-primary" disabled>Acceder a Reuni&oacute;n</button>
-     <a type="button" href="{{ env('APP_URL', './') }}/votacion/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-primary">Votaci&oacute;n</a>
-     <!--button type="button" class="btn btn-block btn-primary disabled">Bot&oacute;n no habilitado para persistencia</button-->                    
-                    
-                    
-
+     </div>  
                     
                     
                     
                   </div>
-                  <div class="tab-pane" id="settings">
+                  <div class="tab-pane" id="settings" style="display:none">
           
                             <!--ul class="list-unstyled">
                               <li>
@@ -96,8 +99,7 @@
                </div>  
               </div>  
            </div>   
-      
-  
+
     </div> 
       
       
@@ -493,8 +495,8 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
           }      
       
       $( document ).ready(function() {
-          cargaadjuntosx(1);
-          //evaluarasignararea();
+          //cargaadjuntosx(1);
+         evaluarasignararea();
       });  
       
     </script>

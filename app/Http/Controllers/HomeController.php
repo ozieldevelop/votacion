@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Mail\InvitacionVotacion;
+
+
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -25,4 +29,13 @@ class HomeController extends Controller
     {
         return view('home');
     }
+  
+    public function pruebamail(Request $request)
+    {
+          $cuenta = ["eaguilars@gmail.com"];
+          $order ='<html><body>contenido<body></html>';
+          Mail::to($cuenta)->send(new InvitacionVotacion($order));
+    }  
+  
+
 }

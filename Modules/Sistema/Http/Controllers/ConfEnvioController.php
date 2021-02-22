@@ -611,12 +611,15 @@ class ConfEnvioController extends Controller
 						];
 	
 						Mail::send([], [], function($message) use ($details) {
-							$message->from(env('MAIL_USERNAME' ));
+							$message->from('digital@cooprofesionales.com.pa');
 							$message->to($details["correo"]);
 							$message->subject($details["title"]);
 							$message->setBody($details["contenido"] , 'text/html');
 						});				  
 
+          
+          
+          
 						$carbon = new \Carbon\Carbon();
 						$date = $carbon->now()->toDateTimeString();
 
