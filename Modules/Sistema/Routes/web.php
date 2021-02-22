@@ -84,7 +84,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	
 	Route::post('/saveimage', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@saveimage'] );
 	
-	
+	Route::post('/actualizarestadoaspirante', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@actualizarestadoaspirante'] );	
+  
 	/*
 	
 			documentos ckeditor
@@ -94,6 +95,7 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	Route::get('/cargarplantillasemailevento', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@cargarplantillasemailevento'] );
 	Route::get('/cargarplantillasresultevento', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@cargarplantillasresultevento'] );	
 	Route::post('/actualizarplantillasresultevento', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@actualizarplantillasresultevento'] );	
+
 
 
 	/*
@@ -115,7 +117,10 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	Route::post('/fnreenviarnoti', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@fnreenviarnoti'] );
 	
   
-
+	Route::get('/vistaenviocapitular', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@vistaenviocapitular'] );						// VISTA
+  Route::get('/vistaenvioasamblea', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@vistaenvioasamblea'] );						// VISTA
+  
+  Route::post('/upload', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@upload'] );		
   
   
 });

@@ -436,8 +436,8 @@ function PapeletasIniciales(textolike){
 							}
 
 							
-						html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team"><div class="card "><div class="card-header bg-info" style="text-align: center;"><b>';
-						html += titulo + ' <br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'"> '+0+'</label> )</b> </div><div class="row">';
+						html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team"><div class="card "><div class="card-header bg-info" style="text-align: center;"><b  style="font-size:36px">';
+						html += titulo + ' </b><br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'"> '+0+'</label> )</b> </div><div class="row">';
 						
 	
 						for (var ii = 0; ii < datosencabezado.length; ii++)
@@ -464,9 +464,9 @@ function PapeletasIniciales(textolike){
 
 							html +="><div class='card' id='papeletacard_"+datosencabezado[ii]['id_delegado']+"_"+datosencabezado[ii]['id_area']+"'><div class='card-header' style='background:#97a37b;text-align: center;color:white;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]['num_cliente']+"</div><div class='card-body' id='collapseExample' style='text-align: center;'>";
 							@if($tipoevent == 2)
-								html +="<img   class='img-fluid rounded-circle mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
+								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
 							@endif
-								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["nombre"]+"</p><p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+"</p><p style='text-align: center;font-size: 17px;'>";
+								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+"&nbsp;,&nbsp;"+datosencabezado[ii]["nombre"]+"</p>&nbsp;<p style='text-align: center;font-size: 17px;'>";
 							@if($tipoevent == 2)
 								html +=titulo;
 							@endif								
@@ -550,8 +550,8 @@ function PapeletasFiltradas(textolike)
 							}
 
 							
-						html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team"><div class="card "><div class="card-header bg-info" style="text-align: center;"><b>';
-						html +=  titulo + '<br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'">'+0+'</label> ) </b></div><div class="row">';
+						html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team"><div class="card "><div class="card-header bg-info" style="text-align: center;"><b  style="font-size:36px">';
+						html +=  ''+titulo + '</b><br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'" >'+0+'</label> ) </b></div><div class="row">';
 						
 	
 						for (var ii = 0; ii < datosencabezado.length; ii++)
@@ -568,7 +568,7 @@ function PapeletasFiltradas(textolike)
 							}   
 							
 
-							html +=" <div class='cuadritovotante col-12 col-xs-12 col-sm-12 col-md-8 col-lg-4' style='cursor:pointer' ";
+							html +=" <div class='cuadritovotante col-12 col-xs-12 col-sm-12 col-md-4 col-lg-3' style='cursor:pointer' ";
 							
 							var aa1 =datosencabezado[ii]['id_delegado'];
 							var aa2 =datosencabezado[ii]['id_area'];
@@ -578,7 +578,7 @@ function PapeletasFiltradas(textolike)
 
 							html +="><div class='card' id='papeletacard_"+datosencabezado[ii]['id_delegado']+"_"+datosencabezado[ii]['id_area']+"'><div class='card-header' style='background:#97a37b;text-align: center;color:white;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]['num_cliente']+"</div><div class='card-body' id='collapseExample' style='text-align: center;'>";
 							@if($tipoevent == 2)
-							html +="<img   class='img-fluid rounded-circle mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
+							html +="<img   class='img-fluid  mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
 							@endif 
 							html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["nombre"]+"</p><p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+"</p><p style='text-align: center;font-size: 17px;'>"+titulo+"</p></div></div></div>";
 

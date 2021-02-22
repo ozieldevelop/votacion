@@ -106,12 +106,12 @@
 </head>
 
 <body onload="nobackbutton();" class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-hidden"   onKeyDown="javascript:Verificar()">
-  <header class="app-header navbar">
+  <header class="app-header navbar" >
 
 		 <div style="width:100%;background:#45793b;text-align: center;color:white;font-size: 28px;font-weight: bold; ">
       <a href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}">  {{  isset($nombreevento) ? $nombreevento :  '' }}   </a>
     </div>
-	     <input type="text" class="form-control col-lg-6" id="elfiltro" placeholder="INGRESE EL N&Uacute;MERO DE CLIENTE O NOMBRE PARA BUSCAR EN LA LISTA DE CANDIDATOS"  style="font-family: arial;width: 36%;"/> <br/>
+	     <input type="text" class="form-control col-md-6 col-lg-7 " id="elfiltro" placeholder="INGRESE EL N&Uacute;MERO DE CLIENTE O NOMBRE PARA BUSCAR EN LA LISTA DE CANDIDATOS"  style="font-family: arial;width: 36%;background: #111a07;"/> <br/>
 	 
 
     <ul class="nav navbar-nav ml-auto">

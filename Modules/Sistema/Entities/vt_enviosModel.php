@@ -11,7 +11,7 @@ class vt_enviosModel extends Model
 	public $timestamps = false;
 	
 	public $table = 'vt_envios';
-	public $fillable = ['id_evento','IDAGEN','CLDOC','NOMBRE','CORREO','agregado','pendiente','enviados','fallido' ];
+	public $fillable = ['id_evento','IDAGEN','CLDOC','NOMBRE','CORREO','agregado','pendiente','enviados','fallido','tipo_invitacion' ];
 	
 }
 

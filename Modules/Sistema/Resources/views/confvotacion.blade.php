@@ -61,6 +61,7 @@
 														<th>Nombre</th>
 														<th>Apellido</th>
 														<th>#Num</th>
+                            <th>Estado</th>
 														<th>Opci&oacute;n</th>
 													</tr>
 												</thead>
@@ -272,12 +273,12 @@ function evaluarasignararea()
 											  for (var i = 0; i < datoz.length; i++)
 											  {
 													if( datoz[i]['foto'] === undefined || datoz[i]['foto'] === null ) {
-														elavatar = "./images/logo-footer.png";
+														elavatar = "../../images/empty_gray.png";
 													}
 													else{
 														elavatar = datoz[i]['tipo']+"base64,"+datoz[i]['foto'];
 													}				
-													html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+ (datoz[i]["nombre"].substring(0, 10)) +' '+ (datoz[i]["apellido"].substring(0, 10))  +' <div class="card-actions"><a href="#" class="btn-setting" onclick="adminAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-wrench"></i></a> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
+													html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+ (datoz[i]["apellido"].substring(0, 10))+','+ (datoz[i]["nombre"].substring(0, 10)) +' <div class="card-actions"><a href="#" class="btn-setting" onclick="adminAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-wrench"></i></a> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
 											  }
 											  $('.DirectivosDir').html(html);    
 									}
@@ -327,12 +328,12 @@ function evaluaragregaaspitante()
 											  for (var i = 0; i < datoz.length; i++)
 											  {
 													if( datoz[i]['foto'] === undefined || datoz[i]['foto'] === null ) {
-														elavatar = "./images/logo-footer.png";
+														elavatar = "../../images/empty_gray.png";
 													}
 													else{
 														elavatar = datoz[i]['tipo']+"base64,"+datoz[i]['foto'];
 													}				
-													html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+ (datoz[i]["nombre"].substring(0, 10)) +' '+ (datoz[i]["apellido"].substring(0, 10))  +' <div class="card-actions"><a href="#" class="btn-setting" onclick="adminAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-wrench"></i></a> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
+													html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+  (datoz[i]["apellido"].substring(0, 10))+','+ (datoz[i]["nombre"].substring(0, 10))  +' <div class="card-actions"><a href="#" class="btn-setting" onclick="adminAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-wrench"></i></a> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
 											  }
 											  $('.DirectivosDir').html(html);    
 									}
@@ -416,9 +417,10 @@ function cargarlistado(valor)
 				  }
 				},
 				"columns": [
-				  { "width": "70%" },
-				  { "width": "10%" },
-				  { "width": "10%" },
+				  { "width": "60%", "orderable": "true"  },
+				  { "width": "10%", "orderable": "true"  },
+				  { "width": "10%", "orderable": "true"  },
+          { "width": "10%", "orderable": "false"  },
 				  { "width": "10%", "orderable": "false" }
 				],				
 				ajax: '{{ url("sistema/cargaraspirantesconfvota")}}',
@@ -426,11 +428,34 @@ function cargarlistado(valor)
 				   { data: 'nombre', name: 'nombre' , class: 'text-center'},				   
 				   { data: 'apellido', name: 'apellido' , class: 'text-center'},
 				   { data: 'num_cliente', name: 'num_cliente', class: 'text-center' },
+           { data: 'gestion_estado', name: 'gestion_estado', orderable: true, searchable: false, class: 'text-center'},
 				   { data: 'action', name: 'action', orderable: false, searchable: false, class: 'text-center'}					   
 				 ]
 			  });
   
   }
+  
+function CambiarEstado(id_delegado,valor)
+{	 
+          //alert(dato+'-'+valor);
+
+							$.ajax({
+								 url: '{{ url("sistema/actualizarestadoaspirante")}}', 
+								data: {id_delegado: id_delegado,valor: valor  },
+								method: 'post',
+								headers: {
+									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+								},
+								success: function(result){
+											cargarlistado(1);					 
+								},
+								error: function (r) {
+									console.log("ERROR");
+								}
+							});
+  
+  //evaluarasignararea();
+}
   
   
   

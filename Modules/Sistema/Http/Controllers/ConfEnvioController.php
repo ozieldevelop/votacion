@@ -25,6 +25,9 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Services\GeneralHelper;
 
+use Illuminate\Contracts\Session\Session;
+use App\Models\DataClientes;
+use Auth;
 use DB;
 
 class ConfEnvioController extends Controller
@@ -42,17 +45,15 @@ class ConfEnvioController extends Controller
 
 	public function cargarenvios(Request $request)
 	{
-		
            try
            {
-				$buscando = $request->input('eleccion');
-                $data = vt_enviosModel::select(['id_evento','IDAGEN','CLDOC','NOMBRE','CORREO','agregado','pendiente','enviados','fallido' ])->where('id_evento',$buscando);
+				      $buscando = $request->input('eleccion');
+              $tipo_invitacion = $request->input('tipo_invitacion');
+              $data = vt_enviosModel::select(['id_evento','IDAGEN','CLDOC','NOMBRE','CORREO','agregado','pendiente','enviados','fallido','tipo_invitacion' ])->where('id_evento',$buscando)->where('tipo_invitacion',$tipo_invitacion);
                    return Datatables::of($data)->make(true);
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }
-
-
 	}
 	
 	public function insertarnuevosavisos(Request $request)
@@ -70,12 +71,19 @@ class ConfEnvioController extends Controller
 								$vowelsvalues2 =  ( str_replace($vowels, "", $xdata["estadosasoc"])  );
 				}
 
-				$resultsxa =DB::select('SELECT IDAGEN,CLASOC,CASE WHEN CLASOC = 0 THEN CLDOC ELSE CLASOC END as CLDOC, NOMBRE,CORREO FROM data_clientes where  id_tipo = 2 and CORREO IS NOT NULL and (TRIM(CORREO) <>"") and IDAGEN in('.$vowelsvalues.') and  id_estado in ('.$vowelsvalues2.')' );
+				$resultsxa =DB::select('SELECT IDAGEN,AGENCIA,CLASOC,CASE WHEN CLASOC = 0 THEN CLDOC ELSE CLASOC END as CLDOC, NOMBRE,CORREO,trato,fecha_nac FROM data_clientes where  id_tipo = 2 and CORREO IS NOT NULL and (TRIM(CORREO) <>"") and IDAGEN in('.$vowelsvalues.') and  id_estado in ('.$vowelsvalues2.')' );
 				
-				//dd($resultsxa[0]->IDAGEN);
+				//dd($resultsxa);
 				
 				
 				foreach ($resultsxa as $xcc) {
+          
+            $xdato = DB::select("select * from asistencia where id_evento=".$buscando ." and num_cliente= '".$xcc->CLASOC ."'" );
+            if (count($xdato)==0 )
+            {  
+                DB::statement('INSERT INTO asistencia (id_evento, tipoevent, num_cliente, trato,nombre, agencia, fecha_nacimiento, asistire) VALUES ('.$buscando.','. $results1[0]->tipo .', '.$xcc->CLASOC.', "'.$xcc->trato.'", "'.$xcc->NOMBRE.'", "'.$xcc->AGENCIA.'", "'.$xcc->fecha_nac.'" , 0);');
+            }
+
 					   DB::statement('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE) values('.$buscando .",".$xcc->IDAGEN.','.$xcc->CLASOC.',"'. $xcc->CORREO .'","'.$xcc->NOMBRE.'")' );
 				}				
 
@@ -93,7 +101,21 @@ class ConfEnvioController extends Controller
            try
            {
 			  $id_evento = $request->input('id_evento');  
-			  
+			  $tipo_envio = trim($request->input('tipo_invitacion'));  
+        $tipo_envio = filter_var( $tipo_envio, FILTER_SANITIZE_NUMBER_INT);
+        $tipo_envio = intval(  $tipo_envio );   
+             
+        switch($tipo_envio)
+          {
+          case 1:
+              $etiquetatipoenvio = "Formulario previo al evento - ";
+              $laimagenicono ="";
+          break;
+          case 2:
+              $etiquetatipoenvio = "Acceso al evento - ";
+              $laimagenicono ="<br/><img style='height:328px;width:352px' src='http://cooperativa.eaguilars.com/images/accede.png'>";
+          break;   
+        }
 			  
 			  // datos de contenido de correo
 			  $documento_resultados = documento_envioModel::select(['asunto','texto'])->where('id_evento','=',$id_evento)->get();
@@ -114,7 +136,7 @@ class ConfEnvioController extends Controller
 			  
 			  // modo desarrollo
 			  
-		      $datos1 = \DB::connection('mysql')->select("select * from envios where id_evento=".$id_evento." and accion=3  ".$desarvari."");
+		      $datos1 = \DB::connection('mysql')->select("select * from envios where tipo_envio=".$tipo_envio." and id_evento=".$id_evento." and accion=3  order by cldoc desc ".$desarvari." ");
 
 			  $CantRegistros = count($datos1);  	
 			  
@@ -242,9 +264,11 @@ class ConfEnvioController extends Controller
 						  <br />
 						  <br />
 						  <br />
-						  <div class="container box" style="width: 970px;">
+						  <div class="container box" style="width: 100%;">
+						  
+              <img src="https://portal.cooprofesionales.com.pa/mercadeo/files/333f41_newlogo1.png" style="width: 470px;">
 						
-							<h1>'.  $time. ';  bienvenido   '.$registrosenvio->NOMBRE .' a '.$documento_resultados[0]->asunto .'</h1>
+							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE .' <br/> Te damos la bienvenida al siguiente evento:   '.$etiquetatipoenvio .' &nbsp;'.$documento_resultados[0]->asunto .'</label>
 
 
 
@@ -254,6 +278,7 @@ class ConfEnvioController extends Controller
                
                
                '.  $documento_resultados[0]->texto .'
+               '.$laimagenicono.'
                
                
                
@@ -336,7 +361,8 @@ class ConfEnvioController extends Controller
            {
 				$evento = $request->input('evento');
 				$cldoc = $request->input('cldoc');
-				$resultsxa =DB::select('select `a`.`fecha` as fechagenerado,CASE WHEN `a`.`accion` = 1 THEN "Enviados" WHEN `a`.`accion` = 0 THEN "Fallido" ELSE "Pendiente" END as Accion,`a`.`fechaenviado` AS `FechaEnvio` from `envios` `a` where `a`.`id_evento`= '. $evento .' and `a`.`CLDOC` = '. $cldoc .' order by `a`.`fecha`,`a`.`fechaenviado` desc');
+        $tipo_invitacion = $request->input('tipo_invitacion');
+				$resultsxa =DB::select('select `a`.`fecha` as fechagenerado,CASE WHEN `a`.`accion` = 1 THEN "Enviados" WHEN `a`.`accion` = 0 THEN "Fallido" ELSE "Pendiente procesar cola global" END as Accion,`a`.`fechaenviado` AS `FechaEnvio` from `envios` `a` where  tipo_envio='. $tipo_invitacion .' and `a`.`id_evento`= '. $evento .' and `a`.`CLDOC` = '. $cldoc .' order by `a`.`fecha`,`a`.`fechaenviado` desc');
 				return json_decode(json_encode($resultsxa),true);				
 
            } catch (Exception $e) {
@@ -349,8 +375,52 @@ class ConfEnvioController extends Controller
 
 	public function reinsertar(Request $request)
 	{
+      try
+       {
+			  $configuraciones =DB::select('select modo,correopruebas from conf');
+			  //$configuraciones[0]->correopruebas
+			  $desarvari = "";
+			  $desarvaricorreo = "";
+			  
+         $desarvari =" limit 1";    
+
+
+        
+				$evento = $request->input('id_evento');
+				$cldoc = $request->input('cldoc');
+        $tipo_invitacion = $request->input('tipo_invitacion');
+        
+				$resultsxa =DB::select('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE) select b.id_evento,b.IDAGEN,b.CLDOC,b.CORREO,b.NOMBRE from vt_envios as b where b.id_evento ='.$evento.' and b.CLDOC='.$cldoc .' AND b.tipo_invitacion ='.$tipo_invitacion.' '.$desarvari.'');
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+     }
+	}
+	
+	public function fnreenviarnoti(Request $request)
+	{
+	
            try
            {
+
+			  $cldoc = $request->input('cldoc');   
+			  $id_evento = $request->input('id_evento');  
+			  $tipo_envio = trim($request->input('tipo_invitacion'));  
+        $tipo_envio = filter_var( $tipo_envio, FILTER_SANITIZE_NUMBER_INT);
+        $tipo_envio = intval(  $tipo_envio );   
+             
+        switch($tipo_envio)
+          {
+          case 1:
+              $etiquetatipoenvio = "Formulario previo al evento - ";
+              $laimagenicono ="";
+          break;
+          case 2:
+              $etiquetatipoenvio = "Acceso al evento - ";
+              $laimagenicono ="<br/><img style='height:328px;width:352px' src='http://cooperativa.eaguilars.com/images/accede.png'>";
+          break;   
+        }
+             
+             
 			  $configuraciones =DB::select('select modo,correopruebas from conf');
 			  //$configuraciones[0]->correopruebas
 			  $desarvari = "";
@@ -361,39 +431,11 @@ class ConfEnvioController extends Controller
 				  $desarvari =" limit 1";
 			  }
 
-			  
-				$evento = $request->input('id_evento');
-				$cldoc = $request->input('cldoc');
-				$resultsxa =DB::select('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE) select b.id_evento,b.IDAGEN,b.CLDOC,b.CORREO,b.NOMBRE from vt_envios as b where b.id_evento ='.$evento.' and b.CLDOC='.$cldoc .' '.$desarvari.'');
-           } catch (Exception $e) {
-                  return json(array('error'=> $e->getMessage()));
-           }
-	}
-	
-	public function fnreenviarnoti(Request $request)
-	{
-	
-           try
-           {
-			  $id_evento = $request->input('id_evento');  
-			  $cldoc = $request->input('cldoc');
-			  
-			  
-			  $configuraciones =DB::select('select modo,correopruebas from conf');
-			  //$configuraciones[0]->correopruebas
-			  $desarvari = "";
-			  $desarvaricorreo = "";
-			  
-			  if($configuraciones[0]->modo ==0)
-			  {
-				  $desarvari =" limit 1";
-			  }
-			  
 			  // datos de contenido de correo
 			  $documento_resultados = documento_envioModel::select(['asunto','texto'])->where('id_evento','=',$id_evento)->get();
 			 // dd($documento_resultados);
 			  // datos de contenido de correo
-		      $datos1 = \DB::connection('mysql')->select("select * from envios where id_evento=".$_REQUEST['id_evento']." and cldoc=".$cldoc." and accion=3 ".$desarvari."");
+		      $datos1 = \DB::connection('mysql')->select("select * from envios where id_evento=".$_REQUEST['id_evento']." and cldoc=".$cldoc." and accion=3 and tipo_envio=".$tipo_envio." ".$desarvari."");
 				//dd( $datos1 );
 			  $CantRegistros = count($datos1);  	
 			  
@@ -487,7 +529,7 @@ class ConfEnvioController extends Controller
 					$contenido = '<!DOCTYPE html>
 						<html>
 						 <head>
-						  <title>How Send an Email in Laravel</title>
+						  <title>Cooperativa Profesionales R.L</title>
 						  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 						  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 						  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -521,17 +563,27 @@ class ConfEnvioController extends Controller
 						  <br />
 						  <br />
 						  <br />
-						  <div class="container box" style="width: 970px;">
+						  <div class="container box" style="width: 100%;">
+						  
+              <img src="https://portal.cooprofesionales.com.pa/mercadeo/files/333f41_newlogo1.png" style="width: 470px;">
 						
-							<h1>'.  $time. '<br/> Te invitamos a el siguiente evento : &nbsp; '.$documento_resultados[0]->asunto .' </h1>
+							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE .' <br/> Te damos la bienvenida al siguiente evento:   '.$etiquetatipoenvio .' &nbsp;'.$documento_resultados[0]->asunto .'</label>
+
 
 
 				
 							 <a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> 
-                  '.  $documento_resultados[0]->texto .'
+               
+               
+               
+               '.  $documento_resultados[0]->texto .'
+               '.$laimagenicono.'
+               
+               
+               
+               
+               
                </a>
-               
-               
                
                
                </p>
@@ -587,5 +639,147 @@ class ConfEnvioController extends Controller
            }
 
 	}
+  
+  
+  
+  
+    public function vistaenviocapitular()
+    {
+        $capitulos = capitulosModel::select(['IDAGEN','AGENCIA'])->where('IDAGEN','>',0)->get();
+        $asamblea_estructura = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
+        $estados_asoc = estados_asocModel::select(['id_estado','estado'])->where('id_estado','>',0)->get();		
+        $eventos = eventoModel::select(['id','nombre','rangofecha1'])->where('tipo',1)->where('status',1)->orderBy('rangofecha1', 'DESC')->get();
+        $tipos = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
+        return view('sistema::confenviocapitular')->with('eventos', $eventos)->with('tipos', $tipos)->with('capitulos', $capitulos)->with('asamblea_estructura', $asamblea_estructura)->with('estados_asoc', $estados_asoc); 		
+    }	
+  
+    public function vistaenvioasamblea()
+    {
+        $capitulos = capitulosModel::select(['IDAGEN','AGENCIA'])->where('IDAGEN','>',0)->get();
+        $asamblea_estructura = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
+        $estados_asoc = estados_asocModel::select(['id_estado','estado'])->where('id_estado','>',0)->get();		
+        $eventos = eventoModel::select(['id','nombre','rangofecha1'])->where('tipo',2)->where('status',1)->orderBy('rangofecha1', 'DESC')->get();
+        $tipos = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
+        return view('sistema::confenvioasamblea')->with('eventos', $eventos)->with('tipos', $tipos)->with('capitulos', $capitulos)->with('asamblea_estructura', $asamblea_estructura)->with('estados_asoc', $estados_asoc); 		
+    }	  
+  
+  public function trabajo($id_evento,$codigos)
+  {
+
+    //dd($codigos);
+    
+    foreach($codigos as $items){
+      // echo gettype (trim($items))."<br/>";
+      echo trim($items)."<br/>";
+      // echo 'INSERT INTO temporal (id_evento,cldoc) VALUES ('.$id_evento.','.(int)$items.');';
+         //DB::statement('INSERT INTO temporal (id_evento, cldoc) VALUES (?,?)',array($id_evento,$items));
+      echo (int) trim($items)."<br/>";;
+      /*
+              $id_directivo = DB::table('temporal')-> insertGetId(
+                array(
+                      'id_evento' => $id_evento,
+                      'cldoc' => echo (int) trim($items);
+                     )
+              );
+      
+      echo ($id_directivo)."<br/>";
+      */
+    }
+    
+   // DB::statement('call pr_genera_inscripcion_asamblea()');
+    // $datoscliente = DB::table('data_clientes')->whereIn('clasoc',$codigos );
+    // var_dump ($datoscliente );
+    
+    // $eventos = eventoModel::select(['*'])->where('id',$id_evento)->get();
+    //
+    
+    // $datoscliente = DataClientes::select(['*'])->where('CLASOC',$elcldoc)->toSql();
+    // $datoscliente = DB::select("select *  from data_clientes where CLASOC='".$elcldoc."'" )->toArray();
+    
+    // $datoscliente = DB::select('select * from data_clientes where clasoc= ?', array($elcldoc));
+    
+    // $datoscliente = DataClientes::select('*');
+    // $datoscliente = DataClientes::whereRaw('clasoc = ?', array($elcldoc))->toSql();
+    // var_dump ($datoscliente );
+    // echo $id_evento."-".$elcldoc."<br/>";
+   
+  }
+
+  public function upload(Request $request)
+     {
+       try 
+       {
+             
+             $file = $request->file('file');
+             $id_evento =$request->input('up_id_evento');  
+             $tipo_invitacion =$request->input('tipo_invitacion');  
+             //dd($tipo_invitacion);
+         
+             $nombrefile = $file->getClientOriginalName();
+             $extension = $file->getClientOriginalExtension();
+             $tipoarchivo = $file->getMimeType();
+             $nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);
+             $upload_success=$file->move(env('UPLOADDIR'),$nombre);
+             $eventos = eventoModel::select(['*'])->where('id',$id_evento)->get();
+             
+             $siasistencia =0;
+         
+         /*
+             if($eventos[0]->tipo==2)
+             {
+               $siasistencia =1;
+             }
+         */
+         
+         
+             // GUARDA EN cooplab/public/storage
+             if ($upload_success) {
+                if (($handle = fopen (env('UPLOADDIR').'/'.$nombre, 'r' )) !== FALSE) {
+
+                     while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
+                     {
+                                  //echo('->'. $data [0]. '<-<br/>');
+                                  $elcldoc = filter_var($data [0], FILTER_SANITIZE_NUMBER_INT);
+                                  $elcldocval = intval( $elcldoc );
+                       
+
+                                  $datoscliente = DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->where('CLASOC',$elcldocval)->get();
+
+                                  if (count($datoscliente)>=1 )
+                                  {  
+                                      //dd($datoscliente[0]->AGENCIA);
+
+                                        $xdato = DB::select("select * from asistencia where id_evento=".$id_evento ." and num_cliente= '".$elcldocval ."'" );
+
+                                        if (count($xdato)==0 )
+                                        {  
+                                          DB::statement('INSERT INTO asistencia (id_evento, tipoevent, num_cliente, trato,nombre, agencia, fecha_nacimiento, asistire) VALUES ('.$id_evento.','. $eventos[0]->tipo .', '.$elcldocval.', "'.$datoscliente[0]->trato.'", "'.$datoscliente[0]->NOMBRE.'", "'.$datoscliente[0]->AGENCIA.'", "'.$datoscliente[0]->fecha_nac.'" , '.$siasistencia.');');
+                                        }
+                                     
+                                    
+                                     DB::statement('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE,tipo_envio) values('. $id_evento  .','. $datoscliente[0]->IDAGEN .','. $elcldocval .',"'. $datoscliente[0]->CORREO .'","'.$datoscliente[0]->NOMBRE.'",'.$tipo_invitacion.')' );
+
+                                  }
+                     }
+                     fclose ( $handle );
+                 }
+
+               DB::statement('update asistencia set veri_id_zoom="'.$eventos[0]->veri_id_zoom.'" where id_evento='.$id_evento.'' );
+               
+               return $nombre;
+             }
+        } catch (Exception $e) {
+                     $response = array(
+                         'resabit' => '0001',
+                         'status' => 'Listado ERR',
+                         'error' => $e->getMessage()
+                    );
+        }
+   }
+  
+  
+  
+  
+  
 
 }

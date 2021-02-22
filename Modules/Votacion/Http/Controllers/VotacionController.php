@@ -136,7 +136,7 @@ class VotacionController extends Controller
 										
 										$categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$idevendesc. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");
 
-										$listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= ".$idevendesc. " and  a.estado=1 order by a.apellido asc");									
+										$listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= ".$idevendesc. " and  a.estado=1 and  a.eliminado=0 order by a.apellido,a.nombre asc");									
 										//dd($listadoaspirantes);
 
 										// consulto si ya realizo su votacion 
@@ -537,7 +537,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 						}	
 				  
 						$details =[
-							'title' => "Participaci&oacute;n en Votaci&oacute;n",
+							'title' => "Participación en Votación",
 							'body' => '',
 							'num_cliente' => $registrosenvio->CLDOC,
 							'nombre' => $registrosenvio->NOMBRE,

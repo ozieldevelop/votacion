@@ -41,7 +41,7 @@
                     
                     
                        
-                    <b style="color:blue" class=" float-left">Ingresa tu cuenta de correo con la que utilizas la plataforma zoom</b><b style="color:red">*</b>
+                    <b style="color:blue" class=" float-left">Ingresa tu cuenta de correo con la que utilizar&aacute;s la plataforma Zoom</b><b style="color:red">*</b>
                     
                     <div class="input-group col-sm-12 col-md-4 col-lg-4 float-right ">
                             <div class="input-group-prepend">
@@ -101,7 +101,7 @@
             </div>
        </div> 
 
-<div class="col-sm-12 col-md-12 col-lg-12">
+<div class="col-sm-12 col-md-12 col-lg-12" style="display:none">
        <div class="card card-outline card-info">
             <div class="card-header">
               <h3 class="card-title">
@@ -228,7 +228,7 @@
                       },
                       success: function(result){
                           lobibox_emergente('success','top right',true,'actualizado.');
-                          //setTimeout(function(){ location.reload();  }, 2000);
+                          setTimeout(function(){ location.reload();  }, 2000);
                       },
                       error: function (r) {
                           //lobibox_emergente('success','top right',true,'de seguro error.');

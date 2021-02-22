@@ -17,6 +17,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "maatwebsite/excel": "^3.1",
         "mpdf/mpdf": "^8.0",
         "nwidart/laravel-modules": "^8.2",
         "phpmailer/phpmailer": "^6.2",

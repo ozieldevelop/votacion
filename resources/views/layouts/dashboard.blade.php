@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
     <script src="{{ asset('js/herramientas.js') }}"></script>
 	
-	
+
     <script>
 
         $.ajaxSetup({
@@ -44,7 +44,8 @@
           });
   
     </script>
-	
+			  <link rel="stylesheet" href="../../plugins/codemirror/codemirror.css">
+    <link rel="stylesheet" href="../../plugins/codemirror/theme/monokai.css">
 	
 </head>
 
@@ -238,7 +239,13 @@
     <script src="../../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/js/jquery.slimscroll.js"></script>
 
+    <script src="../../plugins/codemirror/codemirror.js"></script>
+    <script src="../../plugins/codemirror/mode/css/css.js"></script>
+    <script src="../../plugins/codemirror/mode/xml/xml.js"></script>
+    <script src="../../plugins/codemirror/mode/htmlmixed/htmlmixed.js"></script>  
+    <script src="../../plugins/codemirror/addon/runmode/runmode.js"></script>    
 
+  
     <!-- App js -->
     <script src="../../assets/js/app.js"></script>
 

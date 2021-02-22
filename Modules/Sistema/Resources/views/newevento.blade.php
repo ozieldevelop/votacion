@@ -45,7 +45,14 @@
 						</select>
 				  </div> 
 				</div>
-
+      
+ 	<div class="row ">
+	   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
+		<label for="lblid_zoom">ID ZOOM</label>
+		<input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="id_zoom"  placeholder="Ingrese el id zoom (opcional)">
+	  </div> 
+	</div>
+      
 	<div class="row">
 	 <div class="form-group col-sm-12 col-md-12 col-lg-12 ">		
          <div id="checkboxses" class="col-md-12 col-lg-12">	  
@@ -148,6 +155,8 @@ var ran02 = $('#rangofecha2').val();
 
 var maxvotos = $('#maxvotos').val();
 
+var idzoom = $('#id_zoom').val();
+  
  var checkedVals = $('.loschecks:checkbox:checked').map(function() {
     return this.value;
 }).get();
@@ -222,7 +231,7 @@ else{
 	
 	$.ajax({
 		url: '{{ url("sistema/agregarnuevoevento")}}',
-		data: {"nombre": nom01 ,"maxvotos": maxvotos ,"rangofecha1": ran01 , "rangofecha2": ran02 ,'tipo': secciones,'capitulos': JSON.stringify(seleccioncheckbox),'estadosasoc': JSON.stringify(seleccioncheckbox2)},
+		data: {"nombre": nom01 ,"maxvotos": maxvotos ,"rangofecha1": ran01 , "rangofecha2": ran02 ,'tipo': secciones,'idzoom':idzoom, 'capitulos': JSON.stringify(seleccioncheckbox),'estadosasoc': JSON.stringify(seleccioncheckbox2)},
 		method: 'post',
 		headers: {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -344,6 +353,7 @@ function Cargar(dato)
 			 var tipo = datoz[0]['tipo'];
 				  var n1 = datoz[0]['nombre'];	
 				  var mvotos = datoz[0]['maxvotos'];	
+          var id_zoom = datoz[0]['veri_id_zoom'];	
 				  var f1 = datoz[0]['rangofecha1'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha1'].length - 3);
 				  var f2 = datoz[0]['rangofecha2'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha2'].length - 3);
 				  
@@ -361,7 +371,7 @@ function Cargar(dato)
 				  $('#rangofecha2').val(f2);
 				  $('#maxvotos').val(mvotos);
 				  $("#secciones").val(tipo).change();
-				  
+				  $('#id_zoom').val(id_zoom);
         },
         error: function (r) {
             console.log("ERROR");
@@ -387,6 +397,7 @@ var maxvotos = $('#maxvotos').val();
 var	ran01 = rangofecha1.replace(/\//g, "-")+ ':00';
 var	ran02 = rangofecha2.replace(/\//g, "-")+ ':00';
 
+var idzoom = $('#id_zoom').val();
 
 
  var checkedVals = $('.loschecks:checkbox:checked').map(function() {
@@ -449,13 +460,13 @@ if(valoropcion2<=0)
 
 	$.ajax({
 		url: '{{ url("sistema/actualizarevento")}}',
-		data: {"id": id_evento ,"nombre": nombre ,"maxvotos": maxvotos ,"rangofecha1": ran01 , "rangofecha2": ran02 ,'tipo': secciones,'capitulos': JSON.stringify(seleccioncheckbox),'estadosasoc': JSON.stringify(seleccioncheckbox2)},
+		data: {"id": id_evento ,"nombre": nombre ,"maxvotos": maxvotos ,"rangofecha1": ran01 , "rangofecha2": ran02 ,'tipo': secciones,  'idzoom':idzoom, 'capitulos': JSON.stringify(seleccioncheckbox),'estadosasoc': JSON.stringify(seleccioncheckbox2)},
 		method: 'post',
 		headers: {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		},
 		success: function(result){
-				lobibox_emergente('success','top right',true,'Creado!');		
+				lobibox_emergente('success','top right',true,'Actualizado!');		
 				//setTimeout(function(){ location.reload();  }, 3000);
 		},
 		error: function (r) {
