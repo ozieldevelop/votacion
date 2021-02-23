@@ -11,6 +11,6 @@ class aspiranteModel extends Model
 	public $timestamps = false;
 	
 	public $table = 'directivos';
-	public $fillable = ['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'];
+	public $fillable = ['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo','memoria'];
 	
 }

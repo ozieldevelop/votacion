@@ -27,6 +27,33 @@
 			</div>
 </div>
 
+
+
+
+		<div class="row">
+				<div class="form-group col-sm-12 col-md-12 col-lg-12 ">
+                            <div class="card" >
+                              <div class="card-header bg-light resaltado">ADJUNTOS</div>
+                              <div class="card-body" >
+
+                                <!-- dropzone  -->
+                                <form action="{{ url('/sistema/uploaddocumentosevento') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
+                                  <input type="hidden"  id="up_id_evento" name="up_id_evento"  data-bindto="parametros.up_id_evento"  value="">
+                                  {{ csrf_field() }}
+                                </form>
+                                <!-- AREA DONDE SE LISTARAN LOS ARCHIVOS ADJUNTOS UNA VEZ SUBIDOS -->
+                                <table  class="table" style="width:100%" id="gs_tbl_GestionesArchivos"> </table>                                
+                                
+                                
+                                
+                              </div>
+                            </div>											
+					</div>
+		</div>	
+
+
+
+
 		<div class="row ">
       		<div class="col-md-12" >
 
@@ -106,9 +133,7 @@
 
 		</style>
 
-
-											
-											
+									
 		<div class="row">
 				<div class="form-group col-sm-12 col-md-12 col-lg-12 ">
 					 <button type="text" id="btnagregar" class="btn btn-success form-control" onclick="actualizarplantillas()">GUARDAR PLANTILLAS</button>
@@ -122,11 +147,212 @@
 
 @section('page-script')
 
+<script type="text/javascript" src="{{ url('assets/dropzone') }}/dropzone.js"></script>
 
+<link rel="stylesheet" type="text/css" href="{{ url('assets/dropzone') }}/dropzone.css"/>
 <script src="{{ asset('js/ckeditor.js') }}"></script>
 
 		<script>
-									
+			
+  
+function buildHtmlTableAdjuntos(adjuntosed,selector) 
+{
+   var columns = addAllColumnHeadersAdjuntos(adjuntosed,selector);
+		var contadoradjuntos = 0;
+		var bandera = -1;
+
+
+        for (var i = 0; i < adjuntosed.length; i++) 
+        {
+          if(adjuntosed[i] != undefined)
+          {
+       
+                  var row$ = $('<tr id=rowNum'+contadoradjuntos+' />');
+                  for (var colIndex = 0; colIndex < columns.length; colIndex++) 
+                  {
+                      //console.log(adjuntosed);
+								      bandera++;
+                      var cellValue = adjuntosed[i][columns[colIndex]];
+                      //console.log(adjuntosed[i]);
+                          if (cellValue == null) cellValue = "";
+
+                                if(bandera<=1)
+                                {
+									                  row$.append($('<td style="word-wrap: break-word;" />').html(cellValue));
+                                          
+								                }
+								                else
+                                {
+                                  var eldiv = document.createElement("div");	
+                                  eldiv.setAttribute("role", "group");
+                                  eldiv.setAttribute("class", "btn-group-vertical");
+
+                                  var elboton = document.createElement("button");
+                                  elboton.setAttribute("aria-expanded", "aria-expanded");
+                                  elboton.setAttribute("aria-haspopup", "true");
+                                  elboton.setAttribute("data-toggle", "dropdown");
+                                  elboton.setAttribute("class", "btn btn-secondary dropdown-toggle ");
+                                  elboton.setAttribute("type", "button");
+                                  elboton.innerHTML = "Opciones";
+                                  eldiv.appendChild(elboton);
+
+                                  var eldiv2 = document.createElement("div");	
+                                  eldiv2.setAttribute("aria-labelledby", "btnGroupVerticalDrop1");
+                                  eldiv2.setAttribute("class", "dropdown-menu");
+                                  eldiv2.setAttribute("x-placement", "bottom-start");
+
+                                  /*
+                                  var a1 = document.createElement("a");	
+                                  a1.setAttribute("class", "dropdown-item");
+                                  a1.setAttribute("type", "button");
+                                  a1.setAttribute("style", "cursor:pointer");
+                                  a1.setAttribute("onclick", "javascript:abriretiquetaadjunto("+cellValue+")");
+                                  a1.innerHTML = "Etiquetar";
+                                  */
+
+                                  var a2 = document.createElement("a");	
+                                  a2.setAttribute("class", "dropdown-item");	
+                                  a2.setAttribute("style", "cursor:pointer");
+                                  a2.setAttribute("onclick", "javascript:eliminaradjunto("+cellValue+")");
+                                  a2.innerHTML ="Eliminar";
+
+                                  //eldiv2.appendChild(a1);
+                                  eldiv2.appendChild(a2);
+
+                                  eldiv.appendChild(eldiv2);
+
+                                  
+                                  var elboton2 = document.createElement("button");
+                                  elboton2.setAttribute("type", "button");
+                                  elboton2.setAttribute("onclick", "javascript:descargaradjunto("+cellValue+")");
+                                  elboton2.setAttribute("class", "btn btn-info col-6");
+                                  elboton2.innerHTML ="Descargar";
+
+                                  var eltdfinal = document.createElement("td");
+                                  eltdfinal.setAttribute("style","word-wrap: break-word");
+                                  eltdfinal.appendChild(eldiv);
+                                  eltdfinal.appendChild(elboton2);
+                                  row$.append(eltdfinal);	
+                                  
+                                }
+                     }
+								        
+                    if(bandera===2)
+                    {
+                      bandera=-1;
+                    }
+
+					  }
+                      contadoradjuntos++;
+                      $(selector).append(row$);
+                  }
+
+
+}
+      
+      
+      
+        function addAllColumnHeadersAdjuntos(elementosDatax1, selector)
+        {
+                var columnSet = [];
+                var elthead = $('<thead/>');
+                $(elthead).attr("class", "thead-light");
+                var headerTr$ = $('<tr/>');
+                for (var i = 0; i < elementosDatax1.length; i++) {
+                          var rowHash = elementosDatax1[i];
+                              for (var key in rowHash) {
+                                if ($.inArray(key, columnSet) == -1) {
+                                  columnSet.push(key);
+                                  headerTr$.append($('<th/>').html(key));
+                                }
+                              }
+                }
+                if( elementosDatax1.length >0)
+                {
+                  /*var thcustom = document.createElement("th");
+                  headerTr$.append(thcustom);
+                  elthead.append(headerTr$);*/
+                  $(selector).html('<thead class="thead-light"><tr><th></th><th></th><th></th></tr></thead>');
+                }
+                else {
+                  $(selector).html('<thead class="thead-light"><tr><th>No se encontraron registros</th></tr></thead>');
+                  return columnSet;
+                }
+
+                $(selector).html(elthead);
+                return columnSet;
+        }
+      
+      
+      
+      
+        function cargaadjuntosx(opcion)
+        {
+            // console.log("aaa");
+          var id_evento = $('#eventos').val();
+							$.ajax
+              ({
+								url: '{{ url("sistema/cargaadjuntosScreenListar")}}/'  
+								, data: { 'id_evento': id_evento  }             
+								, method: 'get'
+								,success: function(datos){
+                          //adjuntosed = datos; 
+                          $('#gs_tbl_GestionesArchivos').html('');
+                          buildHtmlTableAdjuntos(datos,'#gs_tbl_GestionesArchivos');
+								},
+								error: function (r) {
+										//console.log("ERROR");
+										//console.log(r);
+								}
+							});
+        }
+      
+Dropzone.autoDiscover = false;
+// or disable for specific dropzone:
+// Dropzone.options.myDropzone = false;
+
+$(function() {
+  // Now that the DOM is fully loaded, create the dropzone, and setup the
+  // event listeners
+  var myDropzone = new Dropzone(".dropzone");
+
+  myDropzone.on("queuecomplete", function(file, res) {
+      if (myDropzone.files[0].status != Dropzone.SUCCESS ) {
+          //alert('yea baby');
+      } else {
+               cargaadjuntosx(1);
+                  console.log('Termino');
+      }
+  });
+});  
+      /*
+         Dropzone.options.myDropzone = {
+          paramName: 'file',
+          maxFilesize: 20, // MB
+          maxFiles: 20,
+          //acceptedFiles: ".jpeg,.jpg,.png,.gif",
+          init: function()
+          {
+              this.on("success", function(file, response) {
+                  cargaadjuntosx(1);
+                  console.log('Termino');
+              });
+          }
+         };
+         */
+    /*  
+ Dropzone.options.myDropzone = {
+  paramName: "file", // The name that will be used to transfer the file
+  maxFilesize: 2, // MB
+  accept: function(file, done) {
+    if (file.name == "justinbieber.jpg") {
+      done("Naha, you don't.");
+    }
+    else { done(); }
+  }
+};*/
+      
+      
 											CKEDITOR.replace('contenidoemail', { 
 													toolbar : [
 														{ name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
@@ -232,6 +458,9 @@ var model = {
 function Cargar(dato)
  {
 	var eleccion = $('#eventos').val();
+   
+   $('#up_id_evento').val(eleccion);
+   
 		if(dato=="" || dato==undefined || dato.length < 0)
 		{
 			lobibox_emergente('info','top right',true,'Deben selecionar algun item del listado.');		 
@@ -281,7 +510,7 @@ function Cargar(dato)
 								 CKEDITOR.instances['resultadoheader'].setData(datoz2[0].superior)   ;
 								 CKEDITOR.instances['resultadofooter'].setData(datoz2[0].inferior)   ;
 									//console.log(datoz);
-
+                  cargaadjuntosx(1);
 								 terminar_espere();
 							},
 							error: function (r) {

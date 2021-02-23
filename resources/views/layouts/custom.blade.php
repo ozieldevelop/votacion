@@ -19,12 +19,9 @@
   <link href="../../css/simple-line-icons.css" rel="stylesheet">
   <link href="../../css/style_custom.css" rel="stylesheet">
 
+  <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
 
-
-    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
-
-	
   <script src="../../js/herramientas.js"></script>
 
   <link rel="stylesheet" href="../../css/lolibox.min.css"/>
@@ -111,7 +108,7 @@
 		 <div style="width:100%;background:#45793b;text-align: center;color:white;font-size: 28px;font-weight: bold; ">
       <a href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}">  {{  isset($nombreevento) ? $nombreevento :  '' }}   </a>
     </div>
-	     <input type="text" class="form-control col-md-6 col-lg-7 " id="elfiltro" placeholder="INGRESE EL N&Uacute;MERO DE CLIENTE O NOMBRE PARA BUSCAR EN LA LISTA DE CANDIDATOS"  style="font-family: arial;width: 36%;background: #111a07;"/> <br/>
+	     &nbsp; &nbsp; &nbsp; BUSCAR  &nbsp; <input type="text" class="form-control col-md-6 col-lg-4 " id="elfiltro" placeholder="INGRESE EL N&Uacute;MERO DE CLIENTE O NOMBRE "  style="font-family: arial;width: 36%;background: #111a07;"/> <br/>
 	 
 
     <ul class="nav navbar-nav ml-auto">

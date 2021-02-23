@@ -7,7 +7,18 @@
 <div class="row ">
     <div class="col-md-3">
 			
+
+      
 	<div class="row ">
+    
+      
+ 			   <div class="form-group col-sm-12 col-md-12 col-lg-12">
+
+				  <button type="text" class="btn btn-success form-control" onclick="vaciarformulario()">Vaciar Formulario</button>
+			  </div>      
+          
+    
+    
 	   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
 		<label for="inputapellidoasoc">Nombre Evento</label>
 		
@@ -139,6 +150,14 @@
 
 <script>
 
+  
+  function vaciarformulario()
+{
+                  //localStorage.setItem("aspirante_selecionado",'');
+								  setTimeout(function(){ location.reload();  }, 1000);	
+}
+  
+  
 
 function updateRango(){ 
 

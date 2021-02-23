@@ -32,7 +32,7 @@ class NewEventoController extends Controller
                    $data = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('status',1);
                    return Datatables::of($data)
                    ->addColumn('action', function ($data) {
-                     return ' <button class="dropdown-item btn-danger"  onclick="Eliminar('. trim($data->id). ')"><i class="icon-book-open"></i> Eliminar</button><button class="dropdown-item btn-secondary"  onclick="Cargar('. trim($data->id). ')"><i class="icon-book-open"></i> Selecci&oacute;n</button>';
+                     return ' <button class="dropdown-item btn-danger"  onclick="Eliminar('. trim($data->id). ')"><i class="icon-book-open"></i> Eliminar</button><button class="dropdown-item btn-info"  onclick="Cargar('. trim($data->id). ')"><i class="icon-book-open"></i> Selecci&oacute;n</button>';
                    })
                    ->make(true);
            } catch (Exception $e) {

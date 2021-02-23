@@ -11,10 +11,108 @@ use Modules\Sistema\Entities\eventoModel;
 use Modules\Sistema\Entities\estados_asocModel;
 use Modules\Sistema\Entities\documento_resultadosModel;
 use Modules\Sistema\Entities\documento_envioModel;
+use Modules\Cliente\Entities\files_up_Model;
+use Auth;
+use Validator;
 
 class FormatosDocumentosController extends Controller
 {
+   
+  
+    public function uploaddocumentosevento(Request $request)
+      {
+
+        try 
+        {
+
+         $id_retorno ='';
+         $validation = Validator::make($request->all(), [
+          'select_file' => 'required|mimes:pdf,docx,jpeg,png,jpg,gif|max:2048'
+         ]);
+
+   
+         if($validation->passes())
+         {
+                 dd($request->input('up_id_evento'));
+          $image = $request->file('file');
+          $extension = $image->getClientOriginalExtension();
+          $tipoarchivo = $image->getMimeType();    
+          $new_name = rand() . '.' . $image->getClientOriginalExtension();
+          $id_evento = $request->input('up_id_evento');
+
+         
+
+          //$nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);
+
+          //return $nombre;
+          //return env('UPLOADDIR');
+          
+          $upload_success=$file->move(base_path('/public/adjuntos/'),$new_name);
+          //$upload_success=$file->move(base_path('\adjuntos'),$file->getClientOriginalName());
+          //return $upload_success;
+          
+   
+          if ($upload_success) {
+            $peso = filesize(base_path('/public/adjuntos/').$nombre);
+            
+             dd($peso);
+             /*
+            
+                $entidad  = new aspiranteModel();
+                $entidad->num_cliente = $request->input('numasoc');
+                $entidad->nombre = $request->input('nombreasoc');
+                $entidad->apellido = $request->input('apellidoasoc');
+                $entidad->user_audit = 'sistema';
+                $entidad->tipo = $tipo_imagen;   
+                $entidad->foto = $avatarBase64;               
+                $entidad->memoria =  $memoria;
+                $entidad->adjunto =  $id_cv;
+                $entidad->save(); 
+            */
+            
+            \DB::connection('mysql')->statement('call pr_subir_file (?,?,?,?,?,?,?)', array($id_evento,0,strtolower($nombrefile),strtolower($nombre),strtolower($extension),$tipoarchivo,$peso));
+             return $nombre;
+          }
+          else {
+            $response = array(
+                'resabit' => '0001',
+                'status' => 'Listado ERR',
+                'error' => 'No se pudo adjuntar'
+           );
+          }
     
+
+         }
+          
+          
+          
+         } catch (Exception $e) {
+                      $response = array(
+                          'resabit' => '0001',
+                          'status' => 'Listado ERR',
+                          'error' => $e->getMessage()
+                     );
+          }
+
+
+
+    }
+  
+       public function cargaadjuntosScreenListar(Request $request)
+    {
+        try {
+              $id_evento = $request->input('id_evento');
+
+              $data = files_up_Model::select(['etiqueta','fecha_upload','id'])->where('id_evento', '=', $id_evento)->where('cldoc', '=', 0)->where('eliminado', '=', 0)->get();
+              //$arreglo = json_decode(json_encode($data), true);
+              $arreglo = json_encode($data, JSON_FORCE_OBJECT);
+              //return $arreglo;
+              return $data;
+        } catch (Exception $e) {
+                          return json(array('error'=> $e->getMessage()));
+        }
+    }   
+  
     public function formatosdocumentos()
     {
         $capitulos = capitulosModel::select(['IDAGEN','AGENCIA'])->where('IDAGEN','>',0)->get();

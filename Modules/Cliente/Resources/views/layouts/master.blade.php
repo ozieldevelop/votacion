@@ -46,7 +46,7 @@
   <script src="{{ url('plugins/gdb/jquery.gdb.js') }}"></script>
   
 </head>
-<body class="layout-boxed"   style="background:#dfc798">
+<body class="layout-boxed"   style="background:#00821b">
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->

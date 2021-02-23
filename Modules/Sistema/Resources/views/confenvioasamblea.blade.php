@@ -60,8 +60,8 @@
                          <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
                         <label for="inputevento">Seleccione tipo de invitaci&oacute;n </label>
                         <select id="tipo_invitacion" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="selecciontipo(this)" >
-                                  <option value="1"> Invitaci&oacute;n a completar formulario</option>
-                                   <option value="2"> Invitaci&oacute;n a evento</option>
+                                  <option value="1"> Registros de puestos directivos</option>
+                                  <option value="2"> Invitaci&oacute;n al evento (Zoom) </option>
                         </select>
                         </div> 
                       </div>

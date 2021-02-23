@@ -8,7 +8,7 @@
 </div>
 
         <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="card card-primary card-outline">
+            <div class="card  card-outline">
               <div class="card-body box-profile">
 
                 <div class="col-sm-12 col-md-12 col-lg-12">
@@ -74,11 +74,11 @@
                 
     
                 @if($existecuentazoom==0)
-                <a type="button" href="#" onclick="guardarasistencia()" class="btn btn-block btn-success" >CONFIRMA TU ASISTENCIA AQUI</a>
+                <a type="button" href="#" onclick="guardarasistencia()" class="btn btn-block" style="background:#3c4199;color:white">REGISTRARME</a>
                 @endif          
                                
                 @if($existecuentazoom==1 && $periactico)
-                <a type="button"style="" href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-success" >INGRESAR EN PANEL</a>
+                <a type="button"  href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block"  style="background:#3c4199;color:white">INGRESAR EN PANEL</a>
                 @endif      
                 
                 
@@ -195,7 +195,7 @@
                             $.ajax({
                               url: '{{ url("cliente/inscripcion/guardaasistencia")}}',
                               data: { datos : JSON.stringify(modelo)  },
-                              method: 'get',
+                              method: 'post',
                               headers: {
                                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                               },

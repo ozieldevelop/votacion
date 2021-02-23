@@ -167,7 +167,20 @@ class ConfVotacionController extends Controller
 
 	 }																		   
 		
+     public function saveimage(Request $request)
+     {
+           try
+           {
+			       $id_delegado = $request->input('aspiranteidBD');
+				   $llimagen = trim($request->input('llimagen'));
+				   $formato  = trim($request->input('formato'));
+                   $data1 = aspiranteModel::where('id_delegado',$id_delegado)->update(['tipo'=> $formato , 'foto'=> $llimagen ]);
 
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+           }
+     }	
+  
      public function saveimageanddatos(Request $request)
      {
            try
