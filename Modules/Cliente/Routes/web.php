@@ -26,11 +26,17 @@ Route::prefix('cliente')->group(function()
   
   
     Route::prefix('inscripcion')->group(function() {
+<<<<<<< HEAD
+        Route::get('/', 'ClienteController@index');
+        Route::get('/guardaasistencia', 'ClienteController@guardaasistencia');
+=======
               Route::get('/', 'ClienteController@index');
               Route::post('/guardaasistencia', 'ClienteController@guardaasistencia');
+>>>>>>> 4d290feae18bc44f423800b963d4a9b2504af997
     });
   
-
+    Route::get('/registro', [App\Http\Controllers\HomeController::class, 'showRegistro'])->name('showRegistro');
+    Route::post('/registro', [App\Http\Controllers\HomeController::class, 'postRegistro'])->name('postRegistro');
   
 });
 

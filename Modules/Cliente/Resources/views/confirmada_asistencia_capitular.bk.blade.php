@@ -1,20 +1,14 @@
 @extends('cliente::layouts.master')
 
+
 @section('content')
-<<<<<<< HEAD
-    <div class="row justify-content-center" style="background-color: green">
-        <div class="col-md-6">
-            <div class="card mt-2 mb-2">
-                {{-- <div class="card-header"><h4>Formulario de Registro</h4></div> --}}
-                <div id="register_form" class="card-body">
-=======
 
 <div class="row">
 
 </div>
 
         <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="card  card-outline">
+            <div class="card card-primary card-outline">
               <div class="card-body box-profile">
 
                 <div class="col-sm-12 col-md-12 col-lg-12">
@@ -34,69 +28,45 @@
                    <li class="list-group-item">
  
                     <b style="color:blue" class=" float-left">Ingresa tu cuenta de correo con la que utilizar&aacute;s la plataforma Zoom</b><b style="color:red">*</b>
->>>>>>> 4d290feae18bc44f423800b963d4a9b2504af997
                     
-                    <div class="text-center" >                        
-                        <div style="clear: left;">
-                            <p style="float: left;"><img src="/images/logo-cooperativa.png" alt=""></p>
-                            <h5><strong>COOPERATIVA PROFESIONALES, R.L.</strong></h5>
-                        </div>
-                        <div>
-                            <i><strong>Éxito, cooperación y confianza</strong></i>
-                        </div>
-                        <div>
-                            <h4>Inscripción al Seminario Web</h4>
-                        </div>
+                    <div class="input-group col-sm-12 col-md-4 col-lg-4 float-right ">
+                            <div class="input-group-prepend">
+                                  <span class="input-group-text">@</span>
+                            </div>
+                            <input type="text"  id="veri_zoom_email_01" data-bindto="parametros.veri_zoom_email_01"  name="veri_zoom_email_01" class="form-control "  value="" /> 
+        
                     </div>
-                    <hr>                    
-                    <div class="form-row">
-                        <div class="col-md-12">
-                            <p>Tema: <span><strong>{{ $nombreevento }}</strong></span></p>
-                            {{-- <p>Tema: <span><strong>@{{ tema }}</strong></span></p> --}}
-                        </div>
-                        <div class="col-md-12">
-                            <p>Descripción: <span><strong>@{{ descripcion }}</strong></span></p>
-                        </div>
-                        <div class="col-md-12">
-                            {{-- <p>Hora: <span><strong>@{{ hora }}</strong></span></p> --}}
-                            <p>Hora: <span><strong>{{ $f_inicia }}</strong></span></p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="col-sm-12 col-md-12 col-lg-12">
+                    
+                    
+                  </li>  
+                  
+                  <li class="list-group-item">
 
-                        {!! $mensaje !!}
-
+                    <b style="color:blue" class=" float-left">Confirma la cuenta de correo de zoom escrita anteriormente para validar que este bien</b><b style="color:red">*</b>
+                    
+                    <div class="input-group col-sm-12 col-md-4 col-lg-4 float-right ">
+                            <div class="input-group-prepend">
+                                  <span class="input-group-text">@</span>
+                            </div>
+                            <input type="text"  id="veri_zoom_email_02" data-bindto="parametros.veri_zoom_email_02"  name="veri_zoom_email_02" class="form-control "  value="" /> 
                     </div>
-<<<<<<< HEAD
-                    <form action="{{ route('postRegistro') }}" method="post">
-                        @csrf
-                        <hr>
-                        <div class="form-row">
-                            <div class="col">
-                                <label for="numero_asoc">Número de Asociado:</label>
-                                <input id="numero_asoc" name="numero_asoc" type="text" class="form-control" placeholder="101">
+                  </li>  
+
+                </ul>
+                 @else
+                <ul class="list-group list-group-unbordered mb-3" >
+
+                  
+                  <li class="list-group-item">
+
+                    <b style="color:blue" class=" float-left">Cuenta de correo de zoom proporcionada!</b>
+                    
+                    <div class="input-group col-sm-12 col-md-4 col-lg-4 float-right ">
+                            <div class="input-group-prepend">
+                                  <span class="input-group-text">@</span>
                             </div>
-                            <div class="col">
-                                <label for="nombre_asoc">Nombre del Asociado:</label>
-                                <input id="nombre_asoc" name="nombre_asoc" type="text" class="form-control" placeholder="Juan Perez">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-row mb-2">
-                            <div class="col">
-                                <label for="email">Dirección de Correo Electronico:</label>
-                                <input id="email" name="email" type="email" class="form-control" placeholder="Ejemplo: juan.perez@cooprofesionales.com.pa">
-                            </div>
-                            <div class="col">
-                                <label for="email_confirmation">Confirmar Correo Electronico:</label>
-                                <input id="email_confirmation" name="email_confirmation" type="email" class="form-control" placeholder="Ejemplo: juan.perez@cooprofesionales.com.pa">
-                            </div>
-                        </div><br>
-                        <button type="submit" class="btn btn-primary">Registrarme</button>
-                    </form>
-                </div>
-=======
+                            <input type="text" class="form-control " disabled  value="{{ $cuentazoom }}" /> 
+                    </div>
                   </li>  
 
                 </ul>                  
@@ -104,11 +74,11 @@
                 
     
                 @if($existecuentazoom==0)
-                <a type="button" href="#" onclick="guardarasistencia()" class="btn btn-block" style="background:#3c4199;color:white">REGISTRARME</a>
+                <a type="button" href="#" onclick="guardarasistencia()" class="btn btn-block btn-success" >CONFIRMA TU ASISTENCIA AQUI</a>
                 @endif          
                                
                 @if($existecuentazoom==1 && $periactico)
-                <a type="button"  href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block"  style="background:#3c4199;color:white">INGRESAR EN PANEL</a>
+                <a type="button"style="" href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-success" >INGRESAR EN PANEL</a>
                 @endif      
                 
                 
@@ -134,47 +104,17 @@
             </div>
             <div class="card-footer">
             
->>>>>>> 4d290feae18bc44f423800b963d4a9b2504af997
             </div>
-        </div>
-    </div>
-@endsection()
+      </div>
+</div>
 
+
+
+@endsection
+
+  
 @section('page-script')
 
-<<<<<<< HEAD
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <script>
-        const app = new Vue({
-            el: '#register_form',
-            // components: { App }
-            data: {
-                tema: 'Seminario de prueba',
-                descripcion: 'Seminario web en zoom (prueba)',
-                hora: '29 de febrero 2021',
-                asociados: [],
-            },
-            
-            mounted() {
-                this.cargarAsociados();
-            }, 
-
-            methods: {
-                cargarAsociados: function() {
-                    axios.get('/api/asociados')
-                    .then( (response) => {
-                        this.asociados + response.data.data;
-                    })
-                    .catch( function(err) {
-                        alert("Hubo un error: " + err);
-                    });
-                }
-            }
-        });
-    </script>
-@stop	   
-=======
 <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 
 <script>
@@ -255,7 +195,7 @@
                             $.ajax({
                               url: '{{ url("cliente/inscripcion/guardaasistencia")}}',
                               data: { datos : JSON.stringify(modelo)  },
-                              method: 'post',
+                              method: 'get',
                               headers: {
                                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                               },
@@ -303,4 +243,3 @@
 
 
 
->>>>>>> 4d290feae18bc44f423800b963d4a9b2504af997
