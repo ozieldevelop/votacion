@@ -13,3 +13,7 @@ npm-debug.log
 yarn-error.log
 .vscode/sftp.json
 .gitignore
+/.vagrant
+after.sh
+aliases
+vagrantfile

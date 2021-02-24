@@ -22,11 +22,12 @@ Route::prefix('cliente')->group(function()
   
   
     Route::prefix('inscripcion')->group(function() {
-              Route::get('/', 'ClienteController@index');
-              Route::get('/guardaasistencia', 'ClienteController@guardaasistencia');
+        Route::get('/', 'ClienteController@index');
+        Route::get('/guardaasistencia', 'ClienteController@guardaasistencia');
     });
   
-
+    Route::get('/registro', [App\Http\Controllers\HomeController::class, 'showRegistro'])->name('showRegistro');
+    Route::post('/registro', [App\Http\Controllers\HomeController::class, 'postRegistro'])->name('postRegistro');
   
 });
 
