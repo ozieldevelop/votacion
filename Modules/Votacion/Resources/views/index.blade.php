@@ -127,6 +127,7 @@ var max_votos = 0;
 var datos='';
 var aspirtantesall = '';
 
+  @if($mododeveloper>0)
       $.ajax({
         url: '{{ url("votacion/verificaparticipacion")}}'
         , method: 'GET'
@@ -138,6 +139,7 @@ var aspirtantesall = '';
 					}
         }
       });
+  @endif
 
 
 $(function () {
@@ -466,7 +468,7 @@ function PapeletasIniciales(textolike){
 							@if($tipoevent == 2)
 								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
 							@endif
-								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+"&nbsp;,&nbsp;"+datosencabezado[ii]["nombre"]+"</p>&nbsp;<p style='text-align: center;font-size: 17px;'>";
+								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+",&nbsp;"+datosencabezado[ii]["nombre"]+"</p>&nbsp;<p style='text-align: center;font-size: 17px;'>";
 							@if($tipoevent == 2)
 								html +=titulo;
 							@endif								

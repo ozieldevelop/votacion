@@ -222,7 +222,7 @@
                     $.ajax({
                       url: '{{ url("cliente/inscripcion/guardaasistencia")}}',
                       data: { datos : JSON.stringify(modelo)  },
-                      method: 'get',
+                      method: 'post',
                       headers: {
                           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                       },

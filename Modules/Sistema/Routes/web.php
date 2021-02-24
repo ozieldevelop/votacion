@@ -38,8 +38,11 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	
 	Route::post('/agregarnuevo', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@agregarnuevo'] );
 	
-
+	Route::post('/almacenarfile', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@almacenarfile'] );
+  
+  Route::post('/almacenarfotoperfil', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@almacenarfotoperfil'] );
 	
+  Route::get('/obteneradjunto', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@obteneradjunto'] );
 	/*
 	
 			evento
@@ -82,6 +85,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	
 	Route::post('/lookimage', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@lookimage'] );	
 	
+  Route::post('/saveimage', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@saveimageanddatos'] );
+  
 	Route::post('/saveimageanddatos', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@saveimageanddatos'] );
 	
 	Route::post('/actualizarestadoaspirante', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@actualizarestadoaspirante'] );	
@@ -95,7 +100,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	Route::get('/cargarplantillasemailevento', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@cargarplantillasemailevento'] );
 	Route::get('/cargarplantillasresultevento', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@cargarplantillasresultevento'] );	
 	Route::post('/actualizarplantillasresultevento', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@actualizarplantillasresultevento'] );	
-
+  Route::post('/uploaddocumentosevento', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@uploaddocumentosevento'] );	
+  Route::get('/cargaadjuntosScreenListar', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@cargaadjuntosScreenListar'] );	
 
 
 	/*

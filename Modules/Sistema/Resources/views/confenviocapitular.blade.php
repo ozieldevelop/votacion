@@ -574,7 +574,7 @@ function fnreenviarnoti(evento,cldoc,tipo_invitacion)
 		  },
 		  success: function(elhtml2){
 			   terminar_espere();
-			setTimeout(function(){  fnlosmovimientos(evento,cldoc,tipo_invitacion); },2000);
+			//setTimeout(function(){  fnlosmovimientos(evento,cldoc,tipo_invitacion); },2000);
 		  },
 		  error: function (r) {
 					console.log("ERROR");

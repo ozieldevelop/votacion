@@ -27,6 +27,7 @@ use Illuminate\Contracts\Session\Session;
 
 use Illuminate\Support\Facades\Mail;
 
+use Config;
 
 class VotacionController extends Controller
 {
@@ -80,6 +81,31 @@ class VotacionController extends Controller
 								if($date > $startDate && $date < $endDate)
 								{
 
+                  $configuraciones =DB::select('select modo,correopruebas from conf');
+                  //dd($configuraciones[0]->modo);
+
+                  if($configuraciones[0]->modo == 0)
+                  {
+                      Auth::loginUsingId(3);
+
+
+                      $request->session()->put('cldoc', $cldoc);
+                      $request->session()->put('idevendesc', $idevendesc);
+                      $request->session()->put('tipoevent', $results2[0]["tipo"] );
+
+
+
+                      $categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$idevendesc. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");
+
+                      $listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= ".$idevendesc. " and  a.estado=1 and  a.eliminado=0 order by a.apellido,a.nombre asc");									
+
+
+                      return view('votacion::index')->with('mododeveloper',$configuraciones[0]->modo)->with('enlace', $request->all() )->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] );	 										
+
+                  }
+                  
+                  
+                  
 									$xdato = DB::select("select *  from votantes where id_evento=".$idevendesc." and (cast(aes_decrypt(`asociado`,'xyz123') as char charset utf8mb4)=".$cldoc.")");
 
 									
@@ -124,26 +150,23 @@ class VotacionController extends Controller
                     
                     Auth::loginUsingId(3);
                     
-										// SI EL RANGO DE FECHA ESTA DENTRO DE LO PARAMETRIZADO AVANZA
+
 										$request->session()->put('cldoc', $cldoc);
 										$request->session()->put('idevendesc', $idevendesc);
 										$request->session()->put('tipoevent', $results2[0]["tipo"] );
 										
-										
-										//dd($request->session()->get('cldoc'));
-										//dd($request->session()->get('idevendesc'));
-										//dd($request->session()->get('tipoevent'));
+
 										
 										$categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$idevendesc. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");
 
 										$listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= ".$idevendesc. " and  a.estado=1 and  a.eliminado=0 order by a.apellido,a.nombre asc");									
-										//dd($listadoaspirantes);
-
-										// consulto si ya realizo su votacion 
 
           
-										return view('votacion::index')->with('enlace', $request->all() )->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] );	 										
-									}
+										return view('votacion::index')->with('mododeveloper', $configuraciones[0]->modo)->with('enlace', $request->all() )->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] );	 										
+									
+                  }
+                  
+
 								}
 								else
 								{
@@ -536,6 +559,15 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 								$correenviar = $registrosenvio->CORREO;
 						}	
 				  
+          
+            Config::set('mail.encryption',env('MAIL_MAILER'));
+            Config::set('mail.host',env('MAIL_HOST'));
+            Config::set('mail.port',env('MAIL_PORT'));
+            Config::set('mail.username',env('MAIL_USERNAME'));
+            Config::set('mail.password',env('MAIL_PASSWORD'));
+            Config::set('mail.from',  ['address' => env('MAIL_FROM_ADDRESS') , 'name' => 'cooprofesionales.com.pa']);
+
+          
 						$details =[
 							'title' => "Participación en Votación",
 							'body' => '',
@@ -546,7 +578,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 						];
 	
 						Mail::send([], [], function($message) use ($details) {
-							$message->from(env('MAIL_USERNAME' ));
+							$message->from(env('MAIL_FROM_ADDRESS'));
 							$message->to($details["correo"]);
 							$message->subject($details["title"]);
 							$message->setBody($details["contenido"] , 'text/html');
@@ -592,10 +624,10 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 	
     public function contenedordetalle(Request $request)
     {
-		$cldoc = $request->session()->get('cldoc');
-	    $idevendesc = $request->session()->get('idevendesc');
+		    $cldoc = $request->session()->get('cldoc');
+	     $idevendesc = $request->session()->get('idevendesc');
 
-$resultsxx = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$idevendesc.'');
+        $resultsxx = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$idevendesc.'');
 										$detalles = DB::select("SELECT 
 											cast(aes_decrypt(`b`.`asociado`,'xyz123') as char charset utf8mb4) AS `votante`,
 											`e`.`id_area` AS `voto_id_area`,

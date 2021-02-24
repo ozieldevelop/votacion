@@ -29,6 +29,7 @@ use Illuminate\Contracts\Session\Session;
 use App\Models\DataClientes;
 use Auth;
 use DB;
+use Config;
 
 class ConfEnvioController extends Controller
 {
@@ -100,6 +101,9 @@ class ConfEnvioController extends Controller
 		
            try
            {
+             
+             
+             //dd("2");
 			  $id_evento = $request->input('id_evento');  
 			  $tipo_envio = trim($request->input('tipo_invitacion'));  
         $tipo_envio = filter_var( $tipo_envio, FILTER_SANITIZE_NUMBER_INT);
@@ -306,7 +310,27 @@ class ConfEnvioController extends Controller
 						{
 							 $correenviar = $registrosenvio->CORREO;
 						}
-
+      
+          
+/*
+MAIL_MAILER=smtp
+MAIL_HOST=email-smtp.us-east-2.amazonaws.com
+MAIL_PORT=587
+MAIL_USERNAME=AKIAUTPSZXQIX4YM5UHV
+MAIL_PASSWORD=BG1YHD0tnaG3eCJbeqUZNVpCmJE62s9IgmqqfMjf6i4U
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=digital@cooprofesionales.com.pa
+MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
+*/
+          
+            Config::set('mail.encryption',env('MAIL_MAILER'));
+            Config::set('mail.host',env('MAIL_HOST'));
+            Config::set('mail.port',env('MAIL_PORT'));
+            Config::set('mail.username',env('MAIL_USERNAME'));
+            Config::set('mail.password',env('MAIL_PASSWORD'));
+            Config::set('mail.from',  ['address' => env('MAIL_FROM_ADDRESS') , 'name' =>  env('MAIL_FROM_NAME')]);
+          
+          
 						$details =[
 							'title' => $documento_resultados[0]->asunto,
 							'body' => $documento_resultados[0]->texto,
@@ -317,7 +341,7 @@ class ConfEnvioController extends Controller
 						];
 	
 						Mail::send([], [], function($message) use ($details) {
-							$message->from(env('MAIL_USERNAME' ));
+							$message->from(env('MAIL_FROM_ADDRESS'),  env('MAIL_FROM_NAME'));
 							$message->to($details["correo"]);
 							$message->subject($details["title"]);
 							$message->setBody($details["contenido"] , 'text/html');
@@ -401,7 +425,7 @@ class ConfEnvioController extends Controller
 	
            try
            {
-
+            //dd("1");
 			  $cldoc = $request->input('cldoc');   
 			  $id_evento = $request->input('id_evento');  
 			  $tipo_envio = trim($request->input('tipo_invitacion'));  
@@ -601,6 +625,14 @@ class ConfEnvioController extends Controller
 							 $correenviar = $registrosenvio->CORREO;
 						}
 
+            Config::set('mail.encryption',env('MAIL_MAILER'));
+            Config::set('mail.host',env('MAIL_HOST'));
+            Config::set('mail.port',env('MAIL_PORT'));
+            Config::set('mail.username',env('MAIL_USERNAME'));
+            Config::set('mail.password',env('MAIL_PASSWORD'));
+            Config::set('mail.from',  ['address' => env('MAIL_FROM_ADDRESS') , 'name' =>  env('MAIL_FROM_NAME')]);
+          						 
+          
 						$details =[
 							'title' => $documento_resultados[0]->asunto,
 							'body' => $documento_resultados[0]->texto,
@@ -611,13 +643,13 @@ class ConfEnvioController extends Controller
 						];
 	
 						Mail::send([], [], function($message) use ($details) {
-							$message->from('digital@cooprofesionales.com.pa');
+							$message->from(env('MAIL_FROM_ADDRESS'),  env('MAIL_FROM_NAME'));     
 							$message->to($details["correo"]);
 							$message->subject($details["title"]);
 							$message->setBody($details["contenido"] , 'text/html');
 						});				  
 
-          
+
           
           
 						$carbon = new \Carbon\Carbon();
