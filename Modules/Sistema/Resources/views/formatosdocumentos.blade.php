@@ -32,22 +32,22 @@
 
 		<div class="row">
 				<div class="form-group col-sm-12 col-md-12 col-lg-12 ">
+          
                             <div class="card" >
                               <div class="card-header bg-light resaltado">ADJUNTOS</div>
                               <div class="card-body" >
-
                                 <!-- dropzone  -->
                                 <form action="{{ url('/sistema/uploaddocumentosevento') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
                                   <input type="hidden"  id="up_id_evento" name="up_id_evento"  data-bindto="parametros.up_id_evento"  value="">
                                   {{ csrf_field() }}
                                 </form>
                                 <!-- AREA DONDE SE LISTARAN LOS ARCHIVOS ADJUNTOS UNA VEZ SUBIDOS -->
-                                <table  class="table" style="width:100%" id="gs_tbl_GestionesArchivos"> </table>                                
-                                
-                                
-                                
+                                <table  class="table" style="width:100%" id="gs_tbl_GestionesArchivos"> </table>
                               </div>
-                            </div>											
+                            </div>          
+          
+          
+										
 					</div>
 		</div>	
 

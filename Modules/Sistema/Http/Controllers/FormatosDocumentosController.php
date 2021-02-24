@@ -25,20 +25,17 @@ class FormatosDocumentosController extends Controller
         try 
         {
 
-         $id_retorno ='';
-         $validation = Validator::make($request->all(), [
-          'select_file' => 'required|mimes:pdf,docx,jpeg,png,jpg,gif|max:2048'
-         ]);
-
-   
-         if($validation->passes())
-         {
-                 dd($request->input('up_id_evento'));
-          $image = $request->file('file');
-          $extension = $image->getClientOriginalExtension();
-          $tipoarchivo = $image->getMimeType();    
-          $new_name = rand() . '.' . $image->getClientOriginalExtension();
-          $id_evento = $request->input('up_id_evento');
+             $file = $request->file('file');
+             $id_evento =$request->input('up_id_evento');  
+             $tipo_invitacion =$request->input('tipo_invitacion');  
+             //dd($tipo_invitacion);
+         
+             $nombrefile = $file->getClientOriginalName();
+             $extension = $file->getClientOriginalExtension();
+             $tipoarchivo = $file->getMimeType();
+             $new_name = strtolower(uniqid('file_'.uniqid()).".".$extension);
+             $upload_success=$file->move(env('UPLOADDIR'),$new_name);
+             $eventos = eventoModel::select(['*'])->where('id',$id_evento)->get();
 
          
 
@@ -81,11 +78,7 @@ class FormatosDocumentosController extends Controller
            );
           }
     
-
-         }
-          
-          
-          
+  
          } catch (Exception $e) {
                       $response = array(
                           'resabit' => '0001',

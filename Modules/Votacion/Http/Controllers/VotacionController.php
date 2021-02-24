@@ -103,9 +103,7 @@ class VotacionController extends Controller
                       return view('votacion::index')->with('mododeveloper',$configuraciones[0]->modo)->with('enlace', $request->all() )->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] );	 										
 
                   }
-                  
-                  
-                  
+
 									$xdato = DB::select("select *  from votantes where id_evento=".$idevendesc." and (cast(aes_decrypt(`asociado`,'xyz123') as char charset utf8mb4)=".$cldoc.")");
 
 									
@@ -565,9 +563,8 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
             Config::set('mail.port',env('MAIL_PORT'));
             Config::set('mail.username',env('MAIL_USERNAME'));
             Config::set('mail.password',env('MAIL_PASSWORD'));
-            Config::set('mail.from',  ['address' => env('MAIL_FROM_ADDRESS') , 'name' => 'cooprofesionales.com.pa']);
+            Config::set('mail.from',  ['address' => env('MAIL_FROM_ADDRESS') , 'name' =>  env('MAIL_FROM_NAME')]);
 
-          
 						$details =[
 							'title' => "Participación en Votación",
 							'body' => '',
@@ -578,7 +575,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 						];
 	
 						Mail::send([], [], function($message) use ($details) {
-							$message->from(env('MAIL_FROM_ADDRESS'));
+							$message->from(env('MAIL_FROM_ADDRESS'),  env('MAIL_FROM_NAME'));     
 							$message->to($details["correo"]);
 							$message->subject($details["title"]);
 							$message->setBody($details["contenido"] , 'text/html');
