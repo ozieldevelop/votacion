@@ -142,7 +142,7 @@ function visualizarselecciones()
 								}
 								else
 								{
-									elavatar = valoresfiltro[0]['tipo']+"base64,"+valoresfiltro[0]['foto'];
+									elavatar = "../../adjuntos/"+valoresfiltro[0]['foto'];
 								} 
 
 								//elavatar = "../../images/logo-footer.png";
