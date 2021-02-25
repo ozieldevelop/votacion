@@ -1,7 +1,9 @@
 @extends('layouts.custom')
 
 @section('content')
-	<br/><br/>
+
+<br/><br/>
+
    <main class="main">
 			<section id="cover" class="min-vh-200">
 			  <div id="cover-caption">
@@ -24,45 +26,26 @@
 					@if($tipoevent == 1)
 					<label style="color:red;font-weight: bold;"> Puede escoger hasta {{ $max_votos }} candidatos </label>
 					@endif
-			  
-			  		<div class="row DirectivosDir">
 
+			  		<div class="row DirectivosDir"></div>	
 
-
-
-
-							
-							
-							
-							
-							
-
-				</div>	
-				
-				
-				
 			</div>	
 
 			<div class="text-center">
 			  <button class="btn btn-primary" onclick="siguientepaso()" style="height:130px;width: 100%;font-size:34px">SIGUIENTE</button>
 			</div>
-			
-			
+
 			<div id="output">
 
 			</div>	
 
-
-		  
-		  
 		</div>
 
 	</main>
 	
-    <aside class="aside-menu">
+  <aside class="aside-menu">
 
       <ul class="nav nav-tabs" role="tablist">
-
 
       </ul>
 
@@ -90,10 +73,8 @@
         </div>
 
       </div>
-	    </aside>
+</aside>
 
-</div>
-  
 @endsection
 
 @section('page-script')
@@ -310,14 +291,14 @@ function avatardisplayFn(id,id_area,areaetiqueta)
 function siguientepaso()
 	{
   if(Papeletas.length==0){
-    lobibox_emergente('warning','top lef',true,'Debe seleccionar almenos un voto!');
+    lobibox_emergente('warning','top lef',true,'Debe seleccionar al menos un voto!');
   }
   else{
          //var terminal = localStorage.getItem("prm_name");
         //localStorage.setItem("Papeletas",Papeletas);
         //max_votos
         //console.log(terminal);
-        location.href = '{{ url("votacion/previa")}}';
+        location.href = '{{ url("votacion/previa/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}';
   }
 }
 
@@ -428,7 +409,7 @@ function PapeletasIniciales(textolike){
 					{
 				
 							if(aa==1){
-								titulo ='Candidatos a Delegados';
+								titulo ='Candidato a Delegado';
 							}else if(aa==2){
 								titulo ='Junta de Directores';
 							}else if(aa==3){
@@ -437,7 +418,6 @@ function PapeletasIniciales(textolike){
 								titulo ='Comite de Crédito';
 							}
 
-							
 						html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team" style="border:none"><div class="card" style="border:none"><div class="card-header bg-info" style="text-align: center;"><b  style="font-size:36px">';
 						html += titulo + ' </b><br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'"> '+0+'</label> )</b> </div><div class="row">';
 						
@@ -452,10 +432,9 @@ function PapeletasIniciales(textolike){
 							}
 							else
 							{
-								elavatar = datosencabezado[ii]['tipo']+"base64,"+datosencabezado[ii]['foto'];
+								elavatar = "./adjuntos/"+datosencabezado[ii]['foto'];
 							}   
-							
-
+	
 							html +=" <div class='cuadritovotante col-12 col-xs-12 col-sm-12 col-md-4 col-lg-3' style='cursor:pointer' ";
 							
 							var aa1 =datosencabezado[ii]['id_delegado'];
@@ -468,9 +447,9 @@ function PapeletasIniciales(textolike){
 							@if($tipoevent == 2)
 								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
 							@endif
-								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+",&nbsp;"+datosencabezado[ii]["nombre"]+"</p>&nbsp;<p style='text-align: center;font-size: 17px;'>";
+								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+",&nbsp;"+datosencabezado[ii]["nombre"]+"</p><p style='text-align: center;font-size: 17px;'>"+titulo+"</p><p style='text-align: center;font-size: 17px;'>";
 							@if($tipoevent == 2)
-								html +=titulo;
+								//html +=titulo;
 							@endif								
 								
 								html +="</p></div></div></div>";
@@ -566,7 +545,7 @@ function PapeletasFiltradas(textolike)
 							}
 							else
 							{
-								elavatar = datosencabezado[ii]['tipo']+"base64,"+datosencabezado[ii]['foto'];
+								elavatar = "./adjuntos/"+datosencabezado[ii]['foto'];
 							}   
 							
 
@@ -582,7 +561,7 @@ function PapeletasFiltradas(textolike)
 							@if($tipoevent == 2)
 							html +="<img   class='img-fluid  mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
 							@endif 
-							html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["nombre"]+"</p><p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+"</p><p style='text-align: center;font-size: 17px;'>"+titulo+"</p></div></div></div>";
+							html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["nombre"]+",&nbsp;"+datosencabezado[ii]["apellido"]+"</p><p style='text-align: center;font-size: 17px;'>"+titulo+"</p></div></div></div>";
 
 
 						}

@@ -11,7 +11,9 @@
       }
 	</style>
 	
-	
+
+
+
 	<div class="row">
 					<label style="color:black;font-weight: bold;margin-left: 17px;">Valide su selección de candidatos en esta pantalla. Si desea corregir algo de clic al bot&oacute;n "Regresar". Para confirmar su voto de clic al bot&oacute;n de "Votar".</label>
 
@@ -66,7 +68,8 @@ function imprimir()
 												msg: 'Gracias por su voto.'
 											});		
 											//localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
-											setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}' });//
+
+                    setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 5000);
                       //setTimeout(function(){ location.reload();  }, 2000);
 								},
 								error: function (r) {

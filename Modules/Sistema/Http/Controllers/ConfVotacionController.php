@@ -13,6 +13,7 @@ use Modules\Sistema\Entities\vtaspiranteModel;
 use Modules\Sistema\Entities\evento_directivosModel;
 
 use DB;
+use File;
 
 class ConfVotacionController extends Controller
 {
@@ -151,8 +152,35 @@ class ConfVotacionController extends Controller
 				   $id_evento = $request->input('id_evento');
 				   $id_area = $request->input('id_area');
 				   $id_delegado = $request->input('id_delegado');
-                   $data = evento_directivosModel::where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->delete();
-				   return $data;
+             
+            $dataDirectivo = vtaspiranteModel::select(['foto'])->where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->get();
+            //dd($dataDirectivo[0]->foto);
+            $bandera = 0;
+             
+            //$nombrefilearr =   explode("../../../", $dataDirectivo[0]);
+             //dd($nombrefilearr);
+           //$nombrefile = $nombrefilearr[1] ; 
+            // dd($nombrefile);
+           if(count($dataDirectivo)){
+                
+             
+              if(File::exists($dataDirectivo[0]))
+              {
+                echo "1";
+                  //$bandera=File::delete(base_path('public/adjuntos').$nombrefile);
+              }
+             else
+             {
+               echo "2";
+             }
+             
+             
+           } 
+           if($bandera=1){             
+                //$data = evento_directivosModel::where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->delete();
+           }    
+             
+				   //return $data;
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }

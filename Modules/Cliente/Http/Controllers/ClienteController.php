@@ -35,6 +35,8 @@ use Validator;
 use Storage;
 use Response;
 
+
+
 class ClienteController extends Controller
 {
     /**
@@ -1096,6 +1098,9 @@ class ClienteController extends Controller
     {
       try
         {
+        
+           // desencriptar
+           //$adjuntoviewid= GeneralHelper::lara_desencriptar( $adjuntoviewid );
 				   $idadjunto = $adjuntoviewid;
            //dd($idadjunto);
            $data = DB::select("select * from files_up where id = ".$idadjunto."");

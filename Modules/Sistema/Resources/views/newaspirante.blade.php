@@ -409,7 +409,7 @@ function Cargar(dato)
               $('#fotoexistente').css('display', 'block');
               model.tipo_imagen =tipo;
               model.avatarBase64 =foto;     
-              $('#fotoexistente').attr('href', tipo+'base64,'+foto); 
+              $('#fotoexistente').attr('href', foto); 
             }
         
             if(id_cv!='')

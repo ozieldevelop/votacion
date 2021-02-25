@@ -40,7 +40,7 @@ class VotacionController extends Controller
 		  try
         {
 				  //Auth::logout();
-				  //$request->session()->flush();
+				  $request->session()->flush();
         
        // dd(auth()->user());
         
@@ -372,7 +372,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 			    $id_evento = $request->session()->get('idevendesc');
 			    $results = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id='.$id_evento.'');
 	
-			    return view('votacion::previa')->with('ideven ', $id_evento )->with('id_evento', $id_evento )->with('tipo', $results[0]->tipo)->with('nombre', $results[0]->nombre)->with('maxvotos', $results[0]->maxvotos);
+			    return view('votacion::previa')->with('enlace', $request->all() )->with('ideven', $id_evento )->with('id_evento', $id_evento )->with('tipo', $results[0]->tipo)->with('nombre', $results[0]->nombre)->with('maxvotos', $results[0]->maxvotos);
 			
         } 
         catch (Exception $e) 
@@ -556,7 +556,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 						{
 								$correenviar = $registrosenvio->CORREO;
 						}	
-				  
+				  /*
           
             Config::set('mail.encryption',env('MAIL_MAILER'));
             Config::set('mail.host',env('MAIL_HOST'));
@@ -582,7 +582,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 						});				  
 
 
-
+*/
 						
 
 				}
@@ -594,7 +594,7 @@ and (num_cliente like '%".$buscando."%' or nombre like '%".$buscando."%' or apel
 		
 				$mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Su votaci&oacute;n se ha realizado con &eacute;xito</h3></div>";
 				$mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Gracias por su participaci&oacute;n</div>";
-				return view('votacion::advertencia')->with('mensaje', $mensaje)->with('nombre', $results[0]->nombre)->with('ideven', $id_evento);
+				return view('votacion::advertencia')->with('enlace', $request->all() )->with('mensaje', $mensaje)->with('nombre', $results[0]->nombre)->with('ideven', $id_evento);
         } catch (Exception $e) 
 		{
                   return json(array('error'=> $e->getMessage()));

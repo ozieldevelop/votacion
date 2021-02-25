@@ -753,12 +753,18 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
              $nombrefile = $file->getClientOriginalName();
              $extension = $file->getClientOriginalExtension();
              $tipoarchivo = $file->getMimeType();
-             $nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);
-             $upload_success=$file->move(env('UPLOADDIR'),$nombre);
+             //$nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);
+             $nombre = strtolower(uniqid('file_' . uniqid()) . "." . $extension);
+             //$upload_success=$file->move(env('UPLOADDIR'),$nombre);
+             $upload_success = $file->move(base_path('public/adjuntos') , $nombre);
              $eventos = eventoModel::select(['*'])->where('id',$id_evento)->get();
              
              $siasistencia =0;
          
+         
+
+              
+              
          /*
              if($eventos[0]->tipo==2)
              {

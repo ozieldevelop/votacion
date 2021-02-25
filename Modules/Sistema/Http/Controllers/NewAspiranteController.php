@@ -74,10 +74,10 @@ class NewAspiranteController extends Controller
             $osi = json_decode($files);
           $id_cv = $osi->{'id_cv'} ;
              
-          $porcion = explode("base64,",  $osi->{'avatarBase64'});
+          $porcion = $osi->{'avatarBase64'};// explode("base64,",  $osi->{'avatarBase64'});
  
-          $avatarBase64 =  $porcion[1] ;
-          $tipo_imagen = 'data:'.$osi->{'tipo_imagen'}.';' ;    
+          //$avatarBase64 =  $porcion[1] ;
+          $tipo_imagen =$osi->{'tipo_imagen'}; //'data:'.$osi->{'tipo_imagen'}.';' ;    
              
              //dd($files);
             $osi = json_decode($files);  
@@ -99,7 +99,7 @@ class NewAspiranteController extends Controller
     
                if(count($data)>0)
                { 
-                  $retorno='../../adjuntos/'.$data[0]->name_system;
+                  $retorno='../../../adjuntos/'.$data[0]->name_system;
                }
              
              
@@ -121,9 +121,12 @@ class NewAspiranteController extends Controller
              
           $porcion = explode("base64,",  $osi->{'avatarBase64'});
  
-          $avatarBase64 =  $porcion[1] ;
-          $tipo_imagen = 'data:'.$osi->{'tipo_imagen'}.';' ;    
-               
+          //$avatarBase64 =  $porcion[1] ;
+          //$tipo_imagen = 'data:'.$osi->{'tipo_imagen'}.';' ;    
+
+          $avatarBase64 = $osi->{'avatarBase64'} ;
+          $tipo_imagen = $osi->{'tipo_imagen'} ;    
+             
              $data =DB::select('select * from directivos where num_cliente='.$request->input('numasoc').'');
     
              if(count($data)==0)
@@ -214,6 +217,74 @@ class NewAspiranteController extends Controller
      }
     }
 	 
+  
+    function almacenarfotoperfil(Request $request)
+    {
+        $id_retorno ='';
+       $validation = Validator::make($request->all(), [
+        'select_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+       ]);
+      
+   
+     if($validation->passes())
+     {
+      $image = $request->file('select_file');
+      $extension = $image->getClientOriginalExtension();
+      $tipoarchivo = $image->getMimeType();    
+      $new_name = rand() . '.' . $image->getClientOriginalExtension();
+        //dd($new_name);
+      //$nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);  
+      //$image->move(public_path('images'), $new_name);
+      $upload_success = $image->move(base_path('public/adjuntos'),$new_name);
+      
+      if ($upload_success) {
+        
+          //$nombrefile = $image->getClientOriginalName();
+
+         //dd( $tipoarchivo );  
+          //$nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);
+
+          $peso = filesize(base_path('/public/adjuntos/').$new_name);
+         
+        	 $entidad  = new adjuntos_Model();
+				   $entidad->name_system = trim($new_name);
+           $entidad->etiqueta = 'Imagen de Perfil';
+				   $entidad->extension = $extension;
+           $entidad->tipoarchivo = $tipoarchivo;
+           $entidad->sizefile = $peso;
+				   $entidad->save();
+           //dd($entidad->id);
+           // \DB::connection('mysql')->statement('call pr_subir_file (?,?,?,?,?,?,?)', array($id_evento,$request->session()->get('cldoc'),strtolower($nombrefile),strtolower($nombre),strtolower($extension),$tipoarchivo,$peso));
+           $id_retorno =$entidad->id;
+      }
+       
+       
+       
+
+      return response()->json([
+       'message'   => 'Documento Adjuntado',
+       'uploaded_doc' => '../../../adjuntos/'.$new_name,
+       'tipo_imagen' => $tipoarchivo ,
+       'class_name'  => 'alert-success'
+      ]); 
+       
+     }
+     else
+     {
+      return response()->json([
+       'message'   => $validation->errors()->all(),
+       'uploaded_doc' => '',
+       'tipo_imagen' => $id_retorno, 
+       'class_name'  => 'alert-danger'
+      ]);
+
+       
+       
+     }
+    }
+  
+  
+  /*
     function almacenarfotoperfil(Request $request)
     {
      $validation = Validator::make($request->all(), [
@@ -224,12 +295,9 @@ class NewAspiranteController extends Controller
       $image = $request->file('select_file');
       $new_name = rand() . '.' . $image->getClientOriginalExtension();
       $tipoarchivo = $image->getMimeType();    
-      //$image = 'data:'.$tipoarchivo.';base64,'.base64_encode(file_get_contents($request->file('select_file')));
+
       $image = 'data:'.$tipoarchivo.';base64,'.base64_encode(file_get_contents($request->file('select_file')));
-      
-      //$nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);  
-      //$image->move(public_path('images'), $new_name);
-      //$image->move(base_path('public/adjuntos'),$new_name);
+
       return response()->json([
        'message'   => 'Documento Adjuntado',
        'uploaded_doc' => $image,
@@ -247,4 +315,5 @@ class NewAspiranteController extends Controller
       ]);
      }
     }	
+    */
 }
