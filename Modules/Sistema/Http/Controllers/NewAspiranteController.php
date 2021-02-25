@@ -82,7 +82,7 @@ class NewAspiranteController extends Controller
              //dd($files);
             $osi = json_decode($files);  
             $memoria= $osi->{'memoria'} ;
-            $data = aspiranteModel::where('id_delegado',$id_delegado)->update(['num_cliente'=> $numasoc , 'nombre'=> $nombreasoc , 'apellido'=> $apellidoasoc , 'memoria'=> $memoria, 'adjunto'=> $id_cv, 'foto'=> $avatarBase64 ,  'tipo'=> $tipo_imagen  ]);
+            $data = aspiranteModel::where('id_delegado',$id_delegado)->update(['num_cliente'=> $numasoc , 'nombre'=> $nombreasoc , 'apellido'=> $apellidoasoc , 'memoria'=> $memoria, 'adjunto'=> $id_cv, 'foto'=> $osi->{'avatarBase64'} ,  'tipo'=> $osi->{'tipo_imagen'} ]);
 				   return $data;
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
@@ -200,7 +200,7 @@ class NewAspiranteController extends Controller
        
       return response()->json([
        'message'   => 'Documento Adjuntado',
-       'uploaded_doc' => '../../../adjuntos/'.$new_name,
+       'uploaded_doc' => $new_name,
        'id_uploaded_doc' => $id_retorno,        
        'class_name'  => 'alert-success'
       ]);
@@ -263,7 +263,7 @@ class NewAspiranteController extends Controller
 
       return response()->json([
        'message'   => 'Documento Adjuntado',
-       'uploaded_doc' => '../../../adjuntos/'.$new_name,
+       'uploaded_doc' => $new_name,
        'tipo_imagen' => $tipoarchivo ,
        'class_name'  => 'alert-success'
       ]); 

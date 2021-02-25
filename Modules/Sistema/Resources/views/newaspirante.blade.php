@@ -409,7 +409,7 @@ function Cargar(dato)
               $('#fotoexistente').css('display', 'block');
               model.tipo_imagen =tipo;
               model.avatarBase64 =foto;     
-              $('#fotoexistente').attr('href', foto); 
+              $('#fotoexistente').attr('href', "../../../adjuntos/"+foto); 
             }
         
             if(id_cv!='')
@@ -422,7 +422,7 @@ function Cargar(dato)
                   data: {"id_cv": id_cv },
                   success: function(datoz){
                         console.log(datoz);
-                        $('#cvexistente').attr('href', '../../../'+datoz); 
+                        $('#cvexistente').attr('href', '../../../adjuntos/'+datoz); 
                   }
                 });
             }
@@ -629,7 +629,7 @@ $(document).ready(function () {
                     $('#fotoexistente').css('display', 'block');
                     $('#fotoexistente').attr('href', data.uploaded_doc);                     
                     model.tipo_imagen =  data.tipo_imagen;
-                    model.avatarBase64 =  data.uploaded_doc;
+                    model.avatarBase64 =  "../../../adjuntos/"+data.uploaded_doc;
                    }
                   });         
         }
