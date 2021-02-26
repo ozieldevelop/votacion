@@ -55,6 +55,7 @@
            <div class="alert" id="message" style="display: none"></div>
            <form method="post" id="upload_form" enctype="multipart/form-data">
             {{ csrf_field() }}
+             <input type="text" name="clasoc_id" id="clasoc_id" value=""/>
             <input type="hidden" name="id_tipo_doc" id="id_tipo_doc" value="1"/>
             <input type="file" name="select_file" id="select_file" />
            </form>
@@ -286,7 +287,7 @@ function actualizar()
 								success: function(result){
 										lobibox_emergente('success','top right',true,'Actualizado.');
 										console.log('actualizar');
-										setTimeout(function(){ location.reload();  }, 2000); 
+										//setTimeout(function(){ location.reload();  }, 2000); 
 								},
 								error: function (r) {
 										console.log("ERROR");
@@ -366,7 +367,7 @@ function cargarlistado(valor)
 				 ]
 			  });
 
-	console.log('cargarlistado');
+	//console.log('cargarlistado');
 }
   
   
@@ -421,7 +422,7 @@ function Cargar(dato)
                   url: '{{ url("sistema/obteneradjunto")}}', 
                   data: {"id_cv": id_cv },
                   success: function(datoz){
-                        console.log(datoz);
+                        //console.log(datoz);
                         $('#cvexistente').attr('href', '../../../adjuntos/'+datoz); 
                   }
                 });
@@ -432,6 +433,7 @@ function Cargar(dato)
 					  $('#nombreasoc').val(nombre);
 					  $('#apellidoasoc').val(apellido);
 					  $('#numasoc').val(num_cliente);
+            $('#clasoc_id').val(num_cliente);
             CKEDITOR.instances['memoria'].setData(memoria);
      /*   
    var model = {
@@ -506,6 +508,7 @@ function blanquearnewaspi()
   $('#nombreasoc').val('');
   $('#apellidoasoc').val('');
   $('#select_file').val('');
+    $('#clasoc_id').val('');
 }
 
 /*
@@ -581,6 +584,8 @@ $(document).ready(function () {
     $('#upload_form').on('submit', function(event){
         event.preventDefault();
         var tipodoc = $('#tipodoc').val();
+      
+        
    
         if(tipodoc == 1){
                    $.ajax({
@@ -596,11 +601,9 @@ $(document).ready(function () {
                    },          
                    success:function(data)
                    {
-                        console.log(data);
                     $('#message').css('display', 'block');
                     $('#message').html(data.message);
                     $('#message').addClass(data.class_name);
-                    //$('#uploaded_image').html(data.uploaded_image);
                     $('#cvexistente').css('display', 'block');
                     $('#cvexistente').attr('href', data.uploaded_doc);
                      model.id_cv =  data.id_uploaded_doc;
@@ -625,11 +628,10 @@ $(document).ready(function () {
                     $('#message').css('display', 'block');
                     $('#message').html(data.message);
                     $('#message').addClass(data.class_name);
-                   // $('#uploaded_image').html(data.uploaded_image);
                     $('#fotoexistente').css('display', 'block');
-                    $('#fotoexistente').attr('href', data.uploaded_doc);                     
+                    $('#fotoexistente').attr('href', "../../../adjuntos/"+data.uploaded_doc);                     
                     model.tipo_imagen =  data.tipo_imagen;
-                    model.avatarBase64 =  "../../../adjuntos/"+data.uploaded_doc;
+                    model.avatarBase64 = data.uploaded_doc;
                    }
                   });         
         }

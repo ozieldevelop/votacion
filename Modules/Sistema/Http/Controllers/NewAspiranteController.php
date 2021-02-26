@@ -10,6 +10,7 @@ use Modules\Sistema\Entities\aspiranteModel;
 use Modules\Cliente\Entities\adjuntos_Model;
 use DB;
 use Validator;
+use File;
 
 class NewAspiranteController extends Controller
 {
@@ -71,13 +72,39 @@ class NewAspiranteController extends Controller
 				   $nombreasoc = $request->input('nombreasoc');
 				   $apellidoasoc = $request->input('apellidoasoc');
            $files = $request->input('otrosobjetos');
-            $osi = json_decode($files);
-          $id_cv = $osi->{'id_cv'} ;
+           $osi = json_decode($files);
+           $id_cv = $osi->{'id_cv'} ;
+           
+           // si la imagen cambio; borro fisicamente la anterior
              
-          $porcion = $osi->{'avatarBase64'};// explode("base64,",  $osi->{'avatarBase64'});
- 
-          //$avatarBase64 =  $porcion[1] ;
-          $tipo_imagen =$osi->{'tipo_imagen'}; //'data:'.$osi->{'tipo_imagen'}.';' ;    
+           $datos = aspiranteModel::where('id_delegado',$id_delegado)->get();
+           
+           if(trim($datos[0]->foto)!=trim($osi->{'avatarBase64'}))
+           {
+             // la borro fisicamente
+              if(File::exists(base_path('public/adjuntos')."/".trim($datos[0]->foto)))
+              {
+                  $bandera=File::delete(base_path('public/adjuntos')."/".trim($datos[0]->foto));
+              }             
+           }
+           //dd($datos[0]->id_cv);  
+           if(trim($datos[0]->adjunto)!=trim($osi->{'id_cv'}))
+           {
+              $dataxx =DB::select('select * from files_up where id='.$datos[0]->adjunto.'');
+             // la borro fisicamente
+              if(File::exists(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system)))
+              {
+                  $bandera=File::delete(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system));
+                  if($bandera){
+                    DB::select('delete from files_up where id='.$datos[0]->adjunto.'');
+                  }
+              }             
+           }
+                 
+                 
+           //$porcion = $osi->{'avatarBase64'};// explode("base64,",  $osi->{'avatarBase64'});
+           //$avatarBase64 =  $porcion[1] ;
+           $tipo_imagen =$osi->{'tipo_imagen'}; //'data:'.$osi->{'tipo_imagen'}.';' ;    
              
              //dd($files);
             $osi = json_decode($files);  
@@ -119,7 +146,7 @@ class NewAspiranteController extends Controller
           $memoria= $osi->{'memoria'} ;
           $id_cv = $osi->{'id_cv'} ;
              
-          $porcion = explode("base64,",  $osi->{'avatarBase64'});
+          //$porcion = explode("base64,",  $osi->{'avatarBase64'});
  
           //$avatarBase64 =  $porcion[1] ;
           //$tipo_imagen = 'data:'.$osi->{'tipo_imagen'}.';' ;    
@@ -144,7 +171,7 @@ class NewAspiranteController extends Controller
              }
              else
              {
-                $entidad = aspiranteModel::where('num_cliente',$request->input('numasoc'))->update(['nombre'=> $request->input('nombreasoc'), 'apellido'=> $request->input('apellidoasoc'), 'memoria'=> $memoria, 'adjunto'=> $id_cv, 'foto'=> $avatarBase64 ,  'tipo'=> $tipo_imagen  ]);
+               // $entidad = aspiranteModel::where('num_cliente',$request->input('numasoc'))->update(['nombre'=> $request->input('nombreasoc'), 'apellido'=> $request->input('apellidoasoc'), 'memoria'=> $memoria, 'adjunto'=> $id_cv, 'foto'=> $avatarBase64 ,  'tipo'=> $tipo_imagen  ]);
              }
 
 				   return $entidad;
@@ -167,6 +194,7 @@ class NewAspiranteController extends Controller
      if($validation->passes())
      {
       $image = $request->file('select_file');
+       //dd($request->input('clasoc_id'));
       $extension = $image->getClientOriginalExtension();
       $tipoarchivo = $image->getMimeType();    
       $new_name = rand() . '.' . $image->getClientOriginalExtension();
@@ -186,6 +214,7 @@ class NewAspiranteController extends Controller
          
         	 $entidad  = new adjuntos_Model();
 				   $entidad->name_system = trim($new_name);
+           $entidad->cldoc = $request->input('clasoc_id');
            $entidad->etiqueta = 'Hoja de Vida';
 				   $entidad->extension = $extension;
            $entidad->tipoarchivo = $tipoarchivo;
@@ -231,7 +260,8 @@ class NewAspiranteController extends Controller
       $image = $request->file('select_file');
       $extension = $image->getClientOriginalExtension();
       $tipoarchivo = $image->getMimeType();    
-      $new_name = rand() . '.' . $image->getClientOriginalExtension();
+      //$new_name = rand() . '.' . $image->getClientOriginalExtension();
+      $new_name = date('YmdHms') . '.' . $image->getClientOriginalExtension();
         //dd($new_name);
       //$nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);  
       //$image->move(public_path('images'), $new_name);

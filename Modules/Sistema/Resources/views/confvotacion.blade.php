@@ -277,7 +277,7 @@ function evaluarasignararea()
 													}
 													else{
 														//elavatar = datoz[i]['tipo']+"base64,"+datoz[i]['foto'];
-                            elavatar = datoz[i]['foto'];
+                            elavatar = "../../../adjuntos/"+datoz[i]['foto'];
 													}				
 													html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+ (datoz[i]["apellido"].substring(0, 10))+','+ (datoz[i]["nombre"].substring(0, 10)) +' <div class="card-actions"><a href="#" class="btn-setting" onclick="adminAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-wrench"></i></a> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
 											  }

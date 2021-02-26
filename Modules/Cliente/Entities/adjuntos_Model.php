@@ -11,7 +11,7 @@ class adjuntos_Model extends Model
 
     protected $connection = 'mysql';
     protected $table = 'files_up';
-    protected $fillable = ['id','etiqueta', 'name_system', 'extension', 'tipoarchivo', 'sizefile', 'fecha_upload', 'eliminado'];
+    protected $fillable = ['id','cldoc','etiqueta', 'name_system', 'extension', 'tipoarchivo', 'sizefile', 'fecha_upload', 'eliminado'];
     public $timestamps = false;
   
     
