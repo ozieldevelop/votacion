@@ -6,21 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <title>{{ config('app.name', 'Laravel') }}</title>
+          <link rel="shortcut icon" href="../../images/favicon.ico">  
     <meta content="www.cooprofesionales.com.pa" name="description" />
     <meta content="CooperativaRLdesign" name="author" />
 	  <meta name="csrf-token" content="{{ csrf_token() }}">	
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="../../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-  
-  <link rel="stylesheet" href="../../plugins/codemirror/codemirror.css">
-  <link rel="stylesheet" href="../../plugins/codemirror/theme/monokai.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="../../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+
+    <link rel="stylesheet" href="../../plugins/codemirror/codemirror.css">
+    <link rel="stylesheet" href="../../plugins/codemirror/theme/monokai.css">
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

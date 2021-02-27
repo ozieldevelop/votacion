@@ -506,7 +506,7 @@ function cargarlistado(valor)
               uploadMultiple: false,
               maxFilesize: 20, // MB
               //parallelUploads: 1,
-              maxFiles: 1,
+              //maxFiles: 1,
               acceptedFiles: ".csv",
               init: function () {
                   this.on("queuecomplete", function () {

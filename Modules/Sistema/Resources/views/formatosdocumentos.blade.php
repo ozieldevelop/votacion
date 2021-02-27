@@ -120,7 +120,7 @@
 									
 		<div class="row">
 				<div class="form-group col-sm-12 col-md-12 col-lg-12 ">
-					 <button type="text" id="btnagregar" class="btn btn-success form-control" onclick="actualizarplantillas()">GUARDAR PLANTILLAS</button>
+					 <button type="text" id="btnagregar" class="btn btn-primary form-control" onclick="actualizarplantillas()">GUARDAR PLANTILLAS</button>
 				</div>
 		</div>
 		  

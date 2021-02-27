@@ -35,6 +35,54 @@ class VotacionController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+  
+    public function test1(Request $request)
+    {
+        try
+        {
+          
+            $request->session()
+                ->flush();
+
+            // dd(auth()->user());
+            $cldoc_temp = $request->input('wget');
+            $ideven = $request->input('id_evento');
+
+            $cldoc_temp = isset($cldoc_temp) ? urldecode($cldoc_temp) : 0;
+            $cldoc = GeneralHelper::lara_desencriptar($cldoc_temp);
+
+            $ideven = isset($ideven) ? urldecode($ideven) : 0;
+            $idevendesc = GeneralHelper::lara_desencriptar($ideven);
+          
+           $results2 = eventoModel::select(['id', 'nombre', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])->where('id', $idevendesc)->where('status', 1)->get();        
+           $configuraciones = DB::select('select modo,correopruebas from conf');
+          
+          
+           Auth::loginUsingId(3);
+
+           $request->session()->put('cldoc', $cldoc);
+           $request->session()->put('idevendesc', $idevendesc);
+           $request->session()->put('tipoevent', $results2[0]["tipo"]);
+
+           $categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = " . $idevendesc . "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");
+
+           $listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= " . $idevendesc . " and  a.estado=1 and  a.eliminado=0 order by a.apellido,a.nombre asc");
+
+           return view('votacion::index2')->with('mododeveloper', $configuraciones[0]->modo)
+                                ->with('enlace', $request->all())
+                                ->with('aspirantes', $listadoaspirantes)->with('categoriaspapeletas', $categoriaspapeletas)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"])->with('id_evento', $idevendesc)->with('ideven', $idevendesc)->with('max_votos', $results2[0]["maxvotos"]);
+
+          
+          
+            return view('votacion::index2');
+        }
+        catch(\Throwable $th)
+        {
+
+            //throw $th;
+            return view('votacion::errorencrypt', compact('th'));
+        }
+    }          
     public function index(Request $request)
     {
         try

@@ -163,14 +163,14 @@
 	<div class="row area_btn_procesar" style="display:none">
    <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
 
-                <button type="text" id="btnagregar" class="btn btn-secondary form-control"  onclick="generarcola()">GENERAR COLA TODOS</button>
+                <button type="text" id="btnagregar" class="btn btn-primary form-control"  onclick="generarcola()">GENERAR COLA TODOS</button>
     </div>
   </div>
 
   <div class="row area_btn_procesar"  style="display:none">
    <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
 
-                <button type="text" id="btnenviogeneral" class="btn btn-secondary form-control" onclick="procesarcola()">PROCESAR COLA</button>
+                <button type="text" id="btnenviogeneral" class="btn btn-primary form-control" onclick="procesarcola()">PROCESAR COLA</button>
     </div>
   </div>
   
@@ -657,7 +657,7 @@ function addAllColumnHeadersdatos(elementosDatax1, selector)
         $(selector).html(elthead);
         return columnSet;
 }
-  
+
   Dropzone.autoDiscover = false;
   // or disable for specific dropzone:
   // Dropzone.options.myDropzone = true;
@@ -668,22 +668,38 @@ function addAllColumnHeadersdatos(elementosDatax1, selector)
               uploadMultiple: false,
               maxFilesize: 20, // MB
               //parallelUploads: 1,
-              maxFiles: 1,
+             // maxFiles: 1,
               acceptedFiles: ".csv",
               init: function () {
                   this.on("queuecomplete", function () {
-                       console.log('Termino de subir');
+                       //console.log('Termino de subir');
                       // setTimeout(function(){ location.reload();  }, 3000);
-                    
-	                      //espere('Cargando');
 												cargarlistado(1);  
-                        //terminar_espere();
-                    
                   });
               }
           };
 
     var myDropzone = new Dropzone(".dropzone",config);
+
+  /*
+Dropzone.autoDiscover = false;
+// or disable for specific dropzone:
+// Dropzone.options.myDropzone = false;
+
+$(function() {
+  // Now that the DOM is fully loaded, create the dropzone, and setup the
+  // event listeners
+  var myDropzone = new Dropzone(".dropzone");
+
+  myDropzone.on("queuecomplete", function(file, res) {
+      if (myDropzone.files[0].status != Dropzone.SUCCESS ) {
+          //alert('yea baby');
+      } else {
+               cargarlistado(1);  
+      }
+  });
+});
+  */
   
     $(function() {
 

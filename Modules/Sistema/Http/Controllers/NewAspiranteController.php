@@ -11,6 +11,10 @@ use Modules\Cliente\Entities\adjuntos_Model;
 use DB;
 use Validator;
 use File;
+use Modules\Sistema\Entities\eventoModel;
+use Modules\Sistema\Entities\asamblea_estructuraModel;
+use Modules\Sistema\Entities\evento_directivosModel;
+
 
 class NewAspiranteController extends Controller
 {
@@ -28,7 +32,7 @@ class NewAspiranteController extends Controller
                    $data = aspiranteModel::select(['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'])->where('eliminado',0);
                    return Datatables::of($data)
                    ->addColumn('action', function ($data) {
-                     return ' <button class="dropdown-item btn-danger"  onclick="Eliminar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Eliminar</button><button class="dropdown-item btn-warning"  onclick="Cargar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Selecci&oacute;n</button>';
+                     return ' <button class="dropdown-item btn-danger"  onclick="Eliminar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Eliminar</button><button class="dropdown-item btn-primary"  onclick="Cargar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Selecci&oacute;n</button>';
                    })
                    ->make(true);
            } catch (Exception $e) {
@@ -56,13 +60,33 @@ class NewAspiranteController extends Controller
            try
            {
 				   $buscando = $request->input('aspirante');
-                   $data = aspiranteModel::where('id_delegado',$buscando)->update(['estado'=> 0]);
+                   $data = aspiranteModel::where('id_delegado',$buscando)->update(['eliminado'=> 1]);
 				   return $data;
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }
      }	 
 	 
+  
+	 
+     public function consultaraspiranteenevento(Request $request)
+     {
+           try
+           {
+				      $id_evento = $request->input('id_evento');
+              $id_area = $request->input('id_area');
+              $id_delegado = $request->input('id_delegado');
+
+                   $data = evento_directivosModel::select(['*'])->where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->get();
+
+             
+				   return count($data);
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+           }
+     }	   
+  
+  
      public function actualizaraspirante(Request $request)
      {
            try
@@ -87,18 +111,20 @@ class NewAspiranteController extends Controller
                   $bandera=File::delete(base_path('public/adjuntos')."/".trim($datos[0]->foto));
               }             
            }
-           //dd($datos[0]->id_cv);  
+
            if(trim($datos[0]->adjunto)!=trim($osi->{'id_cv'}))
            {
               $dataxx =DB::select('select * from files_up where id='.$datos[0]->adjunto.'');
-             // la borro fisicamente
-              if(File::exists(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system)))
-              {
-                  $bandera=File::delete(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system));
-                  if($bandera){
-                    DB::select('delete from files_up where id='.$datos[0]->adjunto.'');
-                  }
-              }             
+               if(count($dataxx)>0)
+               { 
+                    if(File::exists(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system)))
+                    {
+                        $bandera=File::delete(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system));
+                        if($bandera){
+                          DB::select('delete from files_up where id='.$datos[0]->adjunto.'');
+                        }
+                    }  
+               }
            }
                  
                  
@@ -312,6 +338,57 @@ class NewAspiranteController extends Controller
        
      }
     }
+  
+    public function newaspirantesuseventos(Request $request)
+    {
+        $id_aspirante = $request->input('id_aspirante');
+        $eventos = eventoModel::select(['id','nombre','rangofecha1'])->where('id','>',0)->orderBy('rangofecha1', 'DESC')->get();
+        $tipos = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
+        return view('sistema::confaspiranterelacion')->with('id_delegado', $id_aspirante)->with('eventos', $eventos)->with('tipos', $tipos); 
+    }	
+  
+  
+     public function cargaraspi(Request $request)
+     {
+           try
+           {
+                    $id_delegado = $request->input('id_delegado');
+                   $data = aspiranteModel::select(['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'])->where('id_delegado',$id_delegado)->where('eliminado',0);
+                   return Datatables::of($data)
+                   ->addColumn('gestion_estado', function ($data) {
+                     
+                      if($data->estado == 0 )
+                      {
+                          return "Pendiente por activación";
+                      }
+                      else
+                      {
+                          //return "Participación aceptada";
+                          return ' <button class="dropdown-item btn-danger"  onclick="CambiarEstado('. trim($data->id_delegado). ',0)"><i class="icon-book-open"></i> Desabilitar </button>';
+                      }
+                     //return ' <button class="dropdown-item btn-secondary"  onclick="Cargar('. trim($data->estado). ')"><i class="icon-book-open"></i> Agregar </button>';
+                   })                     
+                   ->addColumn('action', function ($data) {
+                     
+                      if($data->estado == 0 )
+                      {
+                           //return ' <button class="dropdown-item btn-secondary"  onclick="CambiarEstado('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Cambiar Estado </button>';
+                           return ' <button class="dropdown-item btn-primary"  onclick="CambiarEstado('. trim($data->id_delegado). ',1)"><i class="icon-book-open"></i>  Cambiar Estado </button>';
+                      }
+                      else
+                      {
+                           return ' <button class="dropdown-item btn-primary"  onclick="Cargar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Agregar </button>';
+                      }
+                     
+                     
+                    
+                   })
+                   ->rawColumns(['gestion_estado', 'action'])
+                   ->make(true);
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+           }
+     }
   
   
   /*
