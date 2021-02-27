@@ -1,6 +1,8 @@
 /node_modules
-/public/hot
+/public/hotgit 
 /public/storage
+/public/adjuntos
+/public/var/
 /storage/*.key
 /vendor
 .env
@@ -16,4 +18,4 @@ yarn-error.log
 /.vagrant
 after.sh
 aliases
-vagrantfile
+Vagrantfile
