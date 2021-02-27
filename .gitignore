@@ -2,6 +2,7 @@
 /public/hotgit 
 /public/storage
 /public/adjuntos
+/public/var/
 /storage/*.key
 /vendor
 .env
@@ -18,4 +19,3 @@ yarn-error.log
 after.sh
 aliases
 Vagrantfile
-public/var/www/html/cooperativa/public/
