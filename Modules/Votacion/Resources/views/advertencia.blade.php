@@ -19,7 +19,7 @@ localStorage.setItem("lasboletas{{ $ideven }}",[]);
 
 
 
-setTimeout(function(){ window.location.href = 'http://www.cooprofesionales.com.pa' ; }, 3000);
+setTimeout(function(){ window.location.href = '{{ url("cliente/dashboard/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 5000);
 
 localStorage.setItem('coopesisvot{{ $ideven }}','1');
 

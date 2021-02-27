@@ -13,6 +13,7 @@ use Modules\Sistema\Entities\vtaspiranteModel;
 use Modules\Sistema\Entities\evento_directivosModel;
 
 use DB;
+use File;
 
 class ConfVotacionController extends Controller
 {
@@ -82,11 +83,11 @@ class ConfVotacionController extends Controller
                       if($data->estado == 0 )
                       {
                            //return ' <button class="dropdown-item btn-secondary"  onclick="CambiarEstado('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Cambiar Estado </button>';
-                           return ' <button class="dropdown-item btn-secondary"  onclick="CambiarEstado('. trim($data->id_delegado). ',1)"><i class="icon-book-open"></i>  Cambiar Estado </button>';
+                           return ' <button class="dropdown-item btn-primary"  onclick="CambiarEstado('. trim($data->id_delegado). ',1)"><i class="icon-book-open"></i>  Cambiar Estado </button>';
                       }
                       else
                       {
-                           return ' <button class="dropdown-item btn-secondary"  onclick="Cargar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Agregar </button>';
+                           return ' <button class="dropdown-item btn-primary"  onclick="Cargar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Agregar </button>';
                       }
                      
                      
@@ -137,22 +138,12 @@ class ConfVotacionController extends Controller
      {
            try
            {
-			    //{  'id_evento': eleccion ,'id_delegado': idbd,"id_area": id_area },
-				//dd($request->input());
-				/*
-				
-					array:3 [
-					  "id_evento" => "4"
-					  "id_delegado" => "2"
-					  "id_area" => "1"
-					]				
-				
-				*/
-				   $id_evento = $request->input('id_evento');
-				   $id_area = $request->input('id_area');
-				   $id_delegado = $request->input('id_delegado');
-                   $data = evento_directivosModel::where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->delete();
-				   return $data;
+				      $id_evento = $request->input('id_evento');
+				      $id_area = $request->input('id_area');
+				      $id_delegado = $request->input('id_delegado');
+              $dataDirectivo = vtaspiranteModel::select(['foto'])->where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->get();
+              $data = evento_directivosModel::where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->delete();
+
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }
@@ -171,10 +162,10 @@ class ConfVotacionController extends Controller
      {
            try
            {
-			       $id_delegado = $request->input('aspiranteidBD');
-				   $llimagen = trim($request->input('llimagen'));
-				   $formato  = trim($request->input('formato'));
-                   $data1 = aspiranteModel::where('id_delegado',$id_delegado)->update(['tipo'=> $formato , 'foto'=> $llimagen ]);
+			        $id_delegado = $request->input('aspiranteidBD');
+				      $llimagen = trim($request->input('llimagen'));
+				      $formato  = trim($request->input('formato'));
+              $data1 = aspiranteModel::where('id_delegado',$id_delegado)->update(['tipo'=> $formato , 'foto'=> $llimagen ]);
 
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
@@ -185,11 +176,10 @@ class ConfVotacionController extends Controller
      {
            try
            {
-			       $id_delegado = $request->input('aspiranteidBD');
-				   $llimagen = trim($request->input('llimagen'));
-				   $formato  = trim($request->input('formato'));
-                   $data1 = aspiranteModel::where('id_delegado',$id_delegado)->update(['tipo'=> $formato , 'foto'=> $llimagen ]);
-
+			        $id_delegado = $request->input('aspiranteidBD');
+				      $llimagen = trim($request->input('llimagen'));
+				      $formato  = trim($request->input('formato'));
+              $data1 = aspiranteModel::where('id_delegado',$id_delegado)->update(['tipo'=> $formato , 'foto'=> $llimagen ]);
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }

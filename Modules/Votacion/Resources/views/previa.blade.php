@@ -11,7 +11,9 @@
       }
 	</style>
 	
-	
+
+
+
 	<div class="row">
 					<label style="color:black;font-weight: bold;margin-left: 17px;">Valide su selección de candidatos en esta pantalla. Si desea corregir algo de clic al bot&oacute;n "Regresar". Para confirmar su voto de clic al bot&oacute;n de "Votar".</label>
 
@@ -27,7 +29,7 @@
 			<div class="col text-center">
 				  <div class="  d-flex justify-content-center" style="margin-left: 37px;">
 				  <button type="button" class="btn btn-secondary" onclick="regresar()" id="botonregresar"  style="height:70px; col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 font-size:34px;    width: 178px;">REGRESAR</button>	&nbsp;&nbsp;&nbsp;			  
-				  <button type="button" class="btn btn-info" onclick="imprimir()" id="botonimprimir" style="height:70px;col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 font-size:34px;    width: 178px;">VOTAR</button>
+				  <button type="button" class="btn btn-primary" onclick="imprimir()" id="botonimprimir" style="height:70px;col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 font-size:34px;    width: 178px;">VOTAR</button>
 
 				  </div>
 			</div>
@@ -66,7 +68,8 @@ function imprimir()
 												msg: 'Gracias por su voto.'
 											});		
 											//localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
-											setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}' });//
+
+                    setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 5000);
                       //setTimeout(function(){ location.reload();  }, 2000);
 								},
 								error: function (r) {
@@ -139,7 +142,7 @@ function visualizarselecciones()
 								}
 								else
 								{
-									elavatar = valoresfiltro[0]['tipo']+"base64,"+valoresfiltro[0]['foto'];
+									elavatar = "../../adjuntos/"+valoresfiltro[0]['foto'];
 								} 
 
 								//elavatar = "../../images/logo-footer.png";

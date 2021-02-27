@@ -44,7 +44,7 @@
 
 		
 		<div class="row ">
-      		<div class="col-md-6">
+      		<div class="col-md-12">
 							<style>
 						#lstaspirantes_wrapper{
 						width:100%;
@@ -74,7 +74,7 @@
 									</div>	
 									
 			</div>
-			<div class="col-md-6" style="background-color:#c3c3c3">
+			<div class="col-md-12" style="background-color:#c3c3c3">
 	
 				<div class="row DirectivosDir">
 				</div>			
@@ -100,40 +100,6 @@
       <link href="{{ asset('datatable/1.10.22/') }}/Responsive-2.2.6/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css">
 
 
-  <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog modal-xs">
-      <div class="modal-content ">
-  
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Actualizar Ficha</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-  
-        <!-- Modal body -->
-        <div class="modal-body">
-                      <div align="center" style="color:red">
-					 procure que la imagen posea las siguientes dimensiones 121x141
-                <form onSubmit="return false" method="post" enctype="multipart/form-data" id="MyUploadForm">
-                    <input name="image_file" id="imageInput" type="file" />
-                    <input type="submit"  id="submit-btn" class="btn btn-secondary" value="1:Confirmar" />
-                    <img src="../../assets/images/ajax-loader.gif" id="loading-img" style="display:none;" alt="Please Wait"/>
-                </form>
-                <div id="progressbox" style="display:none;"><div id="progressbar"></div><div id="statustxt">0%</div></div>
-                <div id="output" ></div>
-                <textarea id="outputCode" style="display:none;"></textarea>
-            </div>
-        </div>
-  
-        <!-- Modal footer -->
-        <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="saveImagen()">2: Guardar Cambios</button>
-        </div>
-  
-      </div>
-    </div>
-  </div>
   
 
   
@@ -251,7 +217,6 @@ function saveImagen(){
 			
 								}
 							});
-
 }
 
 
@@ -279,7 +244,7 @@ function evaluarasignararea()
 														//elavatar = datoz[i]['tipo']+"base64,"+datoz[i]['foto'];
                             elavatar = "../../../adjuntos/"+datoz[i]['foto'];
 													}				
-													html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+ (datoz[i]["apellido"].substring(0, 10))+','+ (datoz[i]["nombre"].substring(0, 10)) +' <div class="card-actions"><a href="#" class="btn-setting" onclick="adminAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-wrench"></i></a> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
+													html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+ (datoz[i]["apellido"].substring(0, 10))+','+ (datoz[i]["nombre"].substring(0, 10)) +' <div class="card-actions"><a href="#" class="fa fa-window-close-o" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
 											  }
 											  $('.DirectivosDir').html(html);    
 									}
@@ -350,7 +315,7 @@ $('.DirectivosDir').html('');
 														//elavatar = datoz[i]['tipo']+"base64,"+datoz[i]['foto'];
                             elavatar ="../../../adjuntos/"+datoz[i]['foto'];
 													}				
-													html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+  (datoz[i]["apellido"].substring(0, 10))+','+ (datoz[i]["nombre"].substring(0, 10))  +' <div class="card-actions"><a href="#" class="btn-setting" onclick="adminAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-wrench"></i></a> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-trash"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
+													html +='<div class="cuadritovotante col-sm-12 col-md-6" style="margin-top: 14px;"> <div class="card"><div class="card-header">'+  (datoz[i]["apellido"].substring(0, 10))+','+ (datoz[i]["nombre"].substring(0, 10))  +' <div class="card-actions"> &nbsp;<a href="#" class="btn-setting" onclick="delAspirante('+  datoz[i]['id_delegado'] +')"  style="color:black"><i class="icon-close icons"></i></a></div></div><div class="card-body " id="collapseExample" style="text-align: center;"><img onclick="avatardisplayFn('+ datoz[i]['id_delegado'] +')"  class="img-fluid rounded-circle mx-auto d-block avatardisplay" id="img_'+ datoz[i]["id_delegado"] +'" style="background: #7e977e;width: 154px;height:155px;cursor:pointer" src="'+ elavatar +'" ><p style="text-align: center;">'+ datoz[i]['num_cliente'] +'</p></div></div></div>';
 											  }
 											  $('.DirectivosDir').html(html);    
 									}
@@ -422,25 +387,31 @@ function cargarlistado(valor)
 				orderable: false,  // set orderable for selected columns
 
 				}],			
-				responsive: {
-				  details: {
-					display: $.fn.dataTable.Responsive.display.modal( {
-					  header: function ( row ) {
-						var data = row.data();
-						return 'Details for '+data[0]+' '+data[1];
-					  }
-					} ),
-					renderer: $.fn.dataTable.Responsive.renderer.tableAll()
-				  }
-				},
-				"columns": [
-				  { "width": "60%", "orderable": "true"  },
-				  { "width": "10%", "orderable": "true"  },
-				  { "width": "10%", "orderable": "true"  },
-          { "width": "10%", "orderable": "false"  },
-				  { "width": "10%", "orderable": "false" }
-				],				
-				ajax: '{{ url("sistema/cargaraspirantesconfvota")}}',
+				  responsive: {
+            details: {
+            display: $.fn.dataTable.Responsive.display.modal( {
+              header: function ( row ) {
+              var data = row.data();
+              return 'Details for '+data[0]+' '+data[1];
+              }
+            } ),
+            renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+            }
+          },
+          "columns": [
+            { "width": "60%", "orderable": "true"  },
+            { "width": "10%", "orderable": "true"  },
+            { "width": "10%", "orderable": "true"  },
+            { "width": "10%", "orderable": "false"  },
+            { "width": "10%", "orderable": "false" }
+          ],				
+          ajax: {
+                url: '{{ url("sistema/cargaraspi")}}',
+                data: function (d) 
+                {
+                  d.id_delegado = {{ $id_delegado}};
+                }
+          },
 				  columns: [
 				   { data: 'nombre', name: 'nombre' , class: 'text-center'},				   
 				   { data: 'apellido', name: 'apellido' , class: 'text-center'},
@@ -448,6 +419,7 @@ function cargarlistado(valor)
            { data: 'gestion_estado', name: 'gestion_estado', orderable: true, searchable: false, class: 'text-center'},
 				   { data: 'action', name: 'action', orderable: false, searchable: false, class: 'text-center'}					   
 				 ]
+                                              
 			  });
   
   }
@@ -489,41 +461,66 @@ function Cargar(dato)
 		return false;
 	}	
 			
-	$.ajax({
-		type: "GET",
+ 	$.ajax({
+		type: "get",
 		url: '{{ url("sistema/cargardatoaspirante")}}', 
 		data: {"buscando": dato },
-		success: function(result){
-			var id_delegado = result[0]['id_delegado'];	
-				$.ajax({
-					type: "GET",
-					url: '{{ url("sistema/agregaraspiranteevento")}}',   
-					data: { "id_delegado":id_delegado  ,"id_evento": eleccion,"id_area": id_area},
-					success: function(result){
-						
-						var secciones = $('#secciones').val();
-						
-						if(secciones=="1"){
-							evaluaragregaaspitante();
-						}
-						else{
-							evaluarasignararea();
-						}
-						
-						
-						
-					},
-					error: function (r) {
-						console.log("ERROR");
-						console.log(r);
-					}
-				});					  
+		success: function(resultado)
+    { 
+      
+
+       var id_delegado = resultado[0]['id_delegado'];	
+
+            $.ajax({
+            type: "get",
+            url: '{{ url("sistema/consultaraspiranteenevento")}}', 
+            data: { "id_delegado":id_delegado  ,"id_evento": eleccion,"id_area": id_area},
+            success: function(cantidad)
+            { 
+
+              
+              if(cantidad<=0){
+                
+                   $.ajax({
+                    url: '{{ url("sistema/agregaraspiranteevento")}}',
+                    data: { "id_delegado":id_delegado  ,"id_evento": eleccion,"id_area": id_area},
+                    method: 'post',
+                    headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(result){
+
+                        var secciones = $('#secciones').val();
+
+                        if(secciones=="1"){
+                          evaluaragregaaspitante();
+                        }
+                        else{
+                          evaluarasignararea();
+                        }
+
+                    },
+                    error: function (r) {
+                      console.log("ERROR");
+                      console.log(r);
+
+                    }
+                  });
+                
+              }
+              else{
+                	lobibox_emergente('warning','top right',true,'Ya existe en esta configuración!');	
+              }
+
+            }
+          });              
 		},
 		error: function (r) {
 			console.log("ERROR");
 			console.log(r);
 		}
 	});
+    
 
 }  
 
@@ -612,9 +609,10 @@ function beforeSubmit() {
         return false;
     }
 }
+  var id_delegado_request= {{ $id_delegado}};
   
 $(document).ready(function () {
-
+    //alert({{ $id_delegado}});
     $("#submit-btn").click(function () {
         beforeSubmit();
     });

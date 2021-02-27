@@ -41,18 +41,12 @@
 
     <script>
 
-          var socket = io("{{ env('PUBLISHER_URL') }}:{{ env('BROADCAST_PORT') }}");
+          /* var socket = io("{{ env('PUBLISHER_URL') }}:{{ env('BROADCAST_PORT') }}");*/
 
 
           /**************************** FUNCIONES ESCUCHAS *************************/
-          socket.on('connect', function() {
-           // var param = JSON.stringify(modelo,undefined,2);
-            //console.log(window.location.search);
-           // var param = $.deparam(window.location.search);
-            //console.log(typeof (param));
-           //console.log(param);
-           //console.log(modelo);
-           // param.push(modelo);
+          /*socket.on('connect', function() {
+
             var parametros = ({ 'num_cliente' : 0 ,'nombre' : 'Administrador','agencia' : 'Sede','sala' : 1 ,'name_evento' : 'administrador'   });
             //console.log(parametros);
            // var parametros = JSON.parse(modelotrue);
@@ -118,7 +112,7 @@
             }
             socket.emit('mensajedirecto', parametros, function(err) { });      
           }     
-      
+      */
       
       
     </script>

@@ -2,64 +2,50 @@
 
 @section('content')
 
-
-
-
-
-
 <div class="row ">
-      		<div class="col-md-12">
-						
-						
-	<div class="row ">
-	   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
-		<label for="inputevento">Seleccione Evento</label>
-		<select id="eventos" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="Cargar(this.value)" >
-							<option value="x"> -- Elegir</option>
-							@foreach ($eventos as $dataeventos)
-								<option value="{{ $dataeventos->id }}">{{ $dataeventos->rangofecha1 }} | {{ $dataeventos->nombre }}</option>
-							@endforeach
-		</select>
-	  </div> 
-	</div>
-	
+     <div class="col-md-12">
+
+            <div class="row ">
+               <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
+              <label for="inputevento">Seleccione Evento</label>
+              <select id="eventos" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="Cargar(this.value)" >
+                        <option value="x"> -- Elegir</option>
+                        @foreach ($eventos as $dataeventos)
+                          <option value="{{ $dataeventos->id }}">{{ $dataeventos->rangofecha1 }} | {{ $dataeventos->nombre }}</option>
+                        @endforeach
+              </select>
+              </div> 
+            </div>
 
 			</div>
 </div>
 
 
-
-
-		<div class="row">
+<div class="row">
 				<div class="form-group col-sm-12 col-md-12 col-lg-12 ">
+          
                             <div class="card" >
                               <div class="card-header bg-light resaltado">ADJUNTOS</div>
-                              <div class="card-body" >
-
+                              <div class="card-body" id="widget1">
                                 <!-- dropzone  -->
                                 <form action="{{ url('/sistema/uploaddocumentosevento') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
                                   <input type="hidden"  id="up_id_evento" name="up_id_evento"  data-bindto="parametros.up_id_evento"  value="">
                                   {{ csrf_field() }}
                                 </form>
                                 <!-- AREA DONDE SE LISTARAN LOS ARCHIVOS ADJUNTOS UNA VEZ SUBIDOS -->
-                                <table  class="table" style="width:100%" id="gs_tbl_GestionesArchivos"> </table>                                
-                                
-                                
-                                
+                                <table  class="table" style="width:100%" id="gs_tbl_GestionesArchivos"> </table>
                               </div>
-                            </div>											
+                            </div>          
 					</div>
-		</div>	
+</div>	
 
-
-
-
-		<div class="row ">
-      		<div class="col-md-12" >
+<div class="row ">
+      <div class="col-md-12" >
 
 			</div>
-		</div>
-	<div id="widget1">
+</div>
+
+<div id="widget1">
 		<div class="row ">
       		<div class="col-md-12" >
 
@@ -108,10 +94,9 @@
 
 			</div> 			
 		</div> 
-	</div>		
+</div>		
 	
-		<style>
-
+<style>
 
 		.hljs {
 			background-attachment: scroll;
@@ -130,13 +115,12 @@
 			padding-top: 0.5em;
 		}
 
-
-		</style>
+</style>
 
 									
 		<div class="row">
 				<div class="form-group col-sm-12 col-md-12 col-lg-12 ">
-					 <button type="text" id="btnagregar" class="btn btn-success form-control" onclick="actualizarplantillas()">GUARDAR PLANTILLAS</button>
+					 <button type="text" id="btnagregar" class="btn btn-primary form-control" onclick="actualizarplantillas()">GUARDAR PLANTILLAS</button>
 				</div>
 		</div>
 		  
@@ -157,7 +141,7 @@
   
 function buildHtmlTableAdjuntos(adjuntosed,selector) 
 {
-   var columns = addAllColumnHeadersAdjuntos(adjuntosed,selector);
+    var columns = addAllColumnHeadersAdjuntos(adjuntosed,selector);
 		var contadoradjuntos = 0;
 		var bandera = -1;
 
@@ -170,10 +154,9 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
                   var row$ = $('<tr id=rowNum'+contadoradjuntos+' />');
                   for (var colIndex = 0; colIndex < columns.length; colIndex++) 
                   {
-                      //console.log(adjuntosed);
 								      bandera++;
                       var cellValue = adjuntosed[i][columns[colIndex]];
-                      //console.log(adjuntosed[i]);
+
                           if (cellValue == null) cellValue = "";
 
                                 if(bandera<=1)
@@ -245,15 +228,13 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
 					  }
                       contadoradjuntos++;
                       $(selector).append(row$);
-                  }
-
-
+      }
 }
       
       
       
-        function addAllColumnHeadersAdjuntos(elementosDatax1, selector)
-        {
+function addAllColumnHeadersAdjuntos(elementosDatax1, selector)
+{
                 var columnSet = [];
                 var elthead = $('<thead/>');
                 $(elthead).attr("class", "thead-light");
@@ -281,13 +262,13 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
 
                 $(selector).html(elthead);
                 return columnSet;
-        }
+}
       
       
       
       
-        function cargaadjuntosx(opcion)
-        {
+function cargaadjuntosx(opcion)
+{
             // console.log("aaa");
           var id_evento = $('#eventos').val();
 							$.ajax
@@ -305,7 +286,7 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
 										//console.log(r);
 								}
 							});
-        }
+}
       
 Dropzone.autoDiscover = false;
 // or disable for specific dropzone:
@@ -325,7 +306,8 @@ $(function() {
       }
   });
 });  
-      /*
+      
+/*
          Dropzone.options.myDropzone = {
           paramName: 'file',
           maxFilesize: 20, // MB
@@ -339,20 +321,20 @@ $(function() {
               });
           }
          };
-         */
-    /*  
- Dropzone.options.myDropzone = {
-  paramName: "file", // The name that will be used to transfer the file
-  maxFilesize: 2, // MB
-  accept: function(file, done) {
-    if (file.name == "justinbieber.jpg") {
-      done("Naha, you don't.");
-    }
-    else { done(); }
-  }
-};*/
-      
-      
+*/
+/*  
+         Dropzone.options.myDropzone = {
+          paramName: "file", // The name that will be used to transfer the file
+          maxFilesize: 2, // MB
+          accept: function(file, done) {
+            if (file.name == "justinbieber.jpg") {
+              done("Naha, you don't.");
+            }
+            else { done(); }
+          }
+        };
+*/
+
 											CKEDITOR.replace('contenidoemail', { 
 													toolbar : [
 														{ name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
@@ -381,9 +363,7 @@ $(function() {
 														}
 													}										
 											});
-			
-			
-											
+
 											CKEDITOR.replace('resultadoheader', { 
 													toolbar : [
 														{ name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
@@ -444,23 +424,26 @@ $(function() {
 										
 									
 									</script>
-									
+
 <script>
 
+function eliminaradjunto(valor)
+{
+      alert(valor);
+}
+  
 var model = {
 				asuntoemail: "",
 				contenidoemail: "",
 				resultadoheader: "",
 				resultadofooter: ""
-			};
+};
 			
 
 function Cargar(dato)
  {
-	var eleccion = $('#eventos').val();
-   
-   $('#up_id_evento').val(eleccion);
-   
+	  var eleccion = $('#eventos').val();
+    $('#up_id_evento').val(eleccion);
 		if(dato=="" || dato==undefined || dato.length < 0)
 		{
 			lobibox_emergente('info','top right',true,'Deben selecionar algun item del listado.');		 
@@ -471,10 +454,7 @@ function Cargar(dato)
 			return false;
 		}	
 		else{
-		
 					espere('Cargando');
-
-
 					$.ajax({
 							type: "GET",
 							url: '{{ url("sistema/cargarplantillasemailevento")}}',  
@@ -557,11 +537,15 @@ function actualizarplantillas()
 		}
 }
 
+function descargaradjunto(id)
+{
+     window.open( '{{ url('/') }}' + '/cliente/descargarfile/'+id );
+}
+      
+  
 
-$(document).ready(function () {
-
-
-
+$(document).ready(function () 
+{
 			var gdb1=new GDB({parametros: model},{rootElementSelectorString: '#widget1',
 				modelChangeCallback: function(e){
 				  //model.comentario = CKEDITOR.instances.template.getData();
@@ -569,7 +553,6 @@ $(document).ready(function () {
 				  $('#json').text(JSON.stringify(model, null, '    '));
 				}
 			});
-	
 });
 
 </script>

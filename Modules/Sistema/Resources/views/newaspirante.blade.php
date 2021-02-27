@@ -18,7 +18,11 @@
 			  </div>
        
 
-       
+ 			   <div class="form-group col-sm-12 col-md-12 col-lg-12" id="verparticipaciones" style="display:none">
+
+				  <button type="text" id="verparticipacionesobjetoclick"  class="btn btn-success form-control" onclick="verparticipacionesfncion()">Junta o Comit&eacute;s </button>
+           
+			  </div>       
        
 
   
@@ -55,6 +59,7 @@
            <div class="alert" id="message" style="display: none"></div>
            <form method="post" id="upload_form" enctype="multipart/form-data">
             {{ csrf_field() }}
+             <input type="hidden" name="clasoc_id" id="clasoc_id" value=""/>
             <input type="hidden" name="id_tipo_doc" id="id_tipo_doc" value="1"/>
             <input type="file" name="select_file" id="select_file" />
            </form>
@@ -89,10 +94,10 @@
 			  
 	</div>
 	<div class="col-md-9">
-							<style>
-						#lstaspirantes_wrapper{
-						width:100%;
-						}
+					<style>
+                #lstaspirantes_wrapper{
+                    width:100%;
+                }
 						</style>
 									<div class="row">
 									
@@ -100,9 +105,9 @@
 											<table id="lstaspirantes" class="display stripe" cellspacing="0" style="width:100%">
 												<thead>
 													<tr>
+														<th>Nro Cliente</th>                            
 														<th>Nombre</th>
 														<th>Apellido</th>
-														<th>#Num</th>
 														<th>Opci&oacute;n</th>
 													</tr>
 												</thead>
@@ -111,13 +116,37 @@
 												</tbody>
 											</table>
 
-
-									</div>	
+									</div>	   
 	</div>
 </div>
 
 	  
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content ">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Listado</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
 
+          
+       
+          
+          
+          
+        </div>
+
+  
+      </div>
+    </div>
+  </div>
+  
 
 @endsection
 
@@ -175,7 +204,11 @@
   };
   //JSON.stringify(model)
  
-
+function verparticipacionesfncion(id_aspirante)
+{
+      setTimeout(function(){ window.location.href = '{{ url("sistema/newaspirantesuseventos")}}/?id_aspirante='+id_aspirante ; }, 1000);
+}
+  
   
 function vaciarformulario()
 {
@@ -210,30 +243,42 @@ function agregarNuevo()
 		return false; 
 	  }  
 	  else{
-		  
-		  
-							$.ajax({
-								url: '{{ url("sistema/agregarnuevo")}}',
-								data: {"numasoc": numasoc , "nombreasoc": nombreasoc , "apellidoasoc": apellidoasoc ,'otrosobjetos':JSON.stringify(model)},
-								method: 'post',
-								headers: {
-										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-								},
-								success: function(result){
-									lobibox_emergente('success','top right',true,'Agregado.');
-									//console.log('agregarNuevo');
-									setTimeout(function(){ location.reload();  }, 2000);
-								},
-								error: function (r) {
-										console.log("ERROR");
-										console.log(r);
-								}
-							});
-      
+          $.ajax({
+            type: "get",
+            url: '{{ url("sistema/consultaaspirante")}}', 
+            data: {"num_cliente": numasoc },
+            success: function(resultado)
+            { 
+              console.log/(resultado);
+              return false;
+                  $.ajax({
+                    url: '{{ url("sistema/agregarnuevo")}}',
+                    data: {"numasoc": numasoc , "nombreasoc": nombreasoc , "apellidoasoc": apellidoasoc ,'otrosobjetos':JSON.stringify(model)},
+                    method: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(result){
+                      lobibox_emergente('success','top right',true,'Agregado.');
+                      //console.log('agregarNuevo');
+                      setTimeout(function(){ location.reload();  }, 2000);
+                    },
+                    error: function (r) {
+                        console.log("ERROR");
+                        console.log(r);
+                    }
+                  });
+ 						}
+			  });     
 	  }
 }
 
-
+function mostrarmodalaspirantes()
+{
+  $('#myModal').show();
+}
+  
+  
 function actualizar()
 {
 
@@ -286,7 +331,7 @@ function actualizar()
 								success: function(result){
 										lobibox_emergente('success','top right',true,'Actualizado.');
 										console.log('actualizar');
-										setTimeout(function(){ location.reload();  }, 2000); 
+										//setTimeout(function(){ location.reload();  }, 2000); 
 								},
 								error: function (r) {
 										console.log("ERROR");
@@ -315,7 +360,7 @@ function cargarlistado(valor)
 				$("#lstaspirantes").dataTable().fnDestroy();
 			  }
 			  var t = $('#lstaspirantes').DataTable({
-
+        lengthMenu: [[5, 25, 50, -1], [5, 25, 50, "All"]],
 				processing: true,
 				//serverSide: true,
 				stateSave: false,
@@ -334,11 +379,8 @@ function cargarlistado(valor)
 				},
 				order: [2,'asc'],
 				columnDefs: [ {
-
 				targets: [ 3], // column or columns numbers
-
 				orderable: false,  // set orderable for selected columns
-
 				}],			
 				responsive: {
 				  details: {
@@ -352,26 +394,29 @@ function cargarlistado(valor)
 				  }
 				},
 				"columns": [
+				  { "width": "10%" },          
 				  { "width": "70%" },
-				  { "width": "10%" },
 				  { "width": "10%" },
 				  { "width": "10%", "orderable": "false" }
 				],				
 				ajax: '{{ url("sistema/cargaraspirantes")}}',
 				  columns: [
+						{ data: 'num_cliente', name: 'num_cliente', class: 'text-center' },            
 				 		{ data: 'nombre', name: 'nombre' , class: 'text-center'},				   
 						{ data: 'apellido', name: 'apellido' , class: 'text-center'},
-						{ data: 'num_cliente', name: 'num_cliente', class: 'text-center' },
 						{ data: 'action', name: 'action', orderable: false, searchable: false, class: 'text-center'}				   
 				 ]
 			  });
 
-	console.log('cargarlistado');
+	//console.log('cargarlistado');
 }
   
   
 function Cargar(dato)
 {
+    //verparticipacionesfncion(dato)
+    $('#verparticipacionesobjetoclick').attr('onclick','verparticipacionesfncion('+dato+')');  
+  
     localStorage.setItem("aspirante_selecionado",dato);
   	$('#btnagregar').css('display','none');  
 		$('#btnactualizar').css('display','block');	  
@@ -399,7 +444,7 @@ function Cargar(dato)
 					  var apellido = datoz[0]['apellido'] ? datoz[0]['apellido'] : 'Pendiente';	
                //console.log(apellido);
 					  var num_cliente =datoz[0]['num_cliente'];	
-            var memoria =datoz[0]['memoria'];	
+            var memoria =datoz[0]['memoria'] ? datoz[0]['memoria'] : '...';
 						var foto = datoz[0]['foto'] ? datoz[0]['foto'] : '';
             var tipo = datoz[0]['tipo'] ? datoz[0]['tipo'] : '';	
             var id_cv = datoz[0]['adjunto'] ? datoz[0]['adjunto'] : '';  
@@ -409,7 +454,7 @@ function Cargar(dato)
               $('#fotoexistente').css('display', 'block');
               model.tipo_imagen =tipo;
               model.avatarBase64 =foto;     
-              $('#fotoexistente').attr('href', tipo+'base64,'+foto); 
+              $('#fotoexistente').attr('href', "../../../adjuntos/"+foto); 
             }
         
             if(id_cv!='')
@@ -421,8 +466,8 @@ function Cargar(dato)
                   url: '{{ url("sistema/obteneradjunto")}}', 
                   data: {"id_cv": id_cv },
                   success: function(datoz){
-                        console.log(datoz);
-                        $('#cvexistente').attr('href', '../../../'+datoz); 
+                        //console.log(datoz);
+                        $('#cvexistente').attr('href', '../../../adjuntos/'+datoz); 
                   }
                 });
             }
@@ -432,6 +477,7 @@ function Cargar(dato)
 					  $('#nombreasoc').val(nombre);
 					  $('#apellidoasoc').val(apellido);
 					  $('#numasoc').val(num_cliente);
+            $('#clasoc_id').val(num_cliente);
             CKEDITOR.instances['memoria'].setData(memoria);
      /*   
    var model = {
@@ -449,8 +495,8 @@ function Cargar(dato)
              // si tiene adjunto
 					  
         
-        
-        
+            $('#verparticipaciones').css('display','block');
+          //$('#myModal').hide();
         
 			},
 			error: function (r) {
@@ -479,7 +525,7 @@ function Eliminar(dato)
 										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 								},
 								success: function(result){
-								  setTimeout(function(){ location.reload();  }, 1000);	  
+								 // setTimeout(function(){ location.reload();  }, 1000);	  
 								},
 								error: function (r) {
 									console.log("ERROR");
@@ -506,6 +552,7 @@ function blanquearnewaspi()
   $('#nombreasoc').val('');
   $('#apellidoasoc').val('');
   $('#select_file').val('');
+    $('#clasoc_id').val('');
 }
 
 /*
@@ -581,6 +628,8 @@ $(document).ready(function () {
     $('#upload_form').on('submit', function(event){
         event.preventDefault();
         var tipodoc = $('#tipodoc').val();
+      
+        
    
         if(tipodoc == 1){
                    $.ajax({
@@ -596,11 +645,9 @@ $(document).ready(function () {
                    },          
                    success:function(data)
                    {
-                        console.log(data);
                     $('#message').css('display', 'block');
                     $('#message').html(data.message);
                     $('#message').addClass(data.class_name);
-                    //$('#uploaded_image').html(data.uploaded_image);
                     $('#cvexistente').css('display', 'block');
                     $('#cvexistente').attr('href', data.uploaded_doc);
                      model.id_cv =  data.id_uploaded_doc;
@@ -625,11 +672,10 @@ $(document).ready(function () {
                     $('#message').css('display', 'block');
                     $('#message').html(data.message);
                     $('#message').addClass(data.class_name);
-                   // $('#uploaded_image').html(data.uploaded_image);
                     $('#fotoexistente').css('display', 'block');
-                    $('#fotoexistente').attr('href', data.uploaded_doc);                     
+                    $('#fotoexistente').attr('href', "../../../adjuntos/"+data.uploaded_doc);                     
                     model.tipo_imagen =  data.tipo_imagen;
-                    model.avatarBase64 =  data.uploaded_doc;
+                    model.avatarBase64 = data.uploaded_doc;
                    }
                   });         
         }

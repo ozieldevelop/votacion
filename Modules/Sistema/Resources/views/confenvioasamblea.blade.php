@@ -137,6 +137,12 @@
 	    </div> 
 	</div>  
 
+	<div class="row area_btn_procesar" >
+   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
+
+                <button type="text" id="btnagregar" class="btn btn-secondary form-control"  onclick="generarcola()">GENERAR COLA TODOS</button>
+    </div>
+  </div>    
     
    <div class="row" style="display:none" id="area_btn_procesar">
    <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
@@ -255,6 +261,32 @@ function selecciontipo(elemento)
     editor.setValue(JSON.stringify(modelo,undefined,2));
     Cargar();
 }  
+  
+  
+  
+function generarcola(){
+	var eleccion = $('#eventos').val();
+	espere('Cargando');
+									$.ajax({
+										type: "GET",
+										datatype: 'json',
+										data: {"eleccion": eleccion },
+										url: '{{ url("sistema/insertarnuevosavisos")}}',  
+										success: function(result){
+										//var data = JSON.parse(result);
+												//console.log(result);
+												cargarlistado(1);
+												terminar_espere();
+											
+										},
+										error: function (r) {
+											//console.log("ERROR");
+											//console.log(r);
+											terminar_espere();
+										}
+									});
+}
+  
   
 function Cargar()
 {
@@ -474,7 +506,7 @@ function cargarlistado(valor)
               uploadMultiple: false,
               maxFilesize: 20, // MB
               //parallelUploads: 1,
-              maxFiles: 1,
+              //maxFiles: 1,
               acceptedFiles: ".csv",
               init: function () {
                   this.on("queuecomplete", function () {

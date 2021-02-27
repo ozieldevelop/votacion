@@ -39,14 +39,14 @@
           });
   
     </script>
-  
+
        <link rel="stylesheet" href="{{ asset('css/lolibox.css') }}">
     <script src="{{ asset('js/lobibox.js') }}"></script>
 
   <script src="{{ url('plugins/gdb/jquery.gdb.js') }}"></script>
   
 </head>
-<body class="layout-boxed"   style="background:#00821b">
+<body class="layout-boxed"   style="background:#008d5e">
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
@@ -84,7 +84,7 @@
           <div class="col-12">
             <!-- Default box -->
             <div class="card">
-              <div class="card-header" style="background: #8ba275;">
+              <div class="card-header" style="background: #fff;">
                 <h3 class="card-title">&nbsp;</h3>
 
                 <!--div class="card-tools">
@@ -106,7 +106,7 @@
 
               </div>
               <!-- /.card-body -->
-              <div class="card-footer" style="background: #8ba275;">
+              <div class="card-footer" style="background: #fff;">
                  ©  {{ date("Y")  }}  </title> <span class="d-none d-sm-inline-block"> - Cooperativa Profesionales, R.L.</span>.
               </div>
               <!-- /.card-footer-->

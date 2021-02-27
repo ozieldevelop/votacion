@@ -68,7 +68,7 @@
     <div class="header-bg">
         <!-- Navigation Bar-->
         <header id="topnav">
-            <div class="topbar-main">
+            <div class="topbar-main" style="backgournd: #45793b; !important">
                 <div class="container-fluid">
 
                     <!-- Logo-->
@@ -81,7 +81,7 @@
 					@if($id_evento == 1)
 					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0p; !important"> Verificaci&oacute;n de su voto para escogencia a delegados</label>
 					@else
-					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0p; !important"> Verificaci&oacute;n de su voto para escogencia a directivos</label>
+					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0p; !important;backgournd: #45793b; !important"> Verificaci&oacute;n de su voto para escogencia a directivos</label>
 					@endif								
                         </a>
                     </div>
