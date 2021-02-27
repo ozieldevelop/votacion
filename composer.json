@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "aws/aws-sdk-php": "^3.173",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "fideloper/proxy": "^4.4",
         "firebase/php-jwt": "^5.2",
@@ -17,6 +18,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "maatwebsite/excel": "^3.1",
         "mpdf/mpdf": "^8.0",
         "nwidart/laravel-modules": "^8.2",
         "phpmailer/phpmailer": "^6.2",

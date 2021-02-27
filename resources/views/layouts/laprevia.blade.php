@@ -73,7 +73,7 @@
 
                     <!-- Logo-->
                     <div>
-                        <a href="/" class="logo" style="line-height: 28px;">
+                        <a href="#" class="logo" style="line-height: 28px;">
                             <span class="logo-light">
                                     <i class="mdi mdi-folder-open-outline"></i> {{ $nombre }}
 								

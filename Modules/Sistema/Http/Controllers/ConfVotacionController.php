@@ -12,6 +12,8 @@ use Modules\Sistema\Entities\asamblea_estructuraModel;
 use Modules\Sistema\Entities\vtaspiranteModel;
 use Modules\Sistema\Entities\evento_directivosModel;
 
+use DB;
+use File;
 
 class ConfVotacionController extends Controller
 {
@@ -23,7 +25,24 @@ class ConfVotacionController extends Controller
 		return view('sistema::confvotacion')->with('eventos', $eventos)->with('tipos', $tipos); 
     }	
 
+  
+  
 
+     public function actualizarestadoaspirante(Request $request)
+     {
+           try
+           {
+				      $id_delegado = $request->input('id_delegado');
+              $valor = $request->input('valor');
+				      DB::statement("update directivos set estado=".$valor." where id_delegado=".$id_delegado."");
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+           }
+     }	
+  
+    
+  
+  
      public function dataeventosseleccion(Request $request)
      {
            try
@@ -44,11 +63,37 @@ class ConfVotacionController extends Controller
      {
            try
            {
-                   $data = aspiranteModel::select(['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'])->where('estado',1);
+                   $data = aspiranteModel::select(['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'])->where('eliminado',0);
                    return Datatables::of($data)
+                   ->addColumn('gestion_estado', function ($data) {
+                     
+                      if($data->estado == 0 )
+                      {
+                          return "Pendiente por activación";
+                      }
+                      else
+                      {
+                          //return "Participación aceptada";
+                          return ' <button class="dropdown-item btn-danger"  onclick="CambiarEstado('. trim($data->id_delegado). ',0)"><i class="icon-book-open"></i> Desabilitar </button>';
+                      }
+                     //return ' <button class="dropdown-item btn-secondary"  onclick="Cargar('. trim($data->estado). ')"><i class="icon-book-open"></i> Agregar </button>';
+                   })                     
                    ->addColumn('action', function ($data) {
-                     return ' <button class="dropdown-item btn-secondary"  onclick="Cargar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Agregar </button>';
+                     
+                      if($data->estado == 0 )
+                      {
+                           //return ' <button class="dropdown-item btn-secondary"  onclick="CambiarEstado('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Cambiar Estado </button>';
+                           return ' <button class="dropdown-item btn-secondary"  onclick="CambiarEstado('. trim($data->id_delegado). ',1)"><i class="icon-book-open"></i>  Cambiar Estado </button>';
+                      }
+                      else
+                      {
+                           return ' <button class="dropdown-item btn-secondary"  onclick="Cargar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Agregar </button>';
+                      }
+                     
+                     
+                    
                    })
+                   ->rawColumns(['gestion_estado', 'action'])
                    ->make(true);
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
@@ -93,22 +138,12 @@ class ConfVotacionController extends Controller
      {
            try
            {
-			    //{  'id_evento': eleccion ,'id_delegado': idbd,"id_area": id_area },
-				//dd($request->input());
-				/*
-				
-					array:3 [
-					  "id_evento" => "4"
-					  "id_delegado" => "2"
-					  "id_area" => "1"
-					]				
-				
-				*/
-				   $id_evento = $request->input('id_evento');
-				   $id_area = $request->input('id_area');
-				   $id_delegado = $request->input('id_delegado');
-                   $data = evento_directivosModel::where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->delete();
-				   return $data;
+				      $id_evento = $request->input('id_evento');
+				      $id_area = $request->input('id_area');
+				      $id_delegado = $request->input('id_delegado');
+              $dataDirectivo = vtaspiranteModel::select(['foto'])->where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->get();
+              $data = evento_directivosModel::where('id_evento',$id_evento)->where('id_area',$id_area)->where('id_delegado',$id_delegado)->delete();
+
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }
@@ -123,16 +158,28 @@ class ConfVotacionController extends Controller
 
 	 }																		   
 		
-
      public function saveimage(Request $request)
      {
            try
            {
-			       $id_delegado = $request->input('aspiranteidBD');
-				   $llimagen = trim($request->input('llimagen'));
-				   $formato  = trim($request->input('formato'));
-                   $data1 = aspiranteModel::where('id_delegado',$id_delegado)->update(['tipo'=> $formato , 'foto'=> $llimagen ]);
+			        $id_delegado = $request->input('aspiranteidBD');
+				      $llimagen = trim($request->input('llimagen'));
+				      $formato  = trim($request->input('formato'));
+              $data1 = aspiranteModel::where('id_delegado',$id_delegado)->update(['tipo'=> $formato , 'foto'=> $llimagen ]);
 
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+           }
+     }	
+  
+     public function saveimageanddatos(Request $request)
+     {
+           try
+           {
+			        $id_delegado = $request->input('aspiranteidBD');
+				      $llimagen = trim($request->input('llimagen'));
+				      $formato  = trim($request->input('formato'));
+              $data1 = aspiranteModel::where('id_delegado',$id_delegado)->update(['tipo'=> $formato , 'foto'=> $llimagen ]);
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }

@@ -5,104 +5,96 @@
 
 
 
+ <div class="col-sm-12 col-md-12 col-lg-12">     
+               <button type="button" class="btn btn-block btn-primary" disabled> Acceder a Reuni&oacute;n</button>
+                @if($periodoactivo==1)
+                    <a type="button" href="{{ env('APP_URL', './') }}/votacion/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-primary">Votaci&oacute;n</a>
+                @else
+                    <button type="button" href="#" class="btn btn-block btn-primary" disabled>Votaci&oacute;n</button>
+                @endif                   
+  </div>
 
 
-    <div class="col-sm-12 col-md-12 col-lg-12">   
-                 <div id="carouselExampleIndicators" class="carousel slide align-items-center justify-content-center" data-ride="carousel"  style="display:none">
-                  <ol class="carousel-indicators">
-                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                  </ol>
-                  <div class="carousel-inner" id="DirectivosDir">
-                   
-                  </div>
-                  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span class="carousel-control-custom-icon" aria-hidden="true">
-                      <i class="fas fa-chevron-left"></i>
-                    </span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span class="carousel-control-custom-icon" aria-hidden="true">
-                      <i class="fas fa-chevron-right"></i>
-                    </span>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </div>
-     </div>                               
+<div class="col-sm-12 col-md-12 col-lg-12"> 
+   
+&nbsp;
+    
+</div>
+    <div class="col-sm-12 col-md-6 col-lg-6">     
 
-
-    <div class="col-sm-12 col-md-6 col-lg-5">     
-            <div class="card">
-              <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Aspirantes Postulados</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Descargas</a></li>
-                </ul>
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content">
-                  <div class="active tab-pane" id="activity">
-
-        @if( $tipoevent == 2 )
-         <a href="#" class="btn btn-primary btn-block"><b>Cambiar Imagen de perfil</b></a>
-        @endif
-     <button type="button" class="btn btn-block btn-primary" disabled>Acceder a Reuni&oacute;n</button>
-     <a type="button" href="{{ env('APP_URL', './') }}/votacion/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-primary">Votaci&oacute;n</a>
-     <!--button type="button" class="btn btn-block btn-primary disabled">Bot&oacute;n no habilitado para persistencia</button-->                    
-                    
-                    
-
-                    
-                    
-                    
-                  </div>
-                  <div class="tab-pane" id="settings">
-          
-                            <!--ul class="list-unstyled">
-                              <li>
-                                <a href="#" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
-                              </li>
-                              <li>
-                                <a href="#" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
-                              </li>
-                              <li>
-                                <a href="#" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
-                              </li>
-                              <li>
-                                <a href="#" class="btn-link text-secondary"><i class="far fa-fw fa-image "></i> Logo.png</a>
-                              </li>
-                              <li>
-                                <a href="#" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
-                              </li>
-                            </ul-->
-
+      
                             <div class="card" >
-                              <div class="card-header bg-light resaltado">ADJUNTOS</div>
+                              <div class="card-header bg-light resaltado"> <label style="float-right; color:#c36c55"> NUEVA </label> PROPUESTAS</div>
                               <div class="card-body" >
-                                <!-- dropzone  -->
-                                <form action="{{ url('/cliente/upload') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
-                                  <input type="hidden"  id="up_id_evento" name="up_id_evento" value="{{ $id_evento }}">
-                                  {{ csrf_field() }}
-                                </form>
+
+                                  <table class="table" style="width:100%">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="PropuestasDir">
+
+                                    </tbody>
+                                  </table>
+                                
+                              </div>
+                            </div>
+  <div class="col-sm-12 col-md-12 col-lg-12"> 
+   
+&nbsp;
+    
+</div>    
+      
+      
+                @if($tipoevent==2)
+                            <div class="card" >
+                              <div class="card-header bg-light resaltado">ASPIRANTES</div>
+                              <div class="card-body" >
+
+                                  <table class="table" style="width:100%">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="DirectivosDir">
+
+                                    </tbody>
+                                  </table>
+                                
+                              </div>
+                            </div>
+                @endif  
+      
+      
+
+
+
+
+
+    </div> 
+
+    <div class="col-sm-12 col-md-6 col-lg-6">     
+                            <div class="card" >
+                              <div class="card-header bg-light resaltado">ADJUNTOS  </div>
+                              <div class="card-body" >
+
                                 <!-- AREA DONDE SE LISTARAN LOS ARCHIVOS ADJUNTOS UNA VEZ SUBIDOS -->
                                 <table  class="table" style="width:100%" id="gs_tbl_GestionesArchivos"> </table>
                               </div>
                             </div>
                     
-                    
-                  </div>                  
-               </div>  
-              </div>  
-           </div>   
-      
-  
-    </div> 
-      
-      
-      
-       <div class="col-sm-12 col-md-12 col-lg-12" style="display:none">        
+    </div>
+
+
+
+
+ <div class="col-sm-12 col-md-12 col-lg-12" style="display:none">        
 
 
                 <div class="card card-secondary card-tabs">
@@ -138,7 +130,7 @@
                     </div>
                 </div>
               </div>
-      </div> 
+ </div> 
 
 
 
@@ -334,45 +326,12 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
                                   eldiv.setAttribute("role", "group");
                                   eldiv.setAttribute("class", "btn-group-vertical");
 
-                                  var elboton = document.createElement("button");
-                                  elboton.setAttribute("aria-expanded", "aria-expanded");
-                                  elboton.setAttribute("aria-haspopup", "true");
-                                  elboton.setAttribute("data-toggle", "dropdown");
-                                  elboton.setAttribute("class", "btn btn-secondary dropdown-toggle ");
-                                  elboton.setAttribute("type", "button");
-                                  elboton.innerHTML = "Opciones";
-                                  eldiv.appendChild(elboton);
-
-                                  var eldiv2 = document.createElement("div");	
-                                  eldiv2.setAttribute("aria-labelledby", "btnGroupVerticalDrop1");
-                                  eldiv2.setAttribute("class", "dropdown-menu");
-                                  eldiv2.setAttribute("x-placement", "bottom-start");
-
-                                  /*
-                                  var a1 = document.createElement("a");	
-                                  a1.setAttribute("class", "dropdown-item");
-                                  a1.setAttribute("type", "button");
-                                  a1.setAttribute("style", "cursor:pointer");
-                                  a1.setAttribute("onclick", "javascript:abriretiquetaadjunto("+cellValue+")");
-                                  a1.innerHTML = "Etiquetar";
-                                  */
-
-                                  var a2 = document.createElement("a");	
-                                  a2.setAttribute("class", "dropdown-item");	
-                                  a2.setAttribute("style", "cursor:pointer");
-                                  a2.setAttribute("onclick", "javascript:eliminaradjunto("+cellValue+")");
-                                  a2.innerHTML ="Eliminar";
-
-                                  //eldiv2.appendChild(a1);
-                                  eldiv2.appendChild(a2);
-
-                                  eldiv.appendChild(eldiv2);
-
+                          
                                   
                                   var elboton2 = document.createElement("button");
                                   elboton2.setAttribute("type", "button");
                                   elboton2.setAttribute("onclick", "javascript:descargaradjunto("+cellValue+")");
-                                  elboton2.setAttribute("class", "btn btn-info col-6");
+                                  elboton2.setAttribute("class", "btn btn-info col-12");
                                   elboton2.innerHTML ="Descargar";
 
                                   var eltdfinal = document.createElement("td");
@@ -416,15 +375,13 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
                 }
                 if( elementosDatax1.length >0)
                 {
-                  var thcustom = document.createElement("th");
-                  headerTr$.append(thcustom);
-                  elthead.append(headerTr$);
+                  $(selector).html('<thead class="thead-light"><tr><th></th><th></th><th></th></tr></thead>');
                 }
                 else {
                   $(selector).html('<thead class="thead-light"><tr><th>No se encontraron registros</th></tr></thead>');
                   return columnSet;
                 }
-
+          
                 $(selector).html(elthead);
                 return columnSet;
         }
@@ -433,10 +390,11 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
         function cargaadjuntosx(opcion)
         {
             // console.log("aaa");
+          var id_evento = $('#eventos').val();
 							$.ajax
               ({
 								url: '{{ url("cliente/cargaadjuntosScreenListar")}}/'  
-								, data: { 'id_evento': '{{ $id_evento }}' , 'cldoc':  '{{ $num_cliente }}'  }             
+								, data: { 'id_evento': {{ $id_evento }}  }             
 								, method: 'get'
 								,success: function(datos){
                           //adjuntosed = datos; 
@@ -485,7 +443,8 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
                                               tempcss ='';
                                             }	                                   
                                     @endif
-                                     html +='<div class="carousel-item '+activo+' "><div class="card card-widget widget-user shadow-lg"><div class="widget-user-header text-white" style="background: url(../dist/img/photo1.png) center center;"><h2 class="widget-user-username" style="font-size:43px !important">'+ (datoz[i]["trato"].substring(0, 10))  +' '+ (datoz[i]["nombre"].substring(0, 10)) +' '+ (datoz[i]["apellido"].substring(0, 10))  +' </h2></div><div class="widget-user-image"><img style="background:#fff !important;" class="img-circle" src="'+ elavatar +'" alt="User Avatar"></div><div class="card-footer"><div class="row"><div class="col-sm-12 col-md-12 col-lg-12 border-right"><div class="description-block"><h5 class="description-header">'+ (datoz[i]["ocupacion"].substring(0, 10)) +' '+ (datoz[i]["profesion"].substring(0, 10)) +'</h5><span class="description-text"># '+ datoz[i]['num_cliente'] +'</span></div></div></div></div></div></div>';
+                                    //console.log({{$tipoevent}});
+                                     html +='<tr><th scope="row" style="vertical-align: text-bottom;"><img style="background:#fff !important;" class="img-circle" src="'+ elavatar +'" alt="User Avatar"></th><td  style="vertical-align: text-bottom;font-weight:bold;">#' + datoz[i]['num_cliente'] +'</td><td  style="vertical-align: text-bottom;font-weight:bold;">'+ (datoz[i]["trato"].substring(0, 10)).toUpperCase()  +' '+ (datoz[i]["nombre"].substring(0, 10)).toUpperCase() +' '+ (datoz[i]["apellido"].substring(0, 10)).toUpperCase()  +' - '+ (datoz[i]["ocupacion"].substring(0, 10)).toUpperCase() +' '+ (datoz[i]["profesion"].substring(0, 10)).toUpperCase() +'</td></tr><tr><td colspan="3" style="vertical-align: text-bottom;">'+ (datoz[i]["memoria"]) +'</td></tr>';
                                   }
                                   $('#DirectivosDir').html(html);    
                             }
@@ -493,9 +452,21 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
           }      
       
       $( document ).ready(function() {
-          cargaadjuntosx(1);
-          //evaluarasignararea();
+        cargaadjuntosx(1);
+          @if($tipoevent==2)
+               evaluarasignararea();
+          @endif
       });  
+      
+        function descargaradjunto(id)
+        {
+
+            window.open( '{{ url('/') }}' + '/cliente/descargarfile/'+id );
+        }
+      
+      
+      
+      
       
     </script>
 
@@ -503,7 +474,7 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"> </script>
 
    <script>
-
+/*
         var socket = io("{{ env('PUBLISHER_URL') }}:{{ env('BROADCAST_PORT') }}");
 
 
@@ -563,7 +534,7 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
                 });
 
        });   
-     
+    */ 
    </script>
 
 

@@ -3,14 +3,17 @@
 @section('content')
 
 	<style>
-      @font-face {
+      @font-face 
+      {
         font-family: "Ordinary";
         src: url('../../fonts/big_noodle_titling.ttf');
-		font-size:24px;
+		    font-size:24px;
       }
 	</style>
 	
-	
+
+
+
 	<div class="row">
 					<label style="color:black;font-weight: bold;margin-left: 17px;">Valide su selección de candidatos en esta pantalla. Si desea corregir algo de clic al bot&oacute;n "Regresar". Para confirmar su voto de clic al bot&oacute;n de "Votar".</label>
 
@@ -65,7 +68,9 @@ function imprimir()
 												msg: 'Gracias por su voto.'
 											});		
 											//localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
-											setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}' });
+
+                    setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 5000);
+                      //setTimeout(function(){ location.reload();  }, 2000);
 								},
 								error: function (r) {
 										console.log("ERROR");
@@ -122,7 +127,7 @@ function visualizarselecciones()
 							//html += "<li><b style='font-family: Ordinary;font-size: 32px;'> "+ lasPapeletas[i].apellido +'  '  + lasPapeletas[i].nombre + "</b></li>";
 							
 
-							html += "<label style='font-size: 28px'><i class='fa fa-book fa-fw' aria-hidden='true'></i>"  + TodosValoresEntradostemp[i].num_cliente+ " - "+ TodosValoresEntradostemp[i].nombre + " "  + TodosValoresEntradostemp[i].apellido+ "</label>";
+							html += "<label style='font-size: 28px'><i class='fa fa-book fa-fw' aria-hidden='true'></i> "+ TodosValoresEntradostemp[i].apellido + ", &nbsp;"  + TodosValoresEntradostemp[i].nombre+ ",&nbsp;" + TodosValoresEntradostemp[i].num_cliente+" </label>";
 							
 							@if($tipo == 2)
 								var iddel = (TodosValoresEntradostemp[i].id_delegado);
@@ -133,15 +138,15 @@ function visualizarselecciones()
 								
 								if(valoresfiltro.length<0)
 								{
-									elavatar = "../../images/logo-footer.png";
+									elavatar = "../../images/empty_gray.png";
 								}
 								else
 								{
-									elavatar = valoresfiltro[0]['tipo']+"base64,"+valoresfiltro[0]['foto'];
+									elavatar = "../../adjuntos/"+valoresfiltro[0]['foto'];
 								} 
 
 								//elavatar = "../../images/logo-footer.png";
-								html +="<img   class='img-fluid rounded-circle mx-auto d-block avatardisplay' style='margin-right: unset !important;margin-top: -47px;width: 54px;height:54px;cursor:pointer' src='"+elavatar+"'>";
+								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' style='border:solid 2px #c5c5c5;margin-right: unset !important;margin-top: -47px;width: 90px;height:90px;cursor:pointer' src='"+elavatar+"'>";
 
 							@endif 							
 

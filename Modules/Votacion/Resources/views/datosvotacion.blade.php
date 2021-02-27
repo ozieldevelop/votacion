@@ -41,7 +41,7 @@ localStorage.setItem("lasboletas{{ $ideven }}",[]);
 																<div class="card" >
 
 																	<div class="card-body " id="collapseExample" style="text-align: center;">
-																	  <p style="text-align: center;font-size: 24px;font-weight: bold;">{{ substr($dataaspirante->voto_aspirante, 0, 10)  }} - {{ substr($dataaspirante->voto_nombre, 0, 10)  }}  {{ substr($dataaspirante->voto_apellido, 0, 10)   }}</p>
+																	  <p style="text-align: center;font-size: 24px;font-weight: bold;">   {{ substr($dataaspirante->voto_apellido, 0, 10) }} , {{ substr($dataaspirante->voto_nombre, 0, 10)  }}  , {{ substr($dataaspirante->voto_aspirante, 0, 10)  }} </p>
 
 																	</div>
 																</div>

@@ -165,6 +165,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 		Yajra\DataTables\DataTablesServiceProvider::class,	
 		Barryvdh\DomPDF\ServiceProvider::class,
+      Maatwebsite\Excel\ExcelServiceProvider::class,
 		//App\Providers\HelperServiceProvider::class,
         /*
          * Package Service Providers...
@@ -230,9 +231,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-		'Laratrust'   => Laratrust\LaratrustFacade::class,
-		'DataTables' => Yajra\DataTables\Facades\DataTables::class,	
-		'PDF' => Barryvdh\DomPDF\Facade::class,
+		    'Laratrust'   => Laratrust\LaratrustFacade::class,
+		    'DataTables' => Yajra\DataTables\Facades\DataTables::class,	
+		    'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 		//'Helper' => App\Helpers\Helper::class,
     ],
 
