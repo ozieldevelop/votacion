@@ -1,22 +1,19 @@
 @extends('cliente::layouts.master')
 
 @section('content')
-    <div class="row justify-content-center" style="background-color: green">
-        <div class="col-md-6">
+    <div class="justify-content-center" {{-- style="background-color: green" --}}>
+        <div class="">
             <div class="card mt-2 mb-2">
                 {{-- <div class="card-header"><h4>Formulario de Registro</h4></div> --}}
-                <div id="register_form" class="card-body">
-                    
+                <div id="register_form" class="card-body">                    
                     <div class="text-center" >                        
-                        <div style="clear: left;">
-                            <p style="float: left;"><img src="/images/logo-cooperativa.png" alt=""></p>
-                            <h5><strong>COOPERATIVA PROFESIONALES, R.L.</strong></h5>
+                        <div style="float: left;">
+                            <img src="/images/logo-cooperativa.png" alt="" style="height:90px;">
                         </div>
                         <div>
-                            <i><strong>Éxito, cooperación y confianza</strong></i>
-                        </div>
-                        <div>
-                            <h4>Inscripción al Seminario Web</h4>
+                            <h4><b>COOPERATIVA PROFESIONALES, R.L.</b></h4>
+                            <p><i><b>Éxito, cooperación y confianza</b></i></p>
+                            <h4>Inscripción a la Reunion Capitular</h4>
                         </div>
                     </div>
                     <hr>                    
@@ -39,9 +36,9 @@
                         {!! $mensaje !!}
 
                     </div>
+                    <hr>
                     <form action="{{ route('postRegistro') }}" method="post">
                         @csrf
-                        <hr>
                         <div class="form-row">
                             <div class="col">
                                 <label for="numero_asoc">Número de Asociado:</label>
