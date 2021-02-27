@@ -804,7 +804,7 @@ dt {
 }
 
 #topnav .topbar-main {
-  background: #45793b; 
+  background: #008d5e; 
 }
 
 #topnav .topbar-main .logo {
@@ -3650,3 +3650,13 @@ table.focus-on tbody tr.focused td {
   padding-left: 20px;
 }
 /*# sourceMappingURL=style.css.map */
+
+
+
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #008d5e !important;
+}
+.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited {
+    background-color: #a53e3e !important;
+}

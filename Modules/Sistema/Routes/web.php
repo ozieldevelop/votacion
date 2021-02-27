@@ -43,7 +43,17 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
   Route::post('/almacenarfotoperfil', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@almacenarfotoperfil'] );
 	
   Route::get('/obteneradjunto', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@obteneradjunto'] );
-	/*
+	
+  Route::get('/newaspirantesuseventos', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@newaspirantesuseventos'] );  
+  
+  Route::get('/cargaraspi', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@cargaraspi'] );  
+  
+  Route::get('/consultaraspiranteenevento', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@consultaraspiranteenevento'] );  
+
+   Route::get('/consultaaspirante', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@consultaaspirante'] );  
+  
+  
+  /*
 	
 			evento
 	
@@ -79,7 +89,7 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	
 	Route::get('/cargaraspirantesconfvota', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@cargaraspirantesconfvota'] );		
 	
-	Route::get('/agregaraspiranteevento', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@agregaraspiranteevento'] );		
+	Route::post('/agregaraspiranteevento', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@agregaraspiranteevento'] );		
 	
 	Route::post('/eliminaraspiranteevento', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@eliminaraspiranteevento'] );	
 	

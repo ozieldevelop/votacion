@@ -83,11 +83,11 @@ class ConfVotacionController extends Controller
                       if($data->estado == 0 )
                       {
                            //return ' <button class="dropdown-item btn-secondary"  onclick="CambiarEstado('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Cambiar Estado </button>';
-                           return ' <button class="dropdown-item btn-secondary"  onclick="CambiarEstado('. trim($data->id_delegado). ',1)"><i class="icon-book-open"></i>  Cambiar Estado </button>';
+                           return ' <button class="dropdown-item btn-primary"  onclick="CambiarEstado('. trim($data->id_delegado). ',1)"><i class="icon-book-open"></i>  Cambiar Estado </button>';
                       }
                       else
                       {
-                           return ' <button class="dropdown-item btn-secondary"  onclick="Cargar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Agregar </button>';
+                           return ' <button class="dropdown-item btn-primary"  onclick="Cargar('. trim($data->id_delegado). ')"><i class="icon-book-open"></i> Agregar </button>';
                       }
                      
                      

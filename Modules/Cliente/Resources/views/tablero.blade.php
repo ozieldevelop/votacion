@@ -5,22 +5,35 @@
 
 
 
- <div class="col-sm-12 col-md-12 col-lg-12">     
-               <button type="button" class="btn btn-block btn-primary" disabled> Acceder a Reuni&oacute;n</button>
-                @if($periodoactivo==1)
-                    <a type="button" href="{{ env('APP_URL', './') }}/votacion/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-primary">Votaci&oacute;n</a>
-                @else
-                    <button type="button" href="#" class="btn btn-block btn-primary" disabled>Votaci&oacute;n</button>
-                @endif                   
-  </div>
+    <div class="col-sm-12 col-md-12 col-lg-12">     
+                   <button type="button" class="btn btn-block btn-primary" disabled> Acceder a Reuni&oacute;n</button>
+                    @if($periodoactivo==1)
+                        <a type="button" href="{{ env('APP_URL', './') }}/votacion/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-primary">Votaci&oacute;n</a>
+                    @else
+                        <button type="button" href="#" class="btn btn-block btn-primary" disabled>Votaci&oacute;n</button>
+                    @endif                   
+    </div>
 
 
-<div class="col-sm-12 col-md-12 col-lg-12"> 
-   
-&nbsp;
-    
-</div>
-    <div class="col-sm-12 col-md-6 col-lg-6">     
+    <div class="col-sm-12 col-md-12 col-lg-12"> &nbsp;</div>
+
+
+    <div class="col-sm-12 col-md-12 col-lg-12">     
+                            <div class="card" >
+                              <div class="card-header bg-light resaltado">ADJUNTOS  </div>
+                              <div class="card-body" >
+
+                                <!-- AREA DONDE SE LISTARAN LOS ARCHIVOS ADJUNTOS UNA VEZ SUBIDOS -->
+                                <table  class="table" style="width:100%" id="gs_tbl_GestionesArchivos"> </table>
+                              </div>
+                            </div>
+    </div>
+
+
+
+ @if($tipoevent==2)
+
+    <div class="col-sm-12 col-md-12 col-lg-12" style="display:none">     
 
       
                             <div class="card" >
@@ -42,14 +55,17 @@
                                 
                               </div>
                             </div>
-  <div class="col-sm-12 col-md-12 col-lg-12"> 
-   
-&nbsp;
-    
-</div>    
+      
+  </div> 
+
+@endif
+  
+
+  <div class="col-sm-12 col-md-12 col-lg-12"> &nbsp;</div>    
       
       
-                @if($tipoevent==2)
+@if($tipoevent==2)
+       <div class="col-sm-12 col-md-12 col-lg-12"> 
                             <div class="card" >
                               <div class="card-header bg-light resaltado">ASPIRANTES</div>
                               <div class="card-body" >
@@ -69,29 +85,10 @@
                                 
                               </div>
                             </div>
-                @endif  
+      </div>         
+ @endif  
       
       
-
-
-
-
-
-    </div> 
-
-    <div class="col-sm-12 col-md-6 col-lg-6">     
-                            <div class="card" >
-                              <div class="card-header bg-light resaltado">ADJUNTOS  </div>
-                              <div class="card-body" >
-
-                                <!-- AREA DONDE SE LISTARAN LOS ARCHIVOS ADJUNTOS UNA VEZ SUBIDOS -->
-                                <table  class="table" style="width:100%" id="gs_tbl_GestionesArchivos"> </table>
-                              </div>
-                            </div>
-                    
-    </div>
-
-
 
 
  <div class="col-sm-12 col-md-12 col-lg-12" style="display:none">        
@@ -134,7 +131,7 @@
 
 
 
-      <div class="col-sm-12 col-md-12 col-lg-12" style="display:none">
+<div class="col-sm-12 col-md-12 col-lg-12" style="display:none">
         <br />
           <div class="card card-outline card-info">
             <div class="card-header">
@@ -154,7 +151,7 @@
             </div>
           </div>
         <br />
-     </div>
+</div>
 
 
 <style>
@@ -208,6 +205,7 @@
             'soy_aspirante':''
           };
       
+        /*
          Dropzone.options.myDropzone = {
           paramName: 'file',
           maxFilesize: 20, // MB
@@ -221,7 +219,7 @@
               });
           }
          };
-      
+        */
       
       
           function haybloqueo()
@@ -439,12 +437,12 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
                                               tempcss ='background: #fff;';
                                             }
                                             else{
-                                              elavatar = datoz[i]['tipo']+"base64,"+datoz[i]['foto'];
+                                              elavatar = "../../../adjuntos/"+datoz[i]['foto'];
                                               tempcss ='';
                                             }	                                   
                                     @endif
                                     //console.log({{$tipoevent}});
-                                     html +='<tr><th scope="row" style="vertical-align: text-bottom;"><img style="background:#fff !important;" class="img-circle" src="'+ elavatar +'" alt="User Avatar"></th><td  style="vertical-align: text-bottom;font-weight:bold;">#' + datoz[i]['num_cliente'] +'</td><td  style="vertical-align: text-bottom;font-weight:bold;">'+ (datoz[i]["trato"].substring(0, 10)).toUpperCase()  +' '+ (datoz[i]["nombre"].substring(0, 10)).toUpperCase() +' '+ (datoz[i]["apellido"].substring(0, 10)).toUpperCase()  +' - '+ (datoz[i]["ocupacion"].substring(0, 10)).toUpperCase() +' '+ (datoz[i]["profesion"].substring(0, 10)).toUpperCase() +'</td></tr><tr><td colspan="3" style="vertical-align: text-bottom;">'+ (datoz[i]["memoria"]) +'</td></tr>';
+                                     html +='<tr><th scope="row" style="vertical-align: text-bottom;"><img style="width:100px;heigth:100px;background:#fff !important;" src="'+ elavatar +'" alt="User Avatar"></th><td  style="vertical-align: text-bottom;font-weight:bold;">#' + datoz[i]['num_cliente'] +'</td><td  style="vertical-align: text-bottom;font-weight:bold;">'+ (datoz[i]["trato"].substring(0, 10)).toUpperCase()  +' '+ (datoz[i]["nombre"].substring(0, 10)).toUpperCase() +' '+ (datoz[i]["apellido"].substring(0, 10)).toUpperCase()  +' - '+ (datoz[i]["ocupacion"].substring(0, 10)).toUpperCase() +' '+ (datoz[i]["profesion"].substring(0, 10)).toUpperCase() +'</td></tr><tr><td colspan="3" style="vertical-align: text-bottom;">'+ (datoz[i]["memoria"]) +'</td></tr>';
                                   }
                                   $('#DirectivosDir').html(html);    
                             }

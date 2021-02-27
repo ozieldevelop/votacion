@@ -272,32 +272,23 @@ class ConfEnvioController extends Controller
 						  
               <img src="https://portal.cooprofesionales.com.pa/mercadeo/files/333f41_newlogo1.png" style="width: 470px;">
 						
-							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE .' <br/> Te damos la bienvenida al siguiente evento:   '.$etiquetatipoenvio .' &nbsp;'.$documento_resultados[0]->asunto .'</label>
+							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE .' <br/> Te damos la bienvenida al siguiente evento:   '.$etiquetatipoenvio .' &nbsp;'.$documento_resultados[0]->asunto .'</label>';
 
 
 
-				
-							 <a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> 
+              switch($tipo_envio)
+                {
+                case 1:
+                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                break;
+                case 2:
+                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                break;   
+              }
                
                
                
-               '.  $documento_resultados[0]->texto .'
-               '.$laimagenicono.'
-               
-               
-               
-               
-               
-               </a>
-               
-               
-               
-               
-               
-               
-               
-               
-               </p>
+              $contenido .= '</p>
 						  </div>
 						 </body>
 						</html>';
@@ -591,26 +582,21 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 						  
               <img src="https://portal.cooprofesionales.com.pa/mercadeo/files/333f41_newlogo1.png" style="width: 470px;">
 						
-							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE .' <br/> Te damos la bienvenida al siguiente evento:   '.$etiquetatipoenvio .' &nbsp;'.$documento_resultados[0]->asunto .'</label>
+							<br/>
+              
+              <label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE .' <br/> Te damos la bienvenida al siguiente evento:   '.$etiquetatipoenvio .' &nbsp;'.$documento_resultados[0]->asunto .'</label>';
 
+              switch($tipo_envio)
+                {
+                case 1:
+                   $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                break;
+                case 2:
+                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                break;   
+              }
 
-
-				
-							 <a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> 
-               
-               
-               
-               '.  $documento_resultados[0]->texto .'
-               '.$laimagenicono.'
-               
-               
-               
-               
-               
-               </a>
-               
-               
-               </p>
+               $contenido.='</p>
 						  </div>
 						 </body>
 						</html>';
@@ -775,7 +761,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
          
              // GUARDA EN cooplab/public/storage
              if ($upload_success) {
-                if (($handle = fopen (env('UPLOADDIR').'/'.$nombre, 'r' )) !== FALSE) {
+                if (($handle = fopen (base_path('/public/adjuntos/').$nombre, 'r' )) !== FALSE) {
 
                      while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
                      {

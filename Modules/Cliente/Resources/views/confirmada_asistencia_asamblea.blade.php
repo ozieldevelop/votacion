@@ -3,23 +3,85 @@
 
 @section('content')
 
+  <style>
+  .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #008d5e !important;
+}
+.btn-primary {
+    background-color: #30419b;
+    border: 1px solid #30419b;
+}
+  </style>
 
-<div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12">
-	   
-	              {!! $mensaje !!}
 
-	      </div>
-</div>    
-<div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12">
-	   
-        <h3 class="profile-username text-center" >{{ $nombreevento }}</h3>
+         <div id="register_form">
+            <div class="text-center" >
+               <div style="clear: left;">
+                  <p style="float: left;"><img src="/images/logo-cooperativa.png" alt=""></p>
+                  <h5><strong>COOPERATIVA PROFESIONALES, R.L.</strong></h5>
+               </div>
+               <div>
+                  <i><strong>Éxito, cooperación y confianza</strong></i>
+               </div>
+               <div>
+                  <h4>Formulario de Inscripci&oacute;n al Evento</h4>
+               </div>
+            </div>
+            <hr>
+            <div class="form-row">
+               <div class="col-md-12">
+                  <p>Tema: <span><strong>Registro a puesto directivos</strong></span></p>
+               </div>
+               <!--div class="col-md-12">
+                  <p>Descripción: <span><strong>Descripcion</strong></span></p>
+               </div-->
+               <div class="col-md-12">
+                  <p>Hora: <span><strong> {{ $f_inicia }} </strong></span></p>
+               </div>
+            </div>
+            <hr>
+            <!--div class="col-sm-12 col-md-12 col-lg-12">
+               <div class='col-xs-4 text-center' style='vertical-align: middle;'>
+                  <h1>Muchas gracias por confirmar tu asistencia!</h1>
+               </div>
+               <div class='col-xs-4 text-center' style='vertical-align: middle;'>
+                  <h4>Te esperamos</h4>
+               </div>
+               <div class='col-xs-4 text-center' style='vertical-align: middle;'> DR&nbsp;Leandra Sanchez</div>
+            </div>
+            <form action="http://cooperativa.eaguilars.com/cliente/registro" method="post">
+               <input type="hidden" name="_token" value="YlTEN8VPo27d4oPHPJLvHqLkJ3PWqklq8HZB2Wmb">                        
+               <hr>
+               <div class="form-row">
+                  <div class="col">
+                     <label for="numero_asoc">Número de Asociado:</label>
+                     <input id="numero_asoc" name="numero_asoc" type="text" class="form-control" placeholder="101">
+                  </div>
+                  <div class="col">
+                     <label for="nombre_asoc">Nombre del Asociado:</label>
+                     <input id="nombre_asoc" name="nombre_asoc" type="text" class="form-control" placeholder="Juan Perez">
+                  </div>
+               </div>
+               <br>
+               <div class="form-row mb-2">
+                  <div class="col">
+                     <label for="email">Dirección de Correo Electronico:</label>
+                     <input id="email" name="email" type="email" class="form-control" placeholder="Ejemplo: juan.perez@cooprofesionales.com.pa">
+                  </div>
+                  <div class="col">
+                     <label for="email_confirmation">Confirmar Correo Electronico:</label>
+                     <input id="email_confirmation" name="email_confirmation" type="email" class="form-control" placeholder="Ejemplo: juan.perez@cooprofesionales.com.pa">
+                  </div>
+               </div>
+               <br>
+               <button type="submit" class="btn btn-primary">Registrarme</button>
+            </form-->
+         </div>
 
-       <p class="text-center"> </p> <p style="display:none" class="text-muted text-center">DIA DEL EVENTO {{ $f_inicia }}</p>
 
-	      </div>
-</div>    
+
+
+  
 
  <div class="row">  
           <div class="form-group col-sm-12 col-md-12 col-lg-6">
@@ -73,13 +135,13 @@
 
 
                             <li class="list-group-item">
-                              <b style="color:black">Junta de directores</b> <label   class="float-right"><input type="checkbox"  id="juntadire" class="juntadire_class"> </label>
+                              <b style="color:black">Junta de Directores</b> <label   class="float-right"><input type="checkbox"  id="juntadire" class="juntadire_class"> </label>
                             </li>  
                             <li class="list-group-item">
-                              <b style="color:black">Junta de vigilancia</b> <label   class="float-right"><input type="checkbox"  id="juntavigi" class="juntavigi_class">  </label>
+                              <b style="color:black">Junta de Vigilancia</b> <label   class="float-right"><input type="checkbox"  id="juntavigi" class="juntavigi_class">  </label>
                             </li>     
                             <li class="list-group-item">
-                              <b style="color:black">Comit&eacute; de cr&eacute;dito</b> <label   class="float-right"><input type="checkbox"  id="comite_credi" class="comite_credi_class">  </label>
+                              <b style="color:black">Comit&eacute; de Cr&eacute;dito</b> <label   class="float-right"><input type="checkbox"  id="comite_credi" class="comite_credi_class">  </label>
                             </li>   
 
                           </ul>
@@ -87,7 +149,7 @@
                           <!-- debe haber confirmado su cuenta de correo para zoom almenos -->
 
                 @if($asistire==0 )
-                  <a type="button" href="#" onclick="guardarasistencia()" class="btn btn-block btn-success" style="background:#3c4199;color:white">GUARDAR REGISTRO</a>
+                  <a type="button" href="#" onclick="guardarasistencia()" class="btn btn-block btn-primary" style="background:#3c4199;color:white">GUARDAR REGISTRO</a>
                 @endif       
             
 

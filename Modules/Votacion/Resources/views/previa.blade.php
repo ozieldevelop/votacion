@@ -29,7 +29,7 @@
 			<div class="col text-center">
 				  <div class="  d-flex justify-content-center" style="margin-left: 37px;">
 				  <button type="button" class="btn btn-secondary" onclick="regresar()" id="botonregresar"  style="height:70px; col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 font-size:34px;    width: 178px;">REGRESAR</button>	&nbsp;&nbsp;&nbsp;			  
-				  <button type="button" class="btn btn-info" onclick="imprimir()" id="botonimprimir" style="height:70px;col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 font-size:34px;    width: 178px;">VOTAR</button>
+				  <button type="button" class="btn btn-primary" onclick="imprimir()" id="botonimprimir" style="height:70px;col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 font-size:34px;    width: 178px;">VOTAR</button>
 
 				  </div>
 			</div>
