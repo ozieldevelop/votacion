@@ -12,6 +12,7 @@
 */
 
 Route::prefix('votacion')->group(function() {
+  
   Route::get('/', 'VotacionController@index');
   
   Route::get('/test', 'VotacionController@test1');
