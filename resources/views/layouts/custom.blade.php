@@ -102,7 +102,7 @@
   
 </head>
 
-<body onload="nobackbutton();" class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-hidden"   onKeyDown="javascript:Verificar()">
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-hidden"   onKeyDown="javascript:Verificar()">
   <header class="app-header navbar" style="font-weight: bold;">
 
 		 <div style="width:100%;background:#008d5e;text-align: center;color:white;font-size: 28px;font-weight: bold; ">

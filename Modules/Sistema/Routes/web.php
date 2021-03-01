@@ -50,7 +50,7 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
   
   Route::get('/consultaraspiranteenevento', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@consultaraspiranteenevento'] );  
 
-   Route::get('/consultaaspirante', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@consultaaspirante'] );  
+  Route::get('/consultaaspirante', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@cargardatoaspirante'] );  
   
   
   /*
@@ -112,7 +112,9 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	Route::post('/actualizarplantillasresultevento', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@actualizarplantillasresultevento'] );	
   Route::post('/uploaddocumentosevento', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@uploaddocumentosevento'] );	
   Route::get('/cargaadjuntosScreenListar', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@cargaadjuntosScreenListar'] );	
-
+  Route::post('/eliminaradjunto', ['middleware' => ['permission:formatosdocumentos'], 'uses' => 'FormatosDocumentosController@eliminaradjunto'] );	
+  
+  
 
 	/*
 	
@@ -137,6 +139,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
   Route::get('/vistaenvioasamblea', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@vistaenvioasamblea'] );						// VISTA
   
   Route::post('/upload', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@upload'] );		
+  
+  Route::post('/eliminardelhistorialenvio', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@eliminardelhistorialenvio'] );		
   
   
 });

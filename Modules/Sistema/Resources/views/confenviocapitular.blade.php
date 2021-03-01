@@ -537,7 +537,7 @@ function cargarlistado(valor)
 function format ( d )
 {
     return "<div class='row'>" +
-    "<div class='col-sm-3'> <button type='button' Class='btn btn-warning' style='width:100%' onclick='javascript:fnlosmovimientos("+(d.id_evento) +","+(d.CLDOC)+","+(d.tipo_invitacion) +")'>MOSTRAR HISTORIAL</button></div><div class='col-sm-3'> <button type='button' Class='btn btn-primary' style='width:100%' onclick='javascript:fnreinsertar("+(d.id_evento) +","+(d.CLDOC) +","+(d.tipo_invitacion) +")'>AGREGAR Y ENVIAR</button><br/></div><div class='col-sm-3'> </div><div class='col-sm-12'>  <table id='tblmovimientos_"+(d.CLDOC) +"'  style='width:100%'></table> </div> </div> ";
+    "<div class='col-sm-3'> <button type='button' Class='btn btn-warning' style='width:100%' onclick='javascript:fnlosmovimientos("+(d.id_evento) +","+(d.CLDOC)+","+(d.tipo_invitacion) +")'> HISTORIAL</button></div><div class='col-sm-3'> <button type='button' Class='btn btn-primary' style='width:100%' onclick='javascript:fnreinsertar("+(d.id_evento) +","+(d.CLDOC) +","+(d.tipo_invitacion) +")'>AGREGAR Y ENVIAR</button></div><div class='col-sm-3'> <button type='button' Class='btn btn-danger' style='width:100%' onclick='javascript:fneliminar("+(d.id_evento) +","+(d.CLDOC) +","+(d.tipo_invitacion) +")'>ELIMINAR  HITORIAL</button><br/></div><div class='col-sm-3'> </div><div class='col-sm-12'>  <table id='tblmovimientos_"+(d.CLDOC) +"'  style='width:100%'></table> </div> </div> ";
 
 }  
 
@@ -562,6 +562,42 @@ function fnreinsertar(evento,cldoc,tipo_invitacion)
  
 }
 
+
+  function fneliminar(evento,cldoc,tipo_invitacion)
+{
+
+  	Lobibox.confirm({
+        msg: "Esta seguro que desea eliminar el historial ?",
+        callback: function ($this, type) {
+            if (type === 'yes') {
+              
+                          $.ajax({
+                                  url: '{{ url("sistema/eliminardelhistorialenvio")}}'
+                              , data: {"id_evento": evento ,  "cldoc":cldoc , "tipo_invitacion":tipo_invitacion}
+                              , method: 'post'
+                              , headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                              },
+                              success: function(elhtml2){
+                                 terminar_espere();
+                                  setTimeout(function(){  cargarlistado(1); },2000);
+                              //setTimeout(function(){  fnlosmovimientos(evento,cldoc,tipo_invitacion); },2000);
+                              },
+                              error: function (r) {
+                                  console.log("ERROR");
+                                  console.log(r);
+                              }
+                           });
+						
+            } else if (type === 'no') {
+									
+            }
+        }
+    });
+				
+		
+}
+       
 function fnreenviarnoti(evento,cldoc,tipo_invitacion)
 {
 

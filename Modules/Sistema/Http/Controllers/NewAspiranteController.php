@@ -14,7 +14,7 @@ use File;
 use Modules\Sistema\Entities\eventoModel;
 use Modules\Sistema\Entities\asamblea_estructuraModel;
 use Modules\Sistema\Entities\evento_directivosModel;
-
+use Modules\Sistema\Entities\vtaspiranteModel;
 
 class NewAspiranteController extends Controller
 {
@@ -342,9 +342,13 @@ class NewAspiranteController extends Controller
     public function newaspirantesuseventos(Request $request)
     {
         $id_aspirante = $request->input('id_aspirante');
+        //dd($id_aspirante);
         $eventos = eventoModel::select(['id','nombre','rangofecha1'])->where('id','>',0)->orderBy('rangofecha1', 'DESC')->get();
         $tipos = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
-        return view('sistema::confaspiranterelacion')->with('id_delegado', $id_aspirante)->with('eventos', $eventos)->with('tipos', $tipos); 
+        $data = vtaspiranteModel::select(['id_evento','nombreevento','id_delegado','id_area','area_etiqueta','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'])->where('id_delegado',$id_aspirante)->get();
+        
+      //dd($data);
+        return view('sistema::confaspiranterelacion')->with('areaspostuladas', $data)->with('id_delegado', $id_aspirante)->with('eventos', $eventos)->with('tipos', $tipos); 
     }	
   
   
