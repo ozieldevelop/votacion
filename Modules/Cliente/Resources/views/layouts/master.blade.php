@@ -80,12 +80,12 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
+        <div class="row justify-content-center">
+          <div class="col-10">
             <!-- Default box -->
             <div class="card">
-              <div class="card-header" style="background: #fff;">
-                <h3 class="card-title">&nbsp;</h3>
+              <div class="{{-- card-header --}}" style="background: #fff;">
+                {{-- <h3 class="card-title">&nbsp;</h3> --}}
 
                 <!--div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
