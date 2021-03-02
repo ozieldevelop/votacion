@@ -149,41 +149,49 @@ class VotacionController extends Controller
                         }
 
                         $xdato = DB::select("select *  from votantes where id_evento=" . $idevendesc . " and (cast(aes_decrypt(`asociado`,'xyz123') as char charset utf8mb4)=" . $cldoc . ")");
-
+                        
+          
+                      
                         if (count($xdato) > 0)
                         {
+                                  $detalles = DB::select("SELECT 
+                                  cast(aes_decrypt(`b`.`asociado`,'xyz123') as char charset utf8mb4) AS `votante`,
+                                  `e`.`id_area` AS `voto_id_area`,
+                                  `c`.`area_etiqueta`AS `voto_area_etiqueta`,
+                                  cast(aes_decrypt(`e`.`aspirante`,'xyz123') as char charset utf8mb4) AS `voto_aspirante`,
+                                  cast(aes_decrypt(`e`.`nombre`,'xyz123') as char charset utf8mb4) AS `voto_nombre`,
+                                  cast(aes_decrypt(`e`.`apellido`,'xyz123') as char charset utf8mb4) AS `voto_apellido`
+                                  from `votos` `e` 
+                                  INNER JOIN votantes AS b ON e.idvotante = b.id
+                                  INNER JOIN conf_areas AS c ON e.id_area = c.id_area
+                                  WHERE 
+                                  cast(aes_decrypt(`b`.`asociado`,'xyz123') as char charset utf8mb4) = " . $cldoc . " 
+                                  AND `e`.`id_evento` = " . $idevendesc . " 
+                                  ORDER BY `e`.`id_area`,voto_nombre,voto_apellido asc");
 
-                            $detalles = DB::select("SELECT 
-											cast(aes_decrypt(`b`.`asociado`,'xyz123') as char charset utf8mb4) AS `votante`,
-											`e`.`id_area` AS `voto_id_area`,
-											`c`.`area_etiqueta`AS `voto_area_etiqueta`,
-											cast(aes_decrypt(`e`.`aspirante`,'xyz123') as char charset utf8mb4) AS `voto_aspirante`,
-											cast(aes_decrypt(`e`.`nombre`,'xyz123') as char charset utf8mb4) AS `voto_nombre`,
-											cast(aes_decrypt(`e`.`apellido`,'xyz123') as char charset utf8mb4) AS `voto_apellido`
-											from `votos` `e` 
-											INNER JOIN votantes AS b ON e.idvotante = b.id
-											INNER JOIN conf_areas AS c ON e.id_area = c.id_area
-											WHERE 
-											cast(aes_decrypt(`b`.`asociado`,'xyz123') as char charset utf8mb4) = " . $cldoc . " 
-											AND `e`.`id_evento` = " . $idevendesc . " 
-											ORDER BY `e`.`id_area`,voto_nombre,voto_apellido asc");
+                                        //dd($categoriaspapeletas);
+                                        $areas = DB::select("SELECT 
+                                  `e`.`id_area` AS `voto_id_area`,
+                                  `c`.`area_etiqueta` AS `voto_area_etiqueta`
+                                  from `votos` `e` 
+                                  INNER JOIN votantes AS b ON e.idvotante = b.id
+                                  INNER JOIN conf_areas AS c ON e.id_area = c.id_area
+                                  WHERE cast(aes_decrypt(`b`.`asociado`,'xyz123') as char charset utf8mb4) = " . $cldoc . " 
+                                  AND `e`.`id_evento` = " . $idevendesc . " 
+                                  GROUP BY `e`.`id_area`,`c`.`area_etiqueta`
+                                  ORDER BY `e`.`id_area`,`c`.`area_etiqueta` ASC");
 
-                            //dd($categoriaspapeletas);
-                            $areas = DB::select("SELECT 
-											`e`.`id_area` AS `voto_id_area`,
-											`c`.`area_etiqueta` AS `voto_area_etiqueta`
-											from `votos` `e` 
-											INNER JOIN votantes AS b ON e.idvotante = b.id
-											INNER JOIN conf_areas AS c ON e.id_area = c.id_area
-											WHERE cast(aes_decrypt(`b`.`asociado`,'xyz123') as char charset utf8mb4) = " . $cldoc . " 
-											AND `e`.`id_evento` = " . $idevendesc . " 
-											GROUP BY `e`.`id_area`,`c`.`area_etiqueta`
-											ORDER BY `e`.`id_area`,`c`.`area_etiqueta` ASC");
+                                $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
+                                    $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Ya realiz&oacute; su voto para este evento</div>";
+                                    return view('votacion::datosvotacion')->with('mensaje', $mensaje)->with('nombre', $resultsxx[0]->nombre)
+                                        ->with('ideven', $idevendesc)->with('areas', $areas)->with('detalles', $detalles);
 
-                            $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
-                            $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Ya realiz&oacute; su voto para este evento</div>";
-                            return view('votacion::datosvotacion')->with('mensaje', $mensaje)->with('nombre', $resultsxx[0]->nombre)
-                                ->with('ideven', $idevendesc)->with('areas', $areas)->with('detalles', $detalles);
+                               /* $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
+                                $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Ya su voto fue realizado; muchas gracias !</div>";
+                                return view('votacion::advertencia')->with('enlace', $request->all())->with('mensaje', $mensaje)->with('nombre', $resultsxx[0]->nombre)
+                                    ->with('ideven', $idevendesc);*/
+                          
+                          
                         }
                         else
                         {
@@ -641,7 +649,7 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
                     {
                         $correenviar = $registrosenvio->CORREO;
                     }
-                    /*
+
                     
                     Config::set('mail.encryption',env('MAIL_MAILER'));
                     Config::set('mail.host',env('MAIL_HOST'));
@@ -651,7 +659,7 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
                     Config::set('mail.from',  ['address' => env('MAIL_FROM_ADDRESS') , 'name' =>  env('MAIL_FROM_NAME')]);
                     
                     $details =[
-                    'title' => "Participación en Votación",
+                    'title' => "Participación en Votación Finalizada",
                     'body' => '',
                     'num_cliente' => $registrosenvio->CLDOC,
                     'nombre' => $registrosenvio->NOMBRE,
@@ -667,7 +675,7 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
                     });
                     
                     
-                    */
+       
 
                 }
             }

@@ -3,6 +3,17 @@
 @section('content')
 
 
+		<div class="row ">
+      		<div class="col-md-12">
+              <table class="table">
+                <tr><td colspan="2" style="font-weight:bold;font-size:24px">Areas a la que pertenece</td></tr>
+ 							@foreach ($areaspostuladas as $dataareaspostuladas)
+								<tr><td>{{ $dataareaspostuladas->nombreevento }}</td><td>{{ $dataareaspostuladas->area_etiqueta }}</td></tr>
+							@endforeach               
+            </table>
+
+			</div> 
+		</div>
 
 		<div class="row ">
 
@@ -10,7 +21,7 @@
 						
 				<div class="row ">
 				   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
-					<label for="inputevento">Seleccione Evento</label>
+					<label for="inputevento" style="font-weight:bold;font-size:24px">Seleccione Evento</label>
 					<select id="eventos" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="evaluaragregaaspitante()" >
 							<option value=""> -- Elegir</option>
 							@foreach ($eventos as $dataeventos)
@@ -23,7 +34,7 @@
 			</div>
 			<div class="col-md-4">	
 				   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
-					<label for="inputevento">Tipo</label>
+					<label for="inputevento"  style="font-weight:bold;font-size:24px">Tipo</label>
 						<select id="secciones" class="form-control col-sm-12 col-md-12 col-lg-12"  disabled>
 							<option value=""> -- Pendiente por Selecci&oacute;n</option>
 							@foreach ($tipos as $dataTipos)
@@ -34,13 +45,14 @@
 			</div> 
 			<div class="col-md-4">	
 				   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
-					<label for="inputevento">Areas</label>
+					<label for="inputevento"  style="font-weight:bold;font-size:24px">Areas</label>
 						<select id="areas"   class="form-control col-sm-12 col-md-12 col-lg-12"  onchange="evaluarasignararea()" >
 							<option value=""> -- Pendiente por Selecci&oacute;n</option>
 						</select>
 				  </div> 
 			</div> 
 		</div>
+
 
 		
 		<div class="row ">

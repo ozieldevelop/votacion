@@ -485,8 +485,9 @@ class ClienteController extends Controller
                         "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento"
                 );
 
-                $listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= " . $idevendesc . " and  a.estado=1 order by a.apellido asc");
-
+                $listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= " . $idevendesc . " and  a.estado=1 GROUP BY num_cliente order by a.apellido asc");
+                
+                //dd($listadoaspirantes);
                 $datosfoto = DB::select("SELECT * FROM directivos where num_cliente=" . $cldoc . "");
 
                 if (count($datosfoto) > 0) {
@@ -939,6 +940,23 @@ class ClienteController extends Controller
         }
     }
 
+      public function alldatadirectivosgroup(Request $request)
+    {
+        try {
+            $evento = $request->input('evento');
+            $data = vtaspiranteModel::select(['id_evento', 'id_delegado', 'trato', 'num_cliente', 'nombre', 'apellido', 'ocupacion', 'profesion', 'img_delegado', 'estado', 'user_audit', 'fecha_aud', 'foto', 'tipo', 'memoria'])
+                ->where('id_evento', $evento)
+                ->groupBy('num_cliente')  
+                ->get();
+
+            return $data;
+            //return json_decode(json_encode($data),true);
+        } catch (Exception $e) {
+            return json(['error' => $e->getMessage()]);
+        }
+    }
+  
+  
     /**
      * Show the form for creating a new resource.
      * @return Renderable

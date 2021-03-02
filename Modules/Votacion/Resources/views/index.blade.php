@@ -21,7 +21,7 @@
 
 		  <div class="container-fluid" styl="border: none;">
 			  <div class="animated fadeIn" style="margin-top: 41px;">
-					
+					    <br/><br/>
 					<label style="color:black;">Seleccione el candidato por el cual desea votar.</label>
 					@if($tipoevent == 1)
 					<label style="color:red;font-weight: bold;"> Puede escoger hasta {{ $max_votos }} candidatos </label>
@@ -60,6 +60,7 @@
 				  <pre><code id="jsonPapeletas" ></code></pre>
 
 				  <div  class="chat__messages ">
+            <br/><br/>
 					<ol id="contenedorAspirantes" style="">
 						
 					</ol>

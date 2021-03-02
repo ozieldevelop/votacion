@@ -279,7 +279,7 @@ class ConfEnvioController extends Controller
               switch($tipo_envio)
                 {
                 case 1:
-                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                   $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
                 break;
                 case 2:
                     $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
@@ -589,7 +589,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
               switch($tipo_envio)
                 {
                 case 1:
-                   $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                   $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
                 break;
                 case 2:
                     $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
@@ -661,6 +661,30 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 
 	}
   
+  
+  
+	public function eliminardelhistorialenvio(Request $request)
+	{
+	
+           try
+           {
+            //dd("1");
+			  $cldoc = $request->input('cldoc');   
+			  $id_evento = $request->input('id_evento');  
+			  $tipo_envio = trim($request->input('tipo_invitacion'));  
+        $tipo_envio = filter_var( $tipo_envio, FILTER_SANITIZE_NUMBER_INT);
+        $tipo_envio = intval(  $tipo_envio );   
+             
+        DB::statement('delete from  envios where id_evento='. $id_evento .'  and tipo_envio='.$tipo_envio.' and CLDOC='.$cldoc.'' );
+             
+             
+
+
+       } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+       }
+
+	}
   
   
   
@@ -766,10 +790,18 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                      while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
                      {
                                   //echo('->'. $data [0]. '<-<br/>');
-                                  $elcldoc = filter_var($data [0], FILTER_SANITIZE_NUMBER_INT);
-                                  $elcldocval = intval( $elcldoc );
+                                  //dd($data);
+                                  $parametros = explode (";",$data [0]);
                        
-
+                                  $elcldoc = filter_var($parametros [0], FILTER_SANITIZE_NUMBER_INT);
+                                  $correo_new = trim($parametros [1]);   
+                       
+                                  $elcldocval = intval( $elcldoc );
+                                  
+                                  //$unionx =  $elcldocval. " -  ". $correo_new;
+                        
+                                  //dd($unionx);
+                       
                                   $datoscliente = DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->where('CLASOC',$elcldocval)->get();
 
                                   if (count($datoscliente)>=1 )
@@ -784,7 +816,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                                         }
                                      
                                     
-                                     DB::statement('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE,tipo_envio) values('. $id_evento  .','. $datoscliente[0]->IDAGEN .','. $elcldocval .',"'. $datoscliente[0]->CORREO .'","'.$datoscliente[0]->NOMBRE.'",'.$tipo_invitacion.')' );
+                                     DB::statement('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE,tipo_envio) values('. $id_evento  .','. $datoscliente[0]->IDAGEN .','. $elcldocval .',"'. $correo_new .'","'.$datoscliente[0]->NOMBRE.'",'.$tipo_invitacion.')' );
 
                                   }
                      }

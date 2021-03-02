@@ -11,6 +11,6 @@ class vtaspiranteModel extends Model
 	public $timestamps = false;
 	
 	public $table = 'vt_aspirantes';
-	public $fillable = ['id_evento','id_area','id_delegado','trato','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'];
+	public $fillable = ['id_evento','nombreevento','id_area','area_etiqueta','id_delegado','trato','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'];
 	
 }

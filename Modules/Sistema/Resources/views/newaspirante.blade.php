@@ -14,13 +14,13 @@
        
  			   <div class="form-group col-sm-12 col-md-12 col-lg-12">
 
-				  <button type="text" class="btn btn-success form-control" onclick="vaciarformulario()">Vaciar Formulario</button>
+				  <button type="btn" class="btn btn-success form-control" onclick="vaciarformulario()">Vaciar Formulario</button>
 			  </div>
        
 
  			   <div class="form-group col-sm-12 col-md-12 col-lg-12" id="verparticipaciones" style="display:none">
 
-				  <button type="text" id="verparticipacionesobjetoclick"  class="btn btn-success form-control" onclick="verparticipacionesfncion()">Junta o Comit&eacute;s </button>
+				  <button type="btn" id="verparticipacionesobjetoclick"  class="btn btn-success form-control" onclick="verparticipacionesfncion()">Junta o Comit&eacute;s </button>
            
 			  </div>       
        
@@ -249,8 +249,8 @@ function agregarNuevo()
             data: {"num_cliente": numasoc },
             success: function(resultado)
             { 
-              console.log/(resultado);
-              return false;
+              //console.log/(resultado);
+              //return false;
                   $.ajax({
                     url: '{{ url("sistema/agregarnuevo")}}',
                     data: {"numasoc": numasoc , "nombreasoc": nombreasoc , "apellidoasoc": apellidoasoc ,'otrosobjetos':JSON.stringify(model)},

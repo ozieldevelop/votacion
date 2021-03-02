@@ -14,6 +14,7 @@ use Modules\Cliente\Entities\files_up_Model;
 use Auth;
 use Validator;
 
+  
 class FormatosDocumentosController extends Controller
 {
 
@@ -73,6 +74,24 @@ class FormatosDocumentosController extends Controller
 
     }
 
+  
+    public function eliminaradjunto(Request $request)
+    {
+        try
+        {
+            $id_adjunto = $request->input('id_adjunto');
+
+            $data = files_up_Model::where('id', $id_adjunto )->update(['eliminado'=> 1]);
+
+        }
+        catch(Exception $e)
+        {
+            return json(array(
+                'error' => $e->getMessage()
+            ));
+        }
+    }
+  
     public function cargaadjuntosScreenListar(Request $request)
     {
         try

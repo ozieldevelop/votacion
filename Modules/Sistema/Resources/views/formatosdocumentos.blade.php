@@ -429,7 +429,21 @@ $(function() {
 
 function eliminaradjunto(valor)
 {
-      alert(valor);
+							$.ajax({
+								url: '{{ url("sistema/eliminaradjunto")}}', 
+								data: { 'id_adjunto': valor },
+								method: 'post',
+								headers: {
+										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+								},
+								success: function(result){
+											   cargaadjuntosx(1); 
+								},
+								error: function (r) {
+									console.log("ERROR");
+									console.log(r);
+								}
+							});
 }
   
 var model = {
