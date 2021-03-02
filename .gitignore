@@ -1,7 +1,7 @@
 /node_modules
 /public/hotgit 
 /public/storage
-/public/adjuntos
+/public/adjuntos/
 /public/var/
 /storage/*.key
 /vendor

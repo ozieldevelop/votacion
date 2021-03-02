@@ -181,15 +181,15 @@ class VotacionController extends Controller
                                   GROUP BY `e`.`id_area`,`c`.`area_etiqueta`
                                   ORDER BY `e`.`id_area`,`c`.`area_etiqueta` ASC");
 
-                                 /*   $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
+                                $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
                                     $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Ya realiz&oacute; su voto para este evento</div>";
                                     return view('votacion::datosvotacion')->with('mensaje', $mensaje)->with('nombre', $resultsxx[0]->nombre)
-                                        ->with('ideven', $idevendesc)->with('areas', $areas)->with('detalles', $detalles);*/
+                                        ->with('ideven', $idevendesc)->with('areas', $areas)->with('detalles', $detalles);
 
-                                $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
+                               /* $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
                                 $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Ya su voto fue realizado; muchas gracias !</div>";
                                 return view('votacion::advertencia')->with('enlace', $request->all())->with('mensaje', $mensaje)->with('nombre', $resultsxx[0]->nombre)
-                                    ->with('ideven', $idevendesc);
+                                    ->with('ideven', $idevendesc);*/
                           
                           
                         }

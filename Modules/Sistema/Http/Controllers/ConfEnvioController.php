@@ -279,7 +279,7 @@ class ConfEnvioController extends Controller
               switch($tipo_envio)
                 {
                 case 1:
-                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                   $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
                 break;
                 case 2:
                     $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';

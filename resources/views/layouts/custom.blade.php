@@ -107,6 +107,8 @@
 
 		 <div style="width:100%;background:#008d5e;text-align: center;color:white;font-size: 28px;font-weight: bold; ">
       <a href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}">  {{  isset($nombreevento) ? $nombreevento :  '' }}   </a>
+       <br/>
+        <label style="margin-left: 51px;color:#000;font-size: 16px;font-weight: bold;">Cantidad de candidatos seleccionados:</label><label id="contadorSeleccionados" style="font-weight: bold;color:#000;font-family: Impact;font-size: 28px;">(0)</label>
     </div>
 	     &nbsp; &nbsp; &nbsp; BUSCAR  &nbsp; <input type="text" class="form-control col-md-6 col-lg-4 " id="elfiltro" placeholder="INGRESE EL N&Uacute;MERO DE CLIENTE O NOMBRE "  style="font-family: arial;width: 36%;background: #111a07;"/> <br/>
 	 
@@ -137,7 +139,7 @@
       </li>
     </ul>
     <button class="navbar-toggler aside-menu-toggler" type="button">
-	  <label style="margin-left: 51px;color:#000;font-size: 16px;font-weight: bold;">Cantidad de candidatos seleccionados:</label><label id="contadorSeleccionados" style="font-weight: bold;color:#000;font-family: Impact;font-size: 28px;">(0)</label>
+	 
       <span class="navbar-toggler-icon"></span>
     </button>
      
