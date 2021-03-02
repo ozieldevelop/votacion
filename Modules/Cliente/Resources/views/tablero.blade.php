@@ -67,7 +67,7 @@
 @if($tipoevent==2)
        <div class="col-sm-12 col-md-12 col-lg-12"> 
                             <div class="card" >
-                              <div class="card-header bg-light resaltado">ASPIRANTES</div>
+                              <div class="card-header bg-light resaltado">POSTULADOS</div>
                               <div class="card-body" >
 
                                   <table class="table" style="width:100%">
@@ -409,7 +409,7 @@ function buildHtmlTableAdjuntos(adjuntosed,selector)
             function evaluarasignararea()
           {
                      $.ajax({
-                            url: '{{ url("cliente/alldatadirectivos")}}/'
+                            url: '{{ url("cliente/alldatadirectivosgroup")}}/'
                             , data: { evento: modelo.id_evento}
                             , method: 'GET'                             
                             , success: function(result){

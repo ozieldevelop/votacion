@@ -90,6 +90,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	Route::get('/cargaraspirantesconfvota', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@cargaraspirantesconfvota'] );		
 	
 	Route::post('/agregaraspiranteevento', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@agregaraspiranteevento'] );		
+  
+  	Route::get('/agregaraspiranteevento', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@agregaraspiranteevento'] );	
 	
 	Route::post('/eliminaraspiranteevento', ['middleware' => ['permission:confvotacion'], 'uses' => 'ConfVotacionController@eliminaraspiranteevento'] );	
 	

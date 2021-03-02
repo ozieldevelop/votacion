@@ -17,6 +17,7 @@ Route::prefix('cliente')->group(function()
     Route::get('/', 'ClienteController@index');
     Route::get('/dashboard', 'ClienteController@dashboard');
     Route::get('/alldatadirectivos', 'ClienteController@alldatadirectivos');
+    Route::get('/alldatadirectivosgroup', 'ClienteController@alldatadirectivosgroup');  
     Route::post('upload', array( 'uses' => 'ClienteController@upload'));
     Route::get('cargaadjuntosScreenListar', array( 'uses' => 'ClienteController@cargaadjuntosScreenListar')); 
     Route::post('almacenarfilecv', array( 'uses' => 'ClienteController@almacenarfilecv')); 
