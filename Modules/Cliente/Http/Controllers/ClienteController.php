@@ -64,7 +64,7 @@ class ClienteController extends Controller
             if (count($results) > 0) {
                 //echo ( " <br/> ".$date. "  ".$startDate. "  ". $endDate."");
 
-                $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes WHERE clasoc = " . $cldoc . " ");
+                $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion, fecha_nac from data_clientes WHERE clasoc = " . $cldoc . " ");
 
                 //$results2 = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$idevendesc)->where('status',1)->get();
                 if ($results[0]["tipo"] == 1) {
@@ -73,8 +73,8 @@ class ClienteController extends Controller
                     //echo "<br/>PERIODO ACTIVO<br/>".$periactico;
 
                     $xdato = DB::select("select * from asistencia where id_evento=" . $idevendesc . " and num_cliente=" . $cldoc . "  ");
-
-                    if ($xdato[0]->asistire == 1) {
+                    
+                    if (count($xdato) > 0) {
                         $existecuentazoom = "";
                         if (strlen(trim($xdato[0]->veri_zoom_email)) > 0) {
                             $cuentazoom = $xdato[0]->veri_zoom_email;
@@ -91,13 +91,13 @@ class ClienteController extends Controller
                     $xdato2 = DB::select("select * from asistencia where id_evento=" . $idevendesc . " and num_cliente=" . $cldoc . " and asistire = 0  ");
 
                     if (count($xdato2) > 0) {
-                        $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h1>Confirma tu asistencia!</h1></div>";
-                        $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Estas cordialmente invitado!</h3></div>";
-                        $elasistira = 0;
-                    } else {
-                        $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h1>Muchas gracias por confirmar tu asistencia!</h1></div>";
+                        $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h2>Muchas gracias por confirmar tu asistencia!</h2></div>";
                         $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h4>Te esperamos</h4></div>";
                         $elasistira = 1;
+                    } else {                        
+                        $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h2>Confirma tu asistencia!</h2></div>";
+                        $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h4>Estas cordialmente invitado,</h4></div>";
+                        $elasistira = 0;
                     }
 
                     //echo "<br/>EL ASISTIRA<br/>".$elasistira;
@@ -107,7 +107,7 @@ class ClienteController extends Controller
 
                     $direccionimagenperfil = "../../images/logo-footer.png";
 
-                    $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> " . trim($datoscliente[0]->trato) . "&nbsp;" . trim($datoscliente[0]->nombre) . "</div>";
+                    $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> <h3><i> " . trim($datoscliente[0]->trato) ."." ."&nbsp;" . trim($datoscliente[0]->nombre) . "</i></h3></div>";
 
                     Auth::loginUsingId(3);
                     return view('cliente::confirmada_asistencia_capitular')
@@ -129,6 +129,7 @@ class ClienteController extends Controller
                         ->with('profesion', trim($datoscliente[0]->profesion))
                         ->with('trato', trim($datoscliente[0]->trato))
                         ->with('nombre', trim($datoscliente[0]->nombre))
+                        ->with('fecha_nac', trim($datoscliente[0]->fecha_nac))
                         ->with('agencia', trim($datoscliente[0]->agencia));
 
                     /*
@@ -240,7 +241,7 @@ class ClienteController extends Controller
                     //
 
                     $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> " . trim($datoscliente[0]->trato) . "&nbsp;" . trim($datoscliente[0]->nombre) . "</div>";
-                    Auth::loginUsingId(3);
+                    Auth::loginUsingId(3);                    
                     return view('cliente::confirmada_asistencia_asamblea')
                         ->with('asistire', $xdato[0]->asistire)
                         ->with('id_asistencia', $xdato[0]->id_asistencia)
@@ -560,15 +561,15 @@ class ClienteController extends Controller
     {
         // recibo los parametros
 
-        $files = $request->input('datos');
-        $osi = json_decode($files);
+        $files = $request->input('datos'); //dd($files);
+        // $osi = json_decode($files);
 
-        if ($osi->{'tipoevent'} == 2) {
-            $memoria = $osi->{'memoria'};
-            $id_cv = $osi->{'id_cv'};
-            $porcion = explode("base64,", $osi->{'avatarBase64'});
+        if ( $files['tipoevent'] == 2 ) {            
+            $memoria = $files['memoria'];
+            $id_cv = $files['id_cv'];
+            $porcion = explode("base64,", $files['avatarBase64']);
             $avatarBase64 = $porcion[1];
-            $tipo_imagen = 'data:' . $osi->{'tipo_imagen'} . ';';
+            $tipo_imagen = 'data:' . $files['tipo_imagen'] . ';';
         } else {
             $memoria = '';
             $id_cv = '';
@@ -579,105 +580,110 @@ class ClienteController extends Controller
 
         //aspiranteModel::where('num_cliente',$osi->num_cliente)->update(['nombre'=> $elnombre, 'apellido'=> $elapellido, 'memoria'=> $memoria, 'adjunto'=> $id_cv, 'foto'=> $id_cv , 'adjunto'=> $id_cv  , 'tipo'=> $tipo_imagen, 'foto' => $avatarBase64   ]);
 
-        $pieces = explode(" ", $osi->nombre);
-        if (count($pieces) > 0) {
-            $elnombre = $pieces[0];
-            $elapellido = $pieces[1];
-        } else {
-            $elnombre = $osi->nombre;
-            $elapellido = "_";
-        }
+        // $pieces = explode(" ", $osi->nombre);
+        // if (count($pieces) > 0) {
+        //     $elnombre = $pieces[0];
+        //     $elapellido = $pieces[1];
+        // } else {
+        //     $elnombre = $osi->nombre;
+        //     $elapellido = "_";
+        // }
+
+        $elnombre = $files['nombre_asoc'];
+        // $elapellido = $files['apellido_asoc'];
 
         $retorno = "";
 
         // obtengo los datos del evento
 
         $results2 = eventoModel::select(['id', 'nombre', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo', 'veri_id_zoom'])
-            ->where('id', $osi->id_evento)
+            ->where('id', $files['id_evento'])
             ->get();
 
         // obtengo los datos del master de cliente
 
-        $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes WHERE clasoc = " . $osi->num_cliente . " ");
+        $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes WHERE clasoc = " . $files['numero_asoc'] . " ");
 
         // 1ro REALIZAR LA PETICION A API DE ZOOM PARA REGISTRASE Y OBTENER LOS SIGUIENTES CAMPOS
         // URL DE O LINK DE REUNION DE ZOOM PARA PERSONALIZADO PARA ESTE USUARIO Y GUARDARLO EN TABLA ASISTENCIA IGUALMENTE UN CAMPO CON ID RE REGISTRO DE ZOOM
 
         // CONSULTO SI ESTA EN TABLA -> ASISTENCIA
 
-        $xdato = DB::select("select *  from asistencia where id_evento=" . $osi->id_evento . " and num_cliente=" . $osi->num_cliente . "");
-
+        $xdato = DB::select("select *  from asistencia where id_evento=" . $files['id_evento'] . " and num_cliente=" . $files['numero_asoc'] . "");
+        // dd($xdato);
         if (count($xdato) == 0) {
             // SI NO EXISTE LO INSERTO
             DB::statement(
-                "INSERT INTO asistencia (id_evento, tipoevent,  num_cliente, nombre, agencia, asistire, f_asistire_regis, soy_aspirante, cantidato_delegado, junta_directores, junta_vigilancia, comite_credito,veri_zoom_email,asistire) VALUES (" .
-                    $osi->id_evento .
+                "INSERT INTO asistencia (id_evento, tipoevent,  num_cliente, nombre, agencia, trato, fecha_nacimiento, veri_zoom_email,asistire) VALUES (" .
+                    $files['id_evento'] .
                     "," .
-                    $osi->tipoevent .
+                    $files['tipoevent'] .
                     "," .
-                    $osi->num_cliente .
+                    $files['numero_asoc'] .
                     ",'" .
-                    $osi->nombre .
+                    $files['nombre_asoc'] .
                     "','" .
-                    $osi->agencia .
-                    "'," .
-                    $osi->asistire .
-                    ",'" .
-                    $osi->f_asistire_regis .
-                    "'," .
-                    $osi->soy_aspirante .
-                    "," .
-                    $osi->cantidato_delegado .
-                    "," .
-                    $osi->junta_directores .
-                    "," .
-                    $osi->junta_vigilancia .
-                    "," .
-                    $osi->comite_credito .
-                    ",'" .
-                    $osi->veri_zoom_email_01 .
+                    $files['agencia'] .
+                    "','" .
+                    $files['trato'] .
+                    "','" .
+                    $files['fecha_nac'] .
+                    "','" .
+                    // $files['asistire'] .
+                    // ",'" .
+                    // $files['soy_aspirante'] .
+                    // "," .
+                    // $files['cantidato_delegado'] .
+                    // "," .
+                    // $files['junta_directores'] .
+                    // "," .
+                    // $files['junta_vigilancia'] .
+                    // "," .
+                    // $files['comite_credito'] .
+                    // ",'" .
+                    $files['email_confirmation'] . //*
                     "',1)"
             );
         } else {
             // EN CASO DE EXISTIR LO ACTUALIZO - EN TERORIA NO DEBE EXISTIR AQUI YA QUE LA PERSONA UNA VEZ REGISTRADO SOLO TIENE ACCESO PARA ENTRAR EN EL DASHBOARD
             DB::statement(
                 "UPDATE asistencia set asistire=" .
-                    $osi->asistire .
+                    $files['asistire'] .
                     ", f_asistire_regis='" .
-                    $osi->f_asistire_regis .
+                    $files['f_asistire_regis'] .
                     "', soy_aspirante=" .
-                    $osi->soy_aspirante .
+                    $files['soy_aspirante'] .
                     ", cantidato_delegado=" .
-                    $osi->cantidato_delegado .
+                    $files['cantidato_delegado'] .
                     ", junta_directores=" .
-                    $osi->junta_directores .
+                    $files['junta_directores'] .
                     ", junta_vigilancia=" .
-                    $osi->junta_vigilancia .
+                    $files['junta_vigilancia'] .
                     ", comite_credito=" .
-                    $osi->comite_credito .
+                    $files['comite_credito'] .
                     ",veri_zoom_email='" .
-                    $osi->veri_zoom_email_01 .
+                    $files['email_confirmation'] . //*
                     "' where id_evento=" .
-                    $osi->id_evento .
+                    $files['id_evento'] .
                     " and num_cliente=" .
-                    $osi->num_cliente .
+                    $files['numero_asoc'] .
                     ""
             );
         }
 
-        DB::statement('update asistencia set veri_id_zoom="' . $results2[0]->veri_id_zoom . '" where id_evento=' . $osi->id_evento . '');
+        DB::statement('update asistencia set veri_id_zoom="' . $results2[0]->veri_id_zoom . '" where id_evento=' . $files['id_evento'] . '');
 
-        if ($osi->{'tipoevent'} == 2) {
+        if ($files['tipoevent'] == 2) {
             // CONSULTO SI ESTA EN TABLA -> DIRECTIVOS PARA CREARLO AUTOMATICAMENTE PERO MANTENERLO EN US STATUS PENDIENTE
-            if ($osi->junta_directores == 1 || $osi->junta_vigilancia == 1 || $osi->comite_credito == 1) {
-                $xdato2 = DB::select("select *  from directivos where num_cliente=" . $osi->num_cliente . "");
+            if ($files['junta_directores'] == 1 || $files['junta_vigilancia'] == 1 || $files['comite_credito'] == 1) {
+                $xdato2 = DB::select("select *  from directivos where num_cliente=" . $files['numero_asoc'] . "");
 
                 if (count($xdato2) == 0) {
                     // SI NO EXISTE LO INSERTO
                     //DB::statement("INSERT INTO directivos (num_cliente, nombre,  user_audit) VALUES (".$osi->num_cliente.", '".$osi->nombre."',0, 'sistema')");
 
                     $id_directivo = DB::table('directivos')->insertGetId([
-                        'num_cliente' => $osi->num_cliente,
+                        'num_cliente' => $files['numero_asoc'],
                         'nombre' => $elnombre,
                         'apellido' => $elapellido,
                         'estado' => 0,
@@ -691,35 +697,35 @@ class ClienteController extends Controller
                     //dd($id_directivo);
 
                     // CONSULTO QUE TIPO DE EVENTO ES
-                    if ($osi->tipoevent == 1) {
+                    if ($files['tipoevent'] == 1) {
                         //DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (".$osi->id_evento.", ".$id_directivo.", 1)" );
                     } else {
-                        aspiranteModel::where('num_cliente', $osi->num_cliente)->update(['memoria' => $memoria, 'adjunto' => $id_cv, 'foto' => $avatarBase64, 'tipo' => $tipo_imagen]);
-                        DB::statement("DELETE from evento_directivos where id_evento = " . $osi->id_evento . " and id_delegado=" . $id_directivo . "");
-                        if ($osi->junta_directores == 1) {
-                            DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $id_directivo . ", 2)");
+                        aspiranteModel::where('num_cliente', $files['numero_asoc'])->update(['memoria' => $memoria, 'adjunto' => $id_cv, 'foto' => $avatarBase64, 'tipo' => $tipo_imagen]);
+                        DB::statement("DELETE from evento_directivos where id_evento = " . $files['id_evento'] . " and id_delegado=" . $id_directivo . "");
+                        if ($files['junta_directores'] == 1) {
+                            DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $files['id_evento'] . ", " . $id_directivo . ", 2)");
                         }
-                        if ($osi->junta_vigilancia == 1) {
-                            DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $id_directivo . ", 3)");
+                        if ($files['junta_vigilancia'] == 1) {
+                            DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $files['id_evento'] . ", " . $id_directivo . ", 3)");
                         }
-                        if ($osi->comite_credito == 1) {
-                            DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $id_directivo . ", 4)");
+                        if ($files['comite_credito'] == 1) {
+                            DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $files['id_evento'] . ", " . $id_directivo . ", 4)");
                         }
                     }
                     $retorno = $id_directivo;
                 } else {
-                    aspiranteModel::where('num_cliente', $osi->num_cliente)->update(['memoria' => $memoria, 'adjunto' => $id_cv, 'foto' => $avatarBase64, 'tipo' => $tipo_imagen]);
+                    aspiranteModel::where('num_cliente', $files['num_cliente'])->update(['memoria' => $memoria, 'adjunto' => $id_cv, 'foto' => $avatarBase64, 'tipo' => $tipo_imagen]);
 
-                    DB::statement("DELETE from evento_directivos where id_evento = " . $osi->id_evento . " and id_delegado=" . $xdato2[0]->id_delegado . "");
+                    DB::statement("DELETE from evento_directivos where id_evento = " . $files['id_evento'] . " and id_delegado=" . $xdato2[0]->id_delegado . "");
 
-                    if ($osi->junta_directores == 1) {
-                        DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $xdato2[0]->id_delegado . ", 2)");
+                    if ($files['junta_directores'] == 1) {
+                        DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $files['id_evento'] . ", " . $xdato2[0]->id_delegado . ", 2)");
                     }
-                    if ($osi->junta_vigilancia == 1) {
-                        DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $xdato2[0]->id_delegado . ", 3)");
+                    if ($files['junta_vigilancia'] == 1) {
+                        DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $files['id_evento'] . ", " . $xdato2[0]->id_delegado . ", 3)");
                     }
-                    if ($osi->comite_credito == 1) {
-                        DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $xdato2[0]->id_delegado . ", 4)");
+                    if ($files['comite_credito'] == 1) {
+                        DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $files['id_evento'] . ", " . $xdato2[0]->id_delegado . ", 4)");
                     }
                     $retorno = $xdato2[0]->id_delegado;
                 }
@@ -872,9 +878,9 @@ class ClienteController extends Controller
 							 <a href="' .
             env('APP_URL', '127.0.0.1') .
             '/cliente/?wget=' .
-            GeneralHelper::lara_encriptar($osi->num_cliente) .
+            GeneralHelper::lara_encriptar($files['numero_asoc']) .
             '&id_evento=' .
-            GeneralHelper::lara_encriptar($osi->id_evento) .
+            GeneralHelper::lara_encriptar($files['id_evento']) .
             '"> 
                   Enlace 
                </a>
@@ -889,7 +895,7 @@ class ClienteController extends Controller
         if ($configuraciones[0]->modo == 0) {
             $correenviar = $configuraciones[0]->correopruebas;
         } else {
-            $correenviar = $osi->veri_zoom_email_01;
+            $correenviar = $files['email_confirmation'];
         }
 
         Config::set('mail.encryption', env('MAIL_MAILER'));
@@ -902,8 +908,8 @@ class ClienteController extends Controller
         $details = [
             'title' => 'Confirmación de registro ',
             'body' => $contenido,
-            'num_cliente' => $osi->num_cliente,
-            'nombre' => $osi->nombre,
+            'num_cliente' => $files['numero_asoc'],
+            'nombre' => $files['nombre_asoc'],
             'correo' => $correenviar,
             'contenido' => $contenido,
         ];
