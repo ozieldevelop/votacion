@@ -138,7 +138,7 @@ class SistemaController extends Controller
 										$request->session()->put('idevendesc', $idevendesc);
 										$request->session()->put('tipoevent', $results2[0]["tipo"] );
                     
-                    $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes WHERE clasoc = ".$cldoc. " ");
+                    $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = ".$cldoc. " ");
                     //dd($datoscliente[0]->ocupacion);
                   
 										$categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$idevendesc. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");

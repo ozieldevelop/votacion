@@ -72,19 +72,21 @@ class ConfEnvioController extends Controller
 								$vowelsvalues2 =  ( str_replace($vowels, "", $xdata["estadosasoc"])  );
 				}
 
-				$resultsxa =DB::select('SELECT IDAGEN,AGENCIA,CLASOC,CASE WHEN CLASOC = 0 THEN CLDOC ELSE CLASOC END as CLDOC, NOMBRE,CORREO,trato,fecha_nac FROM data_clientes where  id_tipo = 2 and CORREO IS NOT NULL and (TRIM(CORREO) <>"") and IDAGEN in('.$vowelsvalues.') and  id_estado in ('.$vowelsvalues2.')' );
+				$resultsxa =DB::select('SELECT IDAGEN,AGENCIA,CASE WHEN CLASOC = 0 THEN CLDOC ELSE CLASOC END as CLASOC, NOMBRE,CORREO,trato,fecha_nac FROM data_clientes where  id_tipo = 2 and CORREO IS NOT NULL and (TRIM(CORREO) <>"") and IDAGEN in('.$vowelsvalues.') and  id_estado in ('.$vowelsvalues2.')' );
 				
 				//dd($resultsxa);
 				
 				
 				foreach ($resultsxa as $xcc) {
           
-            $xdato = DB::select("select * from asistencia where id_evento=".$buscando ." and num_cliente= '".$xcc->CLASOC ."'" );
-            if (count($xdato)==0 )
+            if ($results1[0]->tipo ==2 )
             {  
-                DB::statement('INSERT INTO asistencia (id_evento, tipoevent, num_cliente, trato,nombre, agencia, fecha_nacimiento, asistire) VALUES ('.$buscando.','. $results1[0]->tipo .', '.$xcc->CLASOC.', "'.$xcc->trato.'", "'.$xcc->NOMBRE.'", "'.$xcc->AGENCIA.'", "'.$xcc->fecha_nac.'" , 0);');
+                $xdato = DB::select("select * from asistencia where id_evento=".$buscando ." and num_cliente= '".$xcc->CLASOC ."'" );
+                if (count($xdato)==0 )
+                {  
+                    DB::statement('INSERT INTO asistencia (id_evento, tipoevent, num_cliente, trato,nombre, agencia, fecha_nacimiento, asistire) VALUES ('.$buscando.','. $results1[0]->tipo .', '.$xcc->CLASOC.', "'.$xcc->trato.'", "'.$xcc->NOMBRE.'", "'.$xcc->AGENCIA.'", "'.$xcc->fecha_nac.'" , 0);');
+                }
             }
-
 					   DB::statement('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE) values('.$buscando .",".$xcc->IDAGEN.','.$xcc->CLASOC.',"'. $xcc->CORREO .'","'.$xcc->NOMBRE.'")' );
 				}				
 
@@ -105,6 +107,10 @@ class ConfEnvioController extends Controller
              
              //dd("2");
 			  $id_evento = $request->input('id_evento');  
+             
+             
+        $resultsevento  = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$id_evento)->get();
+             
 			  $tipo_envio = trim($request->input('tipo_invitacion'));  
         $tipo_envio = filter_var( $tipo_envio, FILTER_SANITIZE_NUMBER_INT);
         $tipo_envio = intval(  $tipo_envio );   
@@ -276,13 +282,13 @@ class ConfEnvioController extends Controller
 
 
 
-              switch($tipo_envio)
+              switch($resultsevento[0]->tipo)
                 {
                 case 1:
                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
                 break;
                 case 2:
-                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
                 break;   
               }
                
@@ -419,10 +425,15 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
             //dd("1");
 			  $cldoc = $request->input('cldoc');   
 			  $id_evento = $request->input('id_evento');  
+             
+         $resultsevento  = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$id_evento)->get();
+             
+             
 			  $tipo_envio = trim($request->input('tipo_invitacion'));  
         $tipo_envio = filter_var( $tipo_envio, FILTER_SANITIZE_NUMBER_INT);
         $tipo_envio = intval(  $tipo_envio );   
              
+        //dd( $tipo_envio);
         switch($tipo_envio)
           {
           case 1:
@@ -586,13 +597,13 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
               
               <label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE .' <br/> Te damos la bienvenida al siguiente evento:   '.$etiquetatipoenvio .' &nbsp;'.$documento_resultados[0]->asunto .'</label>';
 
-              switch($tipo_envio)
+               switch($resultsevento[0]->tipo)
                 {
                 case 1:
                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
                 break;
                 case 2:
-                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
                 break;   
               }
 
@@ -666,20 +677,14 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 	public function eliminardelhistorialenvio(Request $request)
 	{
 	
-           try
-           {
-            //dd("1");
-			  $cldoc = $request->input('cldoc');   
-			  $id_evento = $request->input('id_evento');  
-			  $tipo_envio = trim($request->input('tipo_invitacion'));  
-        $tipo_envio = filter_var( $tipo_envio, FILTER_SANITIZE_NUMBER_INT);
-        $tipo_envio = intval(  $tipo_envio );   
-             
-        DB::statement('delete from  envios where id_evento='. $id_evento .'  and tipo_envio='.$tipo_envio.' and CLDOC='.$cldoc.'' );
-             
-             
-
-
+        try
+        {
+            $cldoc = $request->input('cldoc');   
+            $id_evento = $request->input('id_evento');  
+            $tipo_envio = trim($request->input('tipo_invitacion'));  
+            $tipo_envio = filter_var( $tipo_envio, FILTER_SANITIZE_NUMBER_INT);
+            $tipo_envio = intval(  $tipo_envio );   
+            DB::statement('delete from  envios where id_evento='. $id_evento .'  and tipo_envio='.$tipo_envio.' and CLDOC='.$cldoc.'' );
        } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
        }

@@ -503,7 +503,7 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
             $id_evento = $request->session()
                 ->get('idevendesc');
 
-            $datos1 = DB::select("select * from data_clientes where cldoc=" . $usuario);
+            $datos1 = DB::select("select * from data_clientes_vt where clasoc=" . $usuario);
             $documento_resultados = DB::select("select * from evento where id=" . $id_evento);
 
             $CantRegistros = count($datos1);
@@ -661,7 +661,7 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
                     $details =[
                     'title' => "Participación en Votación Finalizada",
                     'body' => '',
-                    'num_cliente' => $registrosenvio->CLDOC,
+                    'num_cliente' => $registrosenvio->CLASOC,
                     'nombre' => $registrosenvio->NOMBRE,
                     'correo' => $correenviar ,
                     'contenido' => $contenido

@@ -64,7 +64,7 @@ class ClienteController extends Controller
             if (count($results) > 0) {
                 //echo ( " <br/> ".$date. "  ".$startDate. "  ". $endDate."");
 
-                $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes WHERE clasoc = " . $cldoc . " ");
+                $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $cldoc . " ");
 
                 //$results2 = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$idevendesc)->where('status',1)->get();
                 if ($results[0]["tipo"] == 1) {
@@ -239,7 +239,7 @@ class ClienteController extends Controller
 
                     //
 
-                    $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> " . trim($datoscliente[0]->trato) . "&nbsp;" . trim($datoscliente[0]->nombre) . "</div>";
+                    $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> " . trim($datoscliente[0]->trato) . "&nbsp;" . trim($datoscliente[0]->NOMBRE) . "</div>";
                     Auth::loginUsingId(3);
                     return view('cliente::confirmada_asistencia_asamblea')
                         ->with('asistire', $xdato[0]->asistire)
@@ -266,8 +266,8 @@ class ClienteController extends Controller
                         ->with('ocupacion', trim($datoscliente[0]->ocupacion))
                         ->with('profesion', trim($datoscliente[0]->profesion))
                         ->with('trato', trim($datoscliente[0]->trato))
-                        ->with('nombre', trim($datoscliente[0]->nombre))
-                        ->with('agencia', trim($datoscliente[0]->agencia));
+                        ->with('nombre', trim($datoscliente[0]->NOMBRE))
+                        ->with('agencia', trim($datoscliente[0]->AGENCIA));
                 }
             } else {
                 $request->session()->flush();
@@ -449,7 +449,7 @@ class ClienteController extends Controller
                 $request->session()->put('idevendesc', $idevendesc);
                 $request->session()->put('tipoevent', $results2[0]["tipo"]);
 
-                $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes WHERE clasoc = " . $cldoc . " ");
+                $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $cldoc . " ");
                 //dd($datoscliente[0]->ocupacion);
 
                 $xdatoassitencia = DB::select("select *  from asistencia where id_evento=" . $idevendesc . " and num_cliente=" . $cldoc . "");
@@ -474,8 +474,8 @@ class ClienteController extends Controller
                         ->with('ocupacion', trim($datoscliente[0]->ocupacion))
                         ->with('profesion', trim($datoscliente[0]->profesion))
                         ->with('trato', trim($datoscliente[0]->trato))
-                        ->with('nombre', trim($datoscliente[0]->nombre))
-                        ->with('agencia', trim($datoscliente[0]->agencia));
+                        ->with('nombre', trim($datoscliente[0]->NOMBRE))
+                        ->with('agencia', trim($datoscliente[0]->AGENCIA));
                 }
 
                 $categoriaspapeletas = DB::select(
@@ -517,8 +517,8 @@ class ClienteController extends Controller
                     ->with('ocupacion', trim($datoscliente[0]->ocupacion))
                     ->with('profesion', trim($datoscliente[0]->profesion))
                     ->with('trato', trim($datoscliente[0]->trato))
-                    ->with('nombre', trim($datoscliente[0]->nombre))
-                    ->with('agencia', trim($datoscliente[0]->agencia));
+                    ->with('nombre', trim($datoscliente[0]->NOMBRE))
+                    ->with('agencia', trim($datoscliente[0]->AGENCIA));
                 //}
                 /*}
 								else
@@ -599,7 +599,7 @@ class ClienteController extends Controller
 
         // obtengo los datos del master de cliente
 
-        $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes WHERE clasoc = " . $osi->num_cliente . " ");
+        $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $osi->num_cliente . " ");
 
         // 1ro REALIZAR LA PETICION A API DE ZOOM PARA REGISTRASE Y OBTENER LOS SIGUIENTES CAMPOS
         // URL DE O LINK DE REUNION DE ZOOM PARA PERSONALIZADO PARA ESTE USUARIO Y GUARDARLO EN TABLA ASISTENCIA IGUALMENTE UN CAMPO CON ID RE REGISTRO DE ZOOM
