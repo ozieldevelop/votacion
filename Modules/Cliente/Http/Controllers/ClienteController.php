@@ -110,7 +110,7 @@ class ClienteController extends Controller
 
                     $direccionimagenperfil = "../../images/logo-footer.png";
 
-                    $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> <h3><i> " . trim($datoscliente[0]->trato) ."." ."&nbsp;" . trim($datoscliente[0]->nombre) . "</i></h3></div>";
+                    $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> <h3><i> " . trim($datoscliente[0]->trato) ."." ."&nbsp;" . trim($datoscliente[0]->NOMBRE) . "</i></h3></div>";
 
                     Auth::loginUsingId(3);
                     return view('cliente::confirmada_asistencia_capitular')
@@ -131,9 +131,9 @@ class ClienteController extends Controller
                         ->with('ocupacion', trim($datoscliente[0]->ocupacion))
                         ->with('profesion', trim($datoscliente[0]->profesion))
                         ->with('trato', trim($datoscliente[0]->trato))
-                        ->with('nombre', trim($datoscliente[0]->nombre))
+                        ->with('nombre', trim($datoscliente[0]->NOMBRE))
                         ->with('fecha_nac', trim($datoscliente[0]->fecha_nac))
-                        ->with('agencia', trim($datoscliente[0]->agencia));
+                        ->with('agencia', trim($datoscliente[0]->AGENCIA));
 
                     /*
        
