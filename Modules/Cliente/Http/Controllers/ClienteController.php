@@ -68,6 +68,7 @@ class ClienteController extends Controller
                 $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $cldoc . " ");
 
 
+
                 //$results2 = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$idevendesc)->where('status',1)->get();
                 if ($results[0]["tipo"] == 1) {
                     //echo "<br/><br/>----CAPITULAR----<br/>";
@@ -245,6 +246,7 @@ class ClienteController extends Controller
 
                     $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> " . trim($datoscliente[0]->trato) . "&nbsp;" . trim($datoscliente[0]->NOMBRE) . "</div>";
                     Auth::loginUsingId(3);
+
 
                     return view('cliente::confirmada_asistencia_asamblea')
                         ->with('asistire', $xdato[0]->asistire)
@@ -606,6 +608,7 @@ class ClienteController extends Controller
             ->get();
 
         // obtengo los datos del master de cliente
+
 
 
         $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $osi->num_cliente . " ");
