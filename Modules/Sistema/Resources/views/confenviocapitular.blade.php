@@ -77,7 +77,7 @@
                          <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
                         <label for="inputevento">Seleccione tipo de invitaci&oacute;n </label>
                         <select id="tipo_invitacion" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="selecciontipo(this)" >
-                                  <option value="1"> Invitaci&oacute;n a registrase</option>
+                                  <option value="1"> Invitaci&oacute;n a registrarse</option>
                                    <option value="2"> Invitaci&oacute;n d&iacute;a del evento </option>
                         </select>
                         </div> 
@@ -447,7 +447,7 @@ function cargarlistado(valor)
 				  },
 				  sInfoFiltered: "(Filtrados de _MAX_ total registros)",
 				},
-				order: [5,'asc'],
+				order: [1,'desc'],
 				columnDefs: [ {
 
 				targets: [ 5 ], // column or columns numbers
@@ -457,14 +457,14 @@ function cargarlistado(valor)
 				}],			
 
 				"columns": [
+				  { "width": "10%" , "orderable": "false"},
 				  { "width": "10%" },
-				  { "width": "10%" },
-				  { "width": "20%" },
-				  { "width": "20%" },
-				  { "width": "10%" },
-				  { "width": "10%" },
-				  { "width": "10%" },
-				  { "width": "10%", "orderable": "false" }
+				  { "width": "30%" },
+				  { "width": "30%" },
+				  { "width": "5%" },
+				  { "width": "5%" },
+				  { "width": "5%" },
+				  { "width": "5%", "orderable": "false" }
 				],				
 				  ajax: {
 					  url: '{{ url("sistema/cargarenvios")}}',   
@@ -489,8 +489,8 @@ function cargarlistado(valor)
 					  "defaultContent": '<img src="../../images/expand.png"  style="cursor:pointer;width:31px" alt="expand/collapse" style="width:120px">'
 				  },				  
 				   { data: 'CLDOC',  name: 'CLDOC' , class: 'text-center'},				   
-				   { data: 'NOMBRE', name: 'NOMBRE' , class: 'text-center'},
-				   { data: 'CORREO', name: 'CORREO', class: 'text-center' },
+				   { data: 'NOMBRE', name: 'NOMBRE' },
+				   { data: 'CORREO', name: 'CORREO' },
 				   { data: 'agregado', name: 'agregado', class: 'text-center' },
 				   { data: 'pendiente', name: 'pendiente', class: 'text-center' },
 				    { data: 'enviados', name: 'enviados', class: 'text-center' },
@@ -498,8 +498,7 @@ function cargarlistado(valor)
 							   
 				 ]
 			  });
-			  
-		 
+
 				var detailRows = [];	 
 					$('#lstenvios tbody').on( 'click', 'tr td.details-control', function () {
 						var tr = $(this).closest('tr');
@@ -543,6 +542,7 @@ function format ( d )
 
 function fnreinsertar(evento,cldoc,tipo_invitacion)
 {
+
 	espere('Cargando');	
 	$.ajax({
       url: '{{ url("sistema/reinsertar")}}' 
@@ -751,7 +751,7 @@ $('#eventos').val('');
 $('#tipo_invitacion').val(1); 
   
 $(document).ready(function () {
-  $('#tipo_invitacion').val(1); 
+  $('#tipo_invitacion').val("1"); 
         editor.setValue(JSON.stringify(modelo,undefined,2));
 	cargarlistado(0);
 

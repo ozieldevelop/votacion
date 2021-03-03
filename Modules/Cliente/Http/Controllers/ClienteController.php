@@ -65,7 +65,7 @@ class ClienteController extends Controller
                 //echo ( " <br/> ".$date. "  ".$startDate. "  ". $endDate."");
 
 
-                $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $cldoc . " ");
+                $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion, fecha_nac from data_clientes_vt WHERE clasoc = " . $cldoc . " ");
 
 
 
@@ -94,19 +94,21 @@ class ClienteController extends Controller
                     $xdato2 = DB::select("select * from asistencia where id_evento=" . $idevendesc . " and num_cliente=" . $cldoc . " and asistire = 0  ");
 
                     if (count($xdato2) > 0) {
-                        $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h2>Muchas gracias por confirmar tu asistencia!</h2></div>";
-                        $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h4>Te esperamos</h4></div>";
-                        $elasistira = 1;
-                    } else {                        
                         $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h2>Confirma tu asistencia!</h2></div>";
                         $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h4>Estas cordialmente invitado,</h4></div>";
+                      
+
+                        $elasistira = 1;
+                    } else {                        
+                        $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h2>Muchas gracias por confirmar tu asistencia!</h2></div>";
+                        $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h4>Te esperamos</h4></div>";
                         $elasistira = 0;
                     }
 
                     //echo "<br/>EL ASISTIRA<br/>".$elasistira;
 
                     //echo "<br/>";
-                    //var_dump( $datoscliente);
+                  // var_dump( $datoscliente);
 
                     $direccionimagenperfil = "../../images/logo-footer.png";
 
@@ -458,16 +460,16 @@ class ClienteController extends Controller
 
                 $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $cldoc . " ");
                 //dd($datoscliente[0]->ocupacion);
-
+          
+                /*
                 $xdatoassitencia = DB::select("select *  from asistencia where id_evento=" . $idevendesc . " and num_cliente=" . $cldoc . "");
 
-                //dd(count($xdatoassitencia));
 
                 if (count($xdatoassitencia) <= 0) {
                     $detalles = DB::select("SELECT num_cliente,trato,nombre,agencia from asistencia WHERE num_cliente = " . $cldoc . " AND id_evento = " . $idevendesc . "");
 
                     $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Esta todo listo!</h3></div>";
-                    $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> " . trim($datoscliente[0]->trato) . "&nbsp;" . trim($datoscliente[0]->nombre) . "; ya su asistencia a sido recibida</div>";
+                    $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> " . trim($datoscliente[0]->trato) . "&nbsp;" . trim($datoscliente[0]->NOMBRE) . "; ya su asistencia a sido recibida</div>";
                     //  dd(($request->all()));
                     return view('cliente::index')
                         ->with('enlace', $request->all())
@@ -484,6 +486,7 @@ class ClienteController extends Controller
                         ->with('nombre', trim($datoscliente[0]->NOMBRE))
                         ->with('agencia', trim($datoscliente[0]->AGENCIA));
                 }
+                */
 
                 $categoriaspapeletas = DB::select(
                     "SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = " .
@@ -568,7 +571,7 @@ class ClienteController extends Controller
     {
         // recibo los parametros
 
-        $files = $request->input('datos'); //dd($files);
+        $files = $request->input('datos');//dd($files);
         // $osi = json_decode($files);
 
         if ( $files['tipoevent'] == 2 ) {            
@@ -611,7 +614,7 @@ class ClienteController extends Controller
 
 
 
-        $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $osi->num_cliente . " ");
+        $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $files['numero_asoc'] . " ");
 
 
         // 1ro REALIZAR LA PETICION A API DE ZOOM PARA REGISTRASE Y OBTENER LOS SIGUIENTES CAMPOS
@@ -874,7 +877,7 @@ class ClienteController extends Controller
             '; ' .
             trim($datoscliente[0]->trato) .
             ' ' .
-            trim($datoscliente[0]->nombre) .
+            trim($datoscliente[0]->NOMBRE) .
             '. <br/> Esta es la confirmaci&oacute;n de registro para:  ' .
             trim($results2[0]["nombre"]) .
             ' 
@@ -925,7 +928,7 @@ class ClienteController extends Controller
         ];
 
         Mail::send([], [], function ($message) use ($details) {
-            $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+            $message->from(env('MAIL_FROM_ADDRESS'), env('APP_AUTOR'));
             $message->to($details["correo"]);
             $message->subject($details["title"]);
             $message->setBody($details["contenido"], 'text/html');

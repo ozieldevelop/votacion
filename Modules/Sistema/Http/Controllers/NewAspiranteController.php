@@ -15,6 +15,7 @@ use Modules\Sistema\Entities\eventoModel;
 use Modules\Sistema\Entities\asamblea_estructuraModel;
 use Modules\Sistema\Entities\evento_directivosModel;
 use Modules\Sistema\Entities\vtaspiranteModel;
+use App\Models\DataClientes;
 
 class NewAspiranteController extends Controller
 {
@@ -24,6 +25,71 @@ class NewAspiranteController extends Controller
         return view('sistema::newaspirante');
     }	
 
+  
+
+  public function subirlistadoaspirantes(Request $request)
+     {
+       try 
+       {
+             
+             $file = $request->file('file');
+             $nombrefile = $file->getClientOriginalName();
+             $extension = $file->getClientOriginalExtension();
+             $tipoarchivo = $file->getMimeType();
+             //$nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);
+             $nombre = strtolower(uniqid('file_' . uniqid()) . "." . $extension);
+             $upload_success = $file->move(base_path('public/adjuntos') , $nombre);
+
+             if ($upload_success) {
+                if (($handle = fopen (base_path('/public/adjuntos/').$nombre, 'r' )) !== FALSE) {
+
+                     while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
+                     {
+
+                                  $parametros = explode (";",$data [0]);
+                       
+                                  $elcldoc = filter_var($parametros [0], FILTER_SANITIZE_NUMBER_INT);
+
+                       
+                                  $elcldocval = intval( $elcldoc );
+
+                              $datoscliente = aspiranteModel::select(['*'])->where('num_cliente',$elcldocval)->get();
+
+                              if (count($datoscliente)==0 )
+                              {                                             
+                                  $datoscliente = DataClientes::select(['CLASOC','NOMBRE'])->where('CLASOC',$elcldocval)->get();
+
+                                  if (count($datoscliente)>=1 )
+                                  {  
+                                      $nombreaspirante = trim($datoscliente[0]->NOMBRE);   
+                                      //dd($nombreaspirante);
+                                      $arreglonombreaspirante = explode (" ",$nombreaspirante);
+                                      $elnombre = $arreglonombreaspirante[0] ? $arreglonombreaspirante[0] : '_';   
+                                      $elapellido = $arreglonombreaspirante[1] ? $arreglonombreaspirante[1] : '_';   
+                                    
+                                     DB::statement('INSERT INTO `directivos` (`num_cliente`, `nombre`, `apellido`, `img_delegado`, `estado`, `user_audit`,  `eliminado`, `memoria`) VALUES ('.$elcldoc.', "'.$elnombre.'","'. $elapellido.'", "default.png", 1, "sistema",  0, "<p>...</p>\n")' );
+                                  }
+                               }
+                               else{
+                                 aspiranteModel::where('num_cliente',$elcldocval)->update(['eliminado'=> 0,'estado'=> 1]);
+                               }
+                     }
+                     fclose ( $handle );
+                 }
+
+               return $nombre;
+             }
+        } catch (Exception $e) {
+                     $response = array(
+                         'resabit' => '0001',
+                         'status' => 'Listado ERR',
+                         'error' => $e->getMessage()
+                    );
+        }
+   }
+  
+  
+  
 
      public function cargaraspirantes(Request $request)
      {
@@ -40,20 +106,32 @@ class NewAspiranteController extends Controller
            }
      }
 	 
-     public function cargardatoaspirante(Request $request)
+     public function consultaaspirante(Request $request)
      {
            try
            {
 				   $buscando = $request->input('buscando');
 				   //dd($buscando);
-                   $data = aspiranteModel::select(['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo','memoria','tipo','foto','adjunto'])->where('id_delegado',$buscando)->get();
+                   $data = aspiranteModel::select(['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo','memoria','tipo','foto','adjunto','eliminado'])->where('num_cliente',$buscando)->get();
 				   //dd($data);
-				   return $data;
-                   //return json_decode(json_encode($data),true);
+				   //return $data;
+                 return json_decode(json_encode($data),true);
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }
      }
+  
+     public function actualizarstatusaspirante(Request $request)
+     {
+           try
+           {
+				   $buscando = $request->input('buscando');
+				   aspiranteModel::where('num_cliente',$buscando)->update(['eliminado'=> 0]);
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+           }
+     }
+  
 	 
      public function eliminaraspirante(Request $request)
      {
@@ -98,34 +176,39 @@ class NewAspiranteController extends Controller
            $files = $request->input('otrosobjetos');
            $osi = json_decode($files);
            $id_cv = $osi->{'id_cv'} ;
-           
+           $lafoto = $osi->{'avatarBase64'};
            // si la imagen cambio; borro fisicamente la anterior
              
            $datos = aspiranteModel::where('id_delegado',$id_delegado)->get();
            
-           if(trim($datos[0]->foto)!=trim($osi->{'avatarBase64'}))
-           {
-             // la borro fisicamente
-              if(File::exists(base_path('public/adjuntos')."/".trim($datos[0]->foto)))
-              {
-                  $bandera=File::delete(base_path('public/adjuntos')."/".trim($datos[0]->foto));
-              }             
-           }
-
-           if(trim($datos[0]->adjunto)!=trim($osi->{'id_cv'}))
-           {
-              $dataxx =DB::select('select * from files_up where id='.$datos[0]->adjunto.'');
-               if(count($dataxx)>0)
-               { 
-                    if(File::exists(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system)))
-                    {
-                        $bandera=File::delete(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system));
-                        if($bandera){
-                          DB::select('delete from files_up where id='.$datos[0]->adjunto.'');
-                        }
-                    }  
+           if($lafoto != ""){
+               if(trim($datos[0]->foto)!=trim($osi->{'avatarBase64'}))
+               {
+                 // la borro fisicamente
+                  if(File::exists(base_path('public/adjuntos')."/".trim($datos[0]->foto)))
+                  {
+                      $bandera=File::delete(base_path('public/adjuntos')."/".trim($datos[0]->foto));
+                  }             
                }
            }
+            
+           if($id_cv != ""){
+              if(trim($datos[0]->adjunto)!=trim($osi->{'id_cv'}))
+               {
+                  $dataxx =DB::select('select * from files_up where id='.$datos[0]->adjunto.'');
+                   if(count($dataxx)>0)
+                   { 
+                        if(File::exists(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system)))
+                        {
+                            $bandera=File::delete(base_path('public/adjuntos')."/".trim($dataxx[0]->name_system));
+                            if($bandera){
+                              DB::select('delete from files_up where id='.$datos[0]->adjunto.'');
+                            }
+                        }  
+                   }
+               }            
+           }
+
                  
                  
            //$porcion = $osi->{'avatarBase64'};// explode("base64,",  $osi->{'avatarBase64'});
@@ -134,7 +217,8 @@ class NewAspiranteController extends Controller
              
              //dd($files);
             $osi = json_decode($files);  
-            $memoria= $osi->{'memoria'} ;
+            $memoria= $osi->{'memoria'} ? $osi->{'memoria'} : '...';
+            //dd($memoria);
             $data = aspiranteModel::where('id_delegado',$id_delegado)->update(['num_cliente'=> $numasoc , 'nombre'=> $nombreasoc , 'apellido'=> $apellidoasoc , 'memoria'=> $memoria, 'adjunto'=> $id_cv, 'foto'=> $osi->{'avatarBase64'} ,  'tipo'=> $osi->{'tipo_imagen'} ]);
 				   return $data;
            } catch (Exception $e) {
@@ -193,6 +277,7 @@ class NewAspiranteController extends Controller
                 $entidad->foto = $avatarBase64;               
                 $entidad->memoria =  $memoria;
                 $entidad->adjunto =  $id_cv;
+                $entidad->estado =  1;
                 $entidad->save();              
              }
              else

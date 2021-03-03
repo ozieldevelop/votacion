@@ -118,7 +118,7 @@ class ConfEnvioController extends Controller
         switch($tipo_envio)
           {
           case 1:
-              $etiquetatipoenvio = "Formulario previo al evento - ";
+              $etiquetatipoenvio = $resultsevento[0]->rangofecha1;
               $laimagenicono ="";
           break;
           case 2:
@@ -278,7 +278,19 @@ class ConfEnvioController extends Controller
 						  
               <img src="https://portal.cooprofesionales.com.pa/mercadeo/files/333f41_newlogo1.png" style="width: 470px;">
 						
-							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE .' <br/> Te damos la bienvenida al siguiente evento:   '.$etiquetatipoenvio .' &nbsp;'.$documento_resultados[0]->asunto .'</label>';
+							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE;
+               
+        switch($tipo_envio)
+          {
+          case 1:
+              $contenido .= ' <br/> Te hemos colocado un enlace al siguiente evento con hora establecida para el evento:   '.  $resultsevento[0]->nombre .' - '. $resultsevento[0]->rangofecha1;
+          break;
+          case 2:
+              $contenido .= ' <br/> Te damos la bienvenida al siguiente evento:   ';
+          break;   
+        }           
+        
+              //$contenido .=  $documento_resultados[0]->asunto .' &nbsp; - &nbsp; '.$etiquetatipoenvio .'</label>';
 
 
 
@@ -338,7 +350,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 						];
 	
 						Mail::send([], [], function($message) use ($details) {
-							$message->from(env('MAIL_FROM_ADDRESS'),  env('MAIL_FROM_NAME'));
+							$message->from(env('MAIL_FROM_ADDRESS'),  env('APP_AUTOR'));
 							$message->to($details["correo"]);
 							$message->subject($details["title"]);
 							$message->setBody($details["contenido"] , 'text/html');
@@ -399,19 +411,33 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
       try
        {
 			  $configuraciones =DB::select('select modo,correopruebas from conf');
+
 			  //$configuraciones[0]->correopruebas
 			  $desarvari = "";
 			  $desarvaricorreo = "";
 			  
-         $desarvari =" limit 1";    
+			  $desarvari =" limit 1"; 
 
-
-        
 				$evento = $request->input('id_evento');
 				$cldoc = $request->input('cldoc');
         $tipo_invitacion = $request->input('tipo_invitacion');
+       
+
+			  if($configuraciones[0]->modo ==0)
+			  {
+				  $desarvaricorreo = $configuraciones[0]->correopruebas;
+          $resultsxa =DB::select('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE,tipo_envio) select b.id_evento,b.IDAGEN,b.CLDOC,"'.$desarvaricorreo.'",b.NOMBRE,'.$tipo_invitacion.' from vt_envios as b where b.id_evento ='.$evento.' and b.CLDOC='.$cldoc .' AND b.tipo_invitacion ='.$tipo_invitacion.' '.$desarvari.'');
+			  }
+        else
+        {
+          $resultsxa =DB::select('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE,tipo_envio) select b.id_evento,b.IDAGEN,b.CLDOC,b.CORREO,b.NOMBRE,'.$tipo_invitacion.'  from vt_envios as b where b.id_evento ='.$evento.' and b.CLDOC='.$cldoc .' AND b.tipo_invitacion ='.$tipo_invitacion.' '.$desarvari.'');
+        }
         
-				$resultsxa =DB::select('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE) select b.id_evento,b.IDAGEN,b.CLDOC,b.CORREO,b.NOMBRE from vt_envios as b where b.id_evento ='.$evento.' and b.CLDOC='.$cldoc .' AND b.tipo_invitacion ='.$tipo_invitacion.' '.$desarvari.'');
+        
+        
+				
+        
+        
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
      }
@@ -437,7 +463,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
         switch($tipo_envio)
           {
           case 1:
-              $etiquetatipoenvio = "Formulario previo al evento - ";
+              $etiquetatipoenvio = $resultsevento[0]->rangofecha1;
               $laimagenicono ="";
           break;
           case 2:
@@ -457,12 +483,9 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 				  $desarvari =" limit 1";
 			  }
 
-			  // datos de contenido de correo
 			  $documento_resultados = documento_envioModel::select(['asunto','texto'])->where('id_evento','=',$id_evento)->get();
-			 // dd($documento_resultados);
-			  // datos de contenido de correo
-		      $datos1 = \DB::connection('mysql')->select("select * from envios where id_evento=".$_REQUEST['id_evento']." and cldoc=".$cldoc." and accion=3 and tipo_envio=".$tipo_envio." ".$desarvari."");
-				//dd( $datos1 );
+		    $datos1 = \DB::connection('mysql')->select("select * from envios where id_evento=".$_REQUEST['id_evento']." and cldoc=".$cldoc." and accion=3 and tipo_envio=".$tipo_envio." ".$desarvari."");
+
 			  $CantRegistros = count($datos1);  	
 			  
 			  if($CantRegistros>0)  
@@ -595,8 +618,20 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 						
 							<br/>
               
-              <label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE .' <br/> Te damos la bienvenida al siguiente evento:   '.$etiquetatipoenvio .' &nbsp;'.$documento_resultados[0]->asunto .'</label>';
+              <label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE;
 
+          
+        switch($tipo_envio)
+          {
+          case 1:
+              $contenido .= ' <br/> Te hemos colocado un enlace al siguiente evento con hora establecida para el evento:   '.  $resultsevento[0]->nombre .' - '. $resultsevento[0]->rangofecha1;
+          break;
+          case 2:
+              $contenido .= ' <br/> Te damos la bienvenida al siguiente evento:   ';
+          break;   
+        } 
+          
+          
                switch($resultsevento[0]->tipo)
                 {
                 case 1:
@@ -640,7 +675,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 						];
 	
 						Mail::send([], [], function($message) use ($details) {
-							$message->from(env('MAIL_FROM_ADDRESS'),  env('MAIL_FROM_NAME'));     
+							$message->from(env('MAIL_FROM_ADDRESS'),  env('APP_AUTOR'));     
 							$message->to($details["correo"]);
 							$message->subject($details["title"]);
 							$message->setBody($details["contenido"] , 'text/html');
@@ -812,14 +847,15 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                                   if (count($datoscliente)>=1 )
                                   {  
                                       //dd($datoscliente[0]->AGENCIA);
-
+                                        
+                                        /*
                                         $xdato = DB::select("select * from asistencia where id_evento=".$id_evento ." and num_cliente= '".$elcldocval ."'" );
 
                                         if (count($xdato)==0 )
                                         {  
                                           DB::statement('INSERT INTO asistencia (id_evento, tipoevent, num_cliente, trato,nombre, agencia, fecha_nacimiento, asistire) VALUES ('.$id_evento.','. $eventos[0]->tipo .', '.$elcldocval.', "'.$datoscliente[0]->trato.'", "'.$datoscliente[0]->NOMBRE.'", "'.$datoscliente[0]->AGENCIA.'", "'.$datoscliente[0]->fecha_nac.'" , '.$siasistencia.');');
                                         }
-                                     
+                                        */
                                     
                                      DB::statement('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE,tipo_envio) values('. $id_evento  .','. $datoscliente[0]->IDAGEN .','. $elcldocval .',"'. $correo_new .'","'.$datoscliente[0]->NOMBRE.'",'.$tipo_invitacion.')' );
 

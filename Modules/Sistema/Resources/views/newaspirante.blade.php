@@ -25,7 +25,22 @@
 			  </div>       
        
 
-  
+
+
+       <div class="card" >
+            <div class="card-header bg-light resaltado"> IMPORTAR LISTADO CSV </div>
+                <div class="card-body" >
+                                <!-- dropzone  -->
+                                <form action="{{ url('/sistema/subirlistadoaspirantes') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
+                                  <input type="hidden"  id="up_id_evento" name="up_id_evento"  data-bindto="parametros.up_id_evento"  value="">
+                                  <input type="hidden"  id="tipo_invitacion" name="tipo_invitacion"  data-bindto="parametros.tipo_invitacion"  >
+                                  {{ csrf_field() }}
+                                </form>
+                                <!-- AREA DONDE SE LISTARAN LOS ARCHIVOS ADJUNTOS UNA VEZ SUBIDOS -->
+            </div>
+      </div>
+                
+
   
   
 			   <input type="hidden" class="form-control" id="id_delegado" >
@@ -166,6 +181,10 @@
       <link href="{{ asset('datatable/1.10.22/') }}/Responsive-2.2.6/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css">
 	  <script src="{{ asset('js/ckeditor.js') }}"></script>
 
+      <script type="text/javascript" src="{{ url('assets/dropzone') }}/dropzone.js"></script>
+      <link rel="stylesheet" type="text/css" href="{{ url('assets/dropzone') }}/dropzone.css"/>
+
+
 			<script>
 									
 											CKEDITOR.replace('memoria', { 
@@ -224,34 +243,32 @@ function agregarNuevo()
 
 	  if(numasoc=="" || numasoc==undefined || numasoc.length < 0)
 	  {
-
-					 lobibox_emergente('info','top right',true,'Deben ingresar un n&uacute;mero de asociado.');
-					 
-					 
-		return false;
+			lobibox_emergente('info','top right',true,'Deben ingresar un n&uacute;mero de asociado.');
+		  return false;
 	  }
 	  else if(nombreasoc=="" || nombreasoc==undefined || nombreasoc.length < 0)
 	  {
-		lobibox_emergente('info','top right',true,'Deben ingresar un nombre.');
-
-		return false; 
+		  lobibox_emergente('info','top right',true,'Deben ingresar un nombre.');
+		  return false; 
 	  }
 	  else if(apellidoasoc=="" || apellidoasoc==undefined || apellidoasoc.length < 0)
 	  {
-		lobibox_emergente('info','top right',true,'Debe ingresar un apellido.');
-		
-		return false; 
+		  lobibox_emergente('info','top right',true,'Debe ingresar un apellido.');
+      return false; 
 	  }  
 	  else{
           $.ajax({
             type: "get",
             url: '{{ url("sistema/consultaaspirante")}}', 
-            data: {"num_cliente": numasoc },
+            data: {"buscando": numasoc },
             success: function(resultado)
             { 
-              //console.log/(resultado);
-              //return false;
-                  $.ajax({
+
+              
+              if(resultado.length==0)
+              {
+                
+                    $.ajax({
                     url: '{{ url("sistema/agregarnuevo")}}',
                     data: {"numasoc": numasoc , "nombreasoc": nombreasoc , "apellidoasoc": apellidoasoc ,'otrosobjetos':JSON.stringify(model)},
                     method: 'post',
@@ -268,7 +285,47 @@ function agregarNuevo()
                         console.log(r);
                     }
                   });
+                          
+              }
+              else
+              {
+
+                 if(resultado[0]['eliminado'] == 1)
+                  {
+                      Lobibox.confirm({
+                              msg: "Aspirante ya existe pero posee un status de eliminado, Desea reactivarlo ?",
+                              callback: function ($this, type) {
+                                  if (type === 'yes') {
+
+                                            $.ajax({
+                                              url: '{{ url("sistema/actualizarstatusaspirante")}}',
+                                              data: {"buscando": numasoc },
+                                              method: 'post',
+                                              headers: {
+                                                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                              },
+                                              success: function(result){
+                                               setTimeout(function(){ location.reload();  }, 1000);	  
+                                              },
+                                              error: function (r) {
+                                                console.log("ERROR");
+                                                console.log(r);
+                                              }
+                                            });
+
+                                  } else if (type === 'no') {
+
+                                  }
+                              }
+                          });	  
+  
+                   }
+                else
+                  {
+                    lobibox_emergente('info','top right',true,'Numero de asociado ya existe en el listado.');
+                  }
  						}
+          }
 			  });     
 	  }
 }
@@ -377,7 +434,7 @@ function cargarlistado(valor)
 				  },
 				  sInfoFiltered: "(Filtrados de _MAX_ total registros)",
 				},
-				order: [2,'asc'],
+				order: [0,'desc'],
 				columnDefs: [ {
 				targets: [ 3], // column or columns numbers
 				orderable: false,  // set orderable for selected columns
@@ -428,7 +485,8 @@ function Cargar(dato)
     $('#fotoexistente').css('display','none');  
     $('#cvexistente').css('display','none');  
     $('#fotoexistente').attr('href','#');  
-    $('#cvexistente').attr('href','#');  
+    $('#cvexistente').attr('href','#');
+    $('#numasoc').attr('disabled','disabled');  
   
 		CKEDITOR.instances['memoria'].setData('')   ;
 	
@@ -456,6 +514,11 @@ function Cargar(dato)
               model.avatarBase64 =foto;     
               $('#fotoexistente').attr('href', "../../../adjuntos/"+foto); 
             }
+            else
+              {
+              model.tipo_imagen ='';
+              model.avatarBase64 ='';                 
+              }
         
             if(id_cv!='')
             {
@@ -470,6 +533,9 @@ function Cargar(dato)
                         $('#cvexistente').attr('href', '../../../adjuntos/'+datoz); 
                   }
                 });
+            }
+            else{
+                model.id_cv = "" ;
             }
         
         
@@ -525,7 +591,7 @@ function Eliminar(dato)
 										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 								},
 								success: function(result){
-								 // setTimeout(function(){ location.reload();  }, 1000);	  
+								 setTimeout(function(){ location.reload();  }, 1000);	  
 								},
 								error: function (r) {
 									console.log("ERROR");
@@ -596,7 +662,28 @@ function updateRango()
 
 
 
+  Dropzone.autoDiscover = false;
+  // or disable for specific dropzone:
+  // Dropzone.options.myDropzone = true;
 
+    var config = {
+              paramName: 'file',
+              //autoProcessQueue: true,
+              uploadMultiple: false,
+              maxFilesize: 20, // MB
+              //parallelUploads: 1,
+             // maxFiles: 1,
+              acceptedFiles: ".csv",
+              init: function () {
+                  this.on("queuecomplete", function () {
+                       //console.log('Termino de subir');
+                      // setTimeout(function(){ location.reload();  }, 3000);
+												cargarlistado(1);  
+                  });
+              }
+          };
+
+    var myDropzone = new Dropzone(".dropzone",config);
 
 
 $(document).ready(function () {

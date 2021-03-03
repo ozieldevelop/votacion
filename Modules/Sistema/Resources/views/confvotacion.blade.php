@@ -58,9 +58,9 @@
 											<table id="lstaspirantes" class="display" cellspacing="0" style="width:100%">
 												<thead>
 													<tr>
+                            <th>#Num</th>
 														<th>Nombre</th>
 														<th>Apellido</th>
-														<th>#Num</th>
                             <th>Estado</th>
 														<th>Opci&oacute;n</th>
 													</tr>
@@ -414,7 +414,7 @@ function cargarlistado(valor)
 				  },
 				  sInfoFiltered: "(Filtrados de _MAX_ total registros)",
 				},
-				order: [0,'asc'],
+				order: [0,'desc'],
 				columnDefs: [ {
 
 				targets: [ 3], // column or columns numbers
@@ -442,9 +442,9 @@ function cargarlistado(valor)
 				],				
 				ajax: '{{ url("sistema/cargaraspirantesconfvota")}}',
 				  columns: [
-				   { data: 'nombre', name: 'nombre' , class: 'text-center'},				   
-				   { data: 'apellido', name: 'apellido' , class: 'text-center'},
-				   { data: 'num_cliente', name: 'num_cliente', class: 'text-center' },
+				   { data: 'num_cliente', name: 'num_cliente', class: 'text-center' },            
+				   { data: 'nombre', name: 'nombre' , },				   
+				   { data: 'apellido', name: 'apellido' },
            { data: 'gestion_estado', name: 'gestion_estado', orderable: true, searchable: false, class: 'text-center'},
 				   { data: 'action', name: 'action', orderable: false, searchable: false, class: 'text-center'}					   
 				 ]
@@ -488,44 +488,63 @@ function Cargar(dato)
 		lobibox_emergente('info','top right',true,'Debe seleccionar un area');
 		return false;
 	}	
-			
+
+  
 	$.ajax({
 		type: "GET",
 		url: '{{ url("sistema/cargardatoaspirante")}}', 
 		data: {"buscando": dato },
 		success: function(result){
 			var id_delegado = result[0]['id_delegado'];	
-				$.ajax({
-					type: "GET",
-					url: '{{ url("sistema/agregaraspiranteevento")}}',   
-					data: { "id_delegado":id_delegado  ,"id_evento": eleccion,"id_area": id_area},
-					success: function(result){
-						
-						var secciones = $('#secciones').val();
-						
-						if(secciones=="1"){
-							evaluaragregaaspitante();
-						}
-						else{
-							evaluarasignararea();
-						}
-						
-						
-						
-					},
-					error: function (r) {
-						console.log("ERROR");
-						console.log(r);
-					}
-				});					  
+      
+      
+      $.ajax({
+      type: "get",
+      url: '{{ url("sistema/consultaraspiranteenevento")}}', 
+      data: { "id_delegado":id_delegado  ,"id_evento": eleccion,"id_area": id_area},
+      success: function(cantidad)
+      { 
+        if(cantidad<=0)
+        {     
+              $.ajax({
+                type: "GET",
+                url: '{{ url("sistema/agregaraspiranteevento")}}',   
+                data: { "id_delegado":id_delegado  ,"id_evento": eleccion,"id_area": id_area},
+                success: function(result){
+
+                  var secciones = $('#secciones').val();
+
+                  if(secciones=="1"){
+                    evaluaragregaaspitante();
+                  }
+                  else{
+                    evaluarasignararea();
+                  }
+
+
+
+                },
+                error: function (r) {
+                  console.log("ERROR");
+                  console.log(r);
+                }
+              });	
+        }
+        else{
+             lobibox_emergente('warning','top right',true,'Ya existe en esta configuración!');	
+        }      
+ 
+            }
+          });              
 		},
 		error: function (r) {
 			console.log("ERROR");
 			console.log(r);
 		}
 	});
+    
 
-}  
+}   
 
 
 function delAspirante(idbd)

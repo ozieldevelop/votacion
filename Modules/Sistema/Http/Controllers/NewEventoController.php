@@ -46,7 +46,7 @@ class NewEventoController extends Controller
            {
 				   $buscando = $request->input('evento');
 				   //dd($buscando);
-                   $data = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo','veri_id_zoom'])->where('id',$buscando)->get();
+                   $data = eventoModel::select(['id','nombre','preinscripAsambleaLimite','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo','veri_id_zoom'])->where('id',$buscando)->get();
 				   //dd($data);
 				   return $data;
                    return json_decode(json_encode($data),true);
@@ -64,6 +64,7 @@ class NewEventoController extends Controller
 				   $entidad->nombre = $request->input('nombre');
 				   $entidad->rangofecha1 = $request->input('rangofecha1');
 				   $entidad->rangofecha2 = $request->input('rangofecha2');
+           $entidad->preinscripAsambleaLimite = $request->input('preinscripAsambleaLimite');
 				   $entidad->maxvotos = $request->input('maxvotos');
 				   $entidad->tipo = $request->input('tipo');
 				   $entidad->capitulos = $request->input('capitulos');
@@ -100,13 +101,14 @@ class NewEventoController extends Controller
 				   $nombre = $request->input('nombre');
 				   $rangofecha1 = $request->input('rangofecha1');
 				   $rangofecha2 = $request->input('rangofecha2');
+           $preinscripAsambleaLimite = $request->input('preinscripAsambleaLimite');
 				   $maxvotos = $request->input('maxvotos');
 				   $tipo = $request->input('tipo');
 				   $capitulos = $request->input('capitulos');
 				   $estadosasoc = $request->input('estadosasoc');
 				   $veri_id_zoom = $request->input('idzoom');
            
-           $data = eventoModel::where('id',$id)->update(['nombre'=> $nombre , 'rangofecha1'=> $rangofecha1 , 'rangofecha2'=> $rangofecha2, 'maxvotos'=> $maxvotos , 'tipo'=> $tipo , 'capitulos'=> $capitulos , 'estadosasoc'=> $estadosasoc ,'veri_id_zoom'=> $veri_id_zoom  ]);
+           $data = eventoModel::where('id',$id)->update(['preinscripAsambleaLimite'=> $preinscripAsambleaLimite ,'nombre'=> $nombre , 'rangofecha1'=> $rangofecha1 , 'rangofecha2'=> $rangofecha2, 'maxvotos'=> $maxvotos , 'tipo'=> $tipo , 'capitulos'=> $capitulos , 'estadosasoc'=> $estadosasoc ,'veri_id_zoom'=> $veri_id_zoom  ]);
 				   
 				   return $data;
            } catch (Exception $e) {

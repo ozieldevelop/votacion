@@ -6,7 +6,7 @@
 
 
     <div class="col-sm-12 col-md-12 col-lg-12">     
-                   <button type="button" class="btn btn-block btn-primary" disabled> Acceder a Reuni&oacute;n</button>
+                   <button type="button" style="display:none" class="btn btn-block btn-primary" disabled> Acceder a Reuni&oacute;n</button>
                     @if($periodoactivo==1)
                         <a type="button" href="{{ env('APP_URL', './') }}/votacion/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-primary">Votaci&oacute;n</a>
                     @else

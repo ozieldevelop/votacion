@@ -9,7 +9,7 @@
             <div>
                 <h4><b>COOPERATIVA PROFESIONALES, R.L.</b></h4>
                 <p><i><b>Éxito, cooperación y confianza</b></i></p>
-                <h4>Inscripción a la Reunion Capitular</h4>
+                <h4>Inscripción a la Reunión Capitular</h4>
             </div>
         </div>
         <div class="card-body" id="register_form" >
@@ -18,7 +18,7 @@
                     <p>Tema: <span><strong>{{ $nombreevento }}</strong></span></p>
                     {{-- <p>Tema: <span><strong>@{{ tema }}</strong></span></p> --}}
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" style="display:none">
                     <p>Descripción: <span><strong>@{{ descripcion }}</strong></span></p>
                     {{-- <p>Descripción: <span><strong>@{{ descripcion }}</strong></span></p> --}}
                 </div>
@@ -138,7 +138,7 @@
                     if(this.datos.email!=null && this.datos.email_confirmation!=null) {
 
                         if (this.datos.email == this.datos.email_confirmation) {
-                            axios.post('inscripcion/guardaasistencia', {
+                            axios.post('cliente/inscripcion/guardaasistencia', {
                                 datos: this.datos
                             }).then( response => {
                                 if (response.status == 200) {

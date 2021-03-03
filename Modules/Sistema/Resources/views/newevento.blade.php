@@ -30,15 +30,18 @@
 	<div class="row">
 	  <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
 		<label for="inputnumasociado">Inicia</label>
-		<input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="rangofecha1"  placeholder="2020-11-01 00:00:00">
+		<input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="rangofecha1"  placeholder="">
 	  </div>
 	</div>
 	<div class="row">
 		<div class="form-group col-sm-12 col-md-12 col-lg-12 ">
 		<label for="inputnombreasoc">Termina</label>
-		<input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="rangofecha2"  placeholder="2020-11-01 00:00:00">
+		<input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="rangofecha2"  placeholder="">
 	  </div>
 	 </div> 
+      
+
+      
 	 <div class="row">
 		<div class="form-group col-sm-12 col-md-12 col-lg-12 ">
 		<label for="inputnombreasoc">M&aacute;ximos de votos por persona</label>
@@ -56,6 +59,15 @@
 						</select>
 				  </div> 
 				</div>
+      
+      
+	<div class="row" style="display:none" id="lafechalimite">
+		<div class="form-group col-sm-12 col-md-12 col-lg-12 ">
+		<label for="inputflimite">Fecha L&iacute;mite PreInscripc&iacute;on</label>
+		<input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="preinscripAsambleaLimite"  placeholder="">
+	  </div>
+	 </div> 
+      
       
  	<div class="row ">
 	   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
@@ -171,6 +183,9 @@ var ran01 = $('#rangofecha1').val();
 
 
 var ran02 = $('#rangofecha2').val();
+  
+var preinscripAsambleaLimite = $('#preinscripAsambleaLimite').val();
+  
 
 var maxvotos = $('#maxvotos').val();
 
@@ -225,7 +240,15 @@ sucursales = [];
 		return false;
       }
 	*/				
-					
+  var seccselect = $('#secciones').find('option:selected').val();
+  if(seccselect=="2" )
+  {
+      if(preinscripAsambleaLimite=="" || preinscripAsambleaLimite==undefined || preinscripAsambleaLimite.length < 0)
+      {
+        lobibox_emergente('info','top right',true,'Debe ingresar una fecha limite para la preinscripción de aspirantes a directivos.');
+        return false; 
+      } 
+  }					
 
   if(nom01=="" || nom01==undefined || nom01.length < 0)
   {
@@ -246,11 +269,11 @@ sucursales = [];
 else{
 	ran01 = ran01.replace(/\//g, "-")+ ':00';
 	ran02 = ran02.replace(/\//g, "-")+ ':00';
-	
+	preinscripAsambleaLimite = preinscripAsambleaLimite.replace(/\//g, "-")+ ':00';
 	
 	$.ajax({
 		url: '{{ url("sistema/agregarnuevoevento")}}',
-		data: {"nombre": nom01 ,"maxvotos": maxvotos ,"rangofecha1": ran01 , "rangofecha2": ran02 ,'tipo': secciones,'idzoom':idzoom, 'capitulos': JSON.stringify(seleccioncheckbox),'estadosasoc': JSON.stringify(seleccioncheckbox2)},
+		data: {"nombre": nom01 ,"maxvotos": maxvotos ,"preinscripAsambleaLimite": preinscripAsambleaLimite ,"rangofecha1": ran01 , "rangofecha2": ran02 ,'tipo': secciones,'idzoom':idzoom, 'capitulos': JSON.stringify(seleccioncheckbox),'estadosasoc': JSON.stringify(seleccioncheckbox2)},
 		method: 'post',
 		headers: {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -296,7 +319,7 @@ function cargarlistado(valor)
 				  },
 				  sInfoFiltered: "(Filtrados de _MAX_ total registros)",
 				},
-				order: [2,'asc'],
+				order: [1,'asc'],
 				columnDefs: [ {
 
 				targets: [ 3], // column or columns numbers
@@ -323,7 +346,7 @@ function cargarlistado(valor)
 				],				
 				ajax: '{{ url("sistema/cargareventos")}}',
 				  columns: [
-				   { data: 'nombre', name: 'nombre' , class: 'text-center'},				   
+				   { data: 'nombre', name: 'nombre'},				   
 				   { data: 'rangofecha1', name: 'rangofecha1' , class: 'text-center'},
 				   { data: 'rangofecha2', name: 'rangofecha2', class: 'text-center' },
 				   { data: 'action', name: 'action', orderable: false, searchable: false, class: 'text-center'}				   
@@ -341,8 +364,8 @@ function Cargar(dato)
 			this.checked = false;
 	});
 		
-		
-    $('#btnagregar').css('display','none');  
+		 $('#secciones').attr('disabled','disabled');  
+   $('#btnagregar').css('display','none');  
 	$('#btnactualizar').css('display','block');	
 	$('#btnagregarparam').css('display','block');				 
 
@@ -367,12 +390,21 @@ function Cargar(dato)
 		data: {"evento": dato },
         success: function(result){
 		
-             var datoz = (result);
-			 var id_evento = datoz[0]['id'];	
-			 var tipo = datoz[0]['tipo'];
+          var datoz = (result);
+			    var id_evento = datoz[0]['id'];	
+			    var tipo = datoz[0]['tipo'];
 				  var n1 = datoz[0]['nombre'];	
 				  var mvotos = datoz[0]['maxvotos'];	
           var id_zoom = datoz[0]['veri_id_zoom'];	
+          if(datoz[0]['preinscripAsambleaLimite']=="" || datoz[0]['preinscripAsambleaLimite']==undefined || datoz[0]['preinscripAsambleaLimite'].length < 0)
+          {    
+            var preinscripAsambleaLimite = '';
+          }
+          else
+            {
+               var preinscripAsambleaLimite = datoz[0]['preinscripAsambleaLimite'].replace(/-/g, "/").substring(0,datoz[0]['preinscripAsambleaLimite'].length - 3);
+            }
+         
 				  var f1 = datoz[0]['rangofecha1'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha1'].length - 3);
 				  var f2 = datoz[0]['rangofecha2'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha2'].length - 3);
 				  
@@ -384,10 +416,20 @@ function Cargar(dato)
 				  capitulos.forEach(element =>$("#elchea"+element).prop("checked","checked") );
 				  estadosasoc.forEach(element =>$("#elcheb"+element).prop("checked","checked") );
 
+          if(tipo==2)
+          {
+              $('#lafechalimite').css('display','block');	
+          }
+          else
+          {
+            $('#lafechalimite').css('display','none');	
+          }
+          
 				  $('#id_evento').val(id_evento);
 				  $('#nombre').val(n1);
 				  $('#rangofecha1').val(f1);
 				  $('#rangofecha2').val(f2);
+          $('#preinscripAsambleaLimite').val(preinscripAsambleaLimite);
 				  $('#maxvotos').val(mvotos);
 				  $("#secciones").val(tipo).change();
 				  $('#id_zoom').val(id_zoom);
@@ -410,48 +452,63 @@ var secciones = $('#secciones').find('option:selected').val();
 var nombre = $('#nombre').val();
 var rangofecha1 = $('#rangofecha1').val();
 var rangofecha2 = $('#rangofecha2').val();
+var preinscripAsambleaLimite = $('#preinscripAsambleaLimite').val();
+ 
 var maxvotos = $('#maxvotos').val();
 
 
 var	ran01 = rangofecha1.replace(/\//g, "-")+ ':00';
 var	ran02 = rangofecha2.replace(/\//g, "-")+ ':00';
 
-var idzoom = $('#id_zoom').val();
+  
+  
+  var seccselect = $('#secciones').find('option:selected').val();
+
+  if(seccselect=="2" )
+  {
+      if(preinscripAsambleaLimite=="" || preinscripAsambleaLimite==undefined || preinscripAsambleaLimite.length < 0)
+      {
+        preinscripAsambleaLimite  = preinscripAsambleaLimite.replace(/\//g, "-")+ ':00';          
+        lobibox_emergente('info','top right',true,'Debe ingresar una fecha limite para la preinscripción de aspirantes a directivos.');
+        return false; 
+      } 
+  }
+
+  var idzoom = $('#id_zoom').val();
 
 
- var checkedVals = $('.loschecks:checkbox:checked').map(function() {
-    return this.value;
-}).get();
+   var checkedVals = $('.loschecks:checkbox:checked').map(function() {
+      return this.value;
+  }).get();
 
-seleccioncheckbox = Object.values(checkedVals);
-seleccioncheckbox.forEach(obj => {
-  obj.value = +obj.value; 
-});
+  seleccioncheckbox = Object.values(checkedVals);
+  seleccioncheckbox.forEach(obj => {
+    obj.value = +obj.value; 
+  });
 
-var valoropcion = parseInt(seleccioncheckbox.length);
-
-
- var checkedVals2 = $('.loschecksEstados:checkbox:checked').map(function() {
-    return this.value;
-}).get();
-
-seleccioncheckbox2 = Object.values(checkedVals2);
-
-var valoropcion2 = parseInt(seleccioncheckbox2.length);
+  var valoropcion = parseInt(seleccioncheckbox.length);
 
 
-if(valoropcion<=0)
-{
-	lobibox_emergente('info','top right',true,'Deben seleccionar almenos una sucursal.');		 
-	return false;
-}
+   var checkedVals2 = $('.loschecksEstados:checkbox:checked').map(function() {
+      return this.value;
+  }).get();
 
-if(valoropcion2<=0)
-{
-	lobibox_emergente('info','top right',true,'Deben seleccionar almenos un estatus de asociado.');		 
-	return false;
-}
+  seleccioncheckbox2 = Object.values(checkedVals2);
 
+  var valoropcion2 = parseInt(seleccioncheckbox2.length);
+
+
+  if(valoropcion<=0)
+  {
+    lobibox_emergente('info','top right',true,'Deben seleccionar almenos una sucursal.');		 
+    return false;
+  }
+
+  if(valoropcion2<=0)
+  {
+    lobibox_emergente('info','top right',true,'Deben seleccionar almenos un estatus de asociado.');		 
+    return false;
+  }
 
   if(id_evento=="" || id_evento==undefined || id_evento.length < 0)
   {
@@ -474,19 +531,19 @@ if(valoropcion2<=0)
   {
 	lobibox_emergente('info','top right',true,'Debe ingresar una fecha final.');
     return false; 
-  }   
+  } 
   else{
 
 	$.ajax({
 		url: '{{ url("sistema/actualizarevento")}}',
-		data: {"id": id_evento ,"nombre": nombre ,"maxvotos": maxvotos ,"rangofecha1": ran01 , "rangofecha2": ran02 ,'tipo': secciones,  'idzoom':idzoom, 'capitulos': JSON.stringify(seleccioncheckbox),'estadosasoc': JSON.stringify(seleccioncheckbox2)},
+		data: {"id": id_evento ,"preinscripAsambleaLimite": preinscripAsambleaLimite ,"nombre": nombre ,"maxvotos": maxvotos ,"rangofecha1": ran01 , "rangofecha2": ran02 ,'tipo': secciones,  'idzoom':idzoom, 'capitulos': JSON.stringify(seleccioncheckbox),'estadosasoc': JSON.stringify(seleccioncheckbox2)},
 		method: 'post',
 		headers: {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		},
 		success: function(result){
 				lobibox_emergente('success','top right',true,'Actualizado!');		
-				//setTimeout(function(){ location.reload();  }, 3000);
+				setTimeout(function(){ location.reload();  }, 3000);
 		},
 		error: function (r) {
 			console.log("ERROR");
@@ -536,9 +593,28 @@ if(valoropcion2<=0)
 
 $(document).ready(function () {
 
+  $('#secciones').on('change', function() {
+      	
+        var seccselect = $('#secciones').find('option:selected').val();
+        if(seccselect==1){
+            $('#lafechalimite').css('display','none');	
+        }
+        else
+          {
+            $('#lafechalimite').css('display','block');	
+          }
+  });
+  
+  
 	$('#lsteventos').DataTable();
 	cargarlistado(1);	
-
+  $('#secciones').val('1');
+  
+  $('#nombre').val('');
+  $('#rangofecha1').val('');
+  $('#rangofecha2').val('');
+  $('#preinscripAsambleaLimite').val('');
+  $('#id_zoom').val();
 });
 
 
@@ -557,16 +633,25 @@ $('#rangofecha1').datetimepicker({
 dayOfWeekStart : 1,
 lang:'en',
 //disabledDates:[anio+'/01/08',anio+'/01/09',anio+'/01/10'],
-startDate:	anio+'/01/05'
+startDate:	anio+'/03/05'
 });
 
 $('#rangofecha2').datetimepicker({
 dayOfWeekStart : 1,
 lang:'en',
 //disabledDates:[anio+'/01/08',anio+'/01/09',anio+'/01/10'],
-startDate:	anio+'/01/05'
+startDate:	anio+'/03/05'
 });
-
+  
+$('#preinscripAsambleaLimite').datetimepicker({
+dayOfWeekStart : 1,
+lang:'en',
+//disabledDates:[anio+'/01/08',anio+'/01/09',anio+'/01/10'],
+startDate:	anio+'/03/05'
+});
+  
+  
+  
 $('#datetimepicker').datetimepicker({value:anio+'/04/15 05:03', step:10});
 
 $('.some_class').datetimepicker();

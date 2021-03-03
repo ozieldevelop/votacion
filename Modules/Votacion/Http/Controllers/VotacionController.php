@@ -126,7 +126,7 @@ class VotacionController extends Controller
                     {
 
                         $configuraciones = DB::select('select modo,correopruebas from conf');
-                        //dd($configuraciones[0]->modo);
+
                         if ($configuraciones[0]->modo == 0)
                         {
                             Auth::loginUsingId(3);
@@ -633,7 +633,12 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
 						  <br />
 						  <div class="container box" style="width: 970px;">
 						
-							<h1>Agradecemos tu participaci&oacute;n en el evento  ' . $documento_resultados[0]->nombre . '</h1>
+            
+              <img src="https://portal.cooprofesionales.com.pa/mercadeo/files/333f41_newlogo1.png" style="width: 470px;">
+						
+							<br/>
+              
+							<h1>Agradecemos su participaci&oacute;n en las votaciones del evento:<br/>  ' . $documento_resultados[0]->nombre . '</h1>
 
 			
 						
@@ -668,7 +673,7 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
                     ];
                     
                     Mail::send([], [], function($message) use ($details) {
-                    $message->from(env('MAIL_FROM_ADDRESS'),  env('MAIL_FROM_NAME'));
+                    $message->from(env('MAIL_FROM_ADDRESS'),  env('APP_AUTOR'));
                     $message->to($details["correo"]);
                     $message->subject($details["title"]);
                     $message->setBody($details["contenido"] , 'text/html');

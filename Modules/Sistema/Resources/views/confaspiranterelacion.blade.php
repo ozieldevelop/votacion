@@ -448,7 +448,8 @@ function CambiarEstado(id_delegado,valor)
 									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 								},
 								success: function(result){
-											cargarlistado(1);					 
+											//cargarlistado(1);			
+                        setTimeout(function(){ location.reload();  }, 1000);	
 								},
 								error: function (r) {
 									console.log("ERROR");
