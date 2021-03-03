@@ -496,7 +496,7 @@ function Cargar(dato)
 		data: {"buscando": dato },
 		success: function(result){
 			var id_delegado = result[0]['id_delegado'];	
-      alert(id_delegado);
+      //alert(id_delegado);
       
       $.ajax({
       type: "get",
