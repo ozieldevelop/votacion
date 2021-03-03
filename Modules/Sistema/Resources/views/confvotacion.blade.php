@@ -322,7 +322,7 @@ $('.DirectivosDir').html('');
 					
 						$("#secciones").val(result[0]["tipo"]).change();
 						 $("#areas").html('');
-						 
+						 //alert(result[0]["tipo"]);
 						if(result[0]["tipo"]==1){
 							console.log(result[0]["tipo"]+' Capitular');
 
@@ -496,7 +496,7 @@ function Cargar(dato)
 		data: {"buscando": dato },
 		success: function(result){
 			var id_delegado = result[0]['id_delegado'];	
-      
+      alert(id_delegado);
       
       $.ajax({
       type: "get",

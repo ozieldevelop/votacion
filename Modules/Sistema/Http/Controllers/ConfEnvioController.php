@@ -72,7 +72,8 @@ class ConfEnvioController extends Controller
 								$vowelsvalues2 =  ( str_replace($vowels, "", $xdata["estadosasoc"])  );
 				}
 
-				$resultsxa =DB::select('SELECT IDAGEN,AGENCIA,CASE WHEN CLASOC = 0 THEN CLDOC ELSE CLASOC END as CLASOC, NOMBRE,CORREO,trato,fecha_nac FROM data_clientes where  id_tipo = 2 and CORREO IS NOT NULL and (TRIM(CORREO) <>"") and IDAGEN in('.$vowelsvalues.') and  id_estado in ('.$vowelsvalues2.')' );
+				//$resultsxa =DB::select('SELECT IDAGEN,AGENCIA,CASE WHEN CLASOC = 0 THEN CLDOC ELSE CLASOC END as CLASOC, NOMBRE,CORREO,trato,fecha_nac FROM data_clientes where  id_tipo = 2 and CORREO IS NOT NULL and (TRIM(CORREO) <>"") and IDAGEN in('.$vowelsvalues.') and  id_estado in ('.$vowelsvalues2.')' );
+        $resultsxa =DB::select('SELECT IDAGEN,AGENCIA,CLASOC, NOMBRE,CORREO,trato,fecha_nac FROM data_clientes_vt where  id_tipo = 2 and CORREO IS NOT NULL and (TRIM(CORREO) <>"") and IDAGEN in('.$vowelsvalues.') and  id_estado in ('.$vowelsvalues2.')' );
 				
 				//dd($resultsxa);
 				

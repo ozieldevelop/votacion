@@ -145,7 +145,20 @@ class NewAspiranteController extends Controller
            }
      }	 
 	 
-  
+     public function cargardatoaspirante(Request $request)
+     {
+           try
+           {
+				   $buscando = $request->input('buscando');
+				   //dd($buscando);
+                   $data = aspiranteModel::select(['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo','memoria','tipo','foto','adjunto','eliminado'])->where('id_delegado',$buscando)->get();
+				   //dd($data);
+				   //return $data;
+                 return json_decode(json_encode($data),true);
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+           }
+     }	   
 	 
      public function consultaraspiranteenevento(Request $request)
      {
