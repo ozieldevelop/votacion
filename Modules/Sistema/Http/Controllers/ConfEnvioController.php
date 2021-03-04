@@ -65,6 +65,8 @@ class ConfEnvioController extends Controller
 				$buscando = $request->input('eleccion');
 				$results1 = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$buscando)->get();
 				
+
+             
 				$vowels = array('[', ']', '"');
 				 
 				foreach ($results1 as $xdata) {
@@ -75,11 +77,11 @@ class ConfEnvioController extends Controller
 				//$resultsxa =DB::select('SELECT IDAGEN,AGENCIA,CASE WHEN CLASOC = 0 THEN CLDOC ELSE CLASOC END as CLASOC, NOMBRE,CORREO,trato,fecha_nac FROM data_clientes where  id_tipo = 2 and CORREO IS NOT NULL and (TRIM(CORREO) <>"") and IDAGEN in('.$vowelsvalues.') and  id_estado in ('.$vowelsvalues2.')' );
         $resultsxa =DB::select('SELECT IDAGEN,AGENCIA,CLASOC, NOMBRE,CORREO,trato,fecha_nac FROM data_clientes_vt where  id_tipo = 2 and CORREO IS NOT NULL and (TRIM(CORREO) <>"") and IDAGEN in('.$vowelsvalues.') and  id_estado in ('.$vowelsvalues2.')' );
 				
-				//dd($resultsxa);
+			 //dd($resultsxa);
 				
 				
 				foreach ($resultsxa as $xcc) {
-          
+
             if ($results1[0]->tipo ==2 )
             {  
                 $xdato = DB::select("select * from asistencia where id_evento=".$buscando ." and num_cliente= '".$xcc->CLASOC ."'" );
@@ -124,7 +126,7 @@ class ConfEnvioController extends Controller
           break;
           case 2:
               $etiquetatipoenvio = "Acceso al evento - ";
-              $laimagenicono ="<br/><img style='height:328px;width:352px' src='http://cooperativa.eaguilars.com/images/accede.png'>";
+              $laimagenicono ="<br/><img style='height:328px;width:352px' src='http://portal.cooprofesionales.com.pa/mercadeo/files/98aee5_accede.png'>";
           break;   
         }
 			  
@@ -760,34 +762,9 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
       // echo 'INSERT INTO temporal (id_evento,cldoc) VALUES ('.$id_evento.','.(int)$items.');';
          //DB::statement('INSERT INTO temporal (id_evento, cldoc) VALUES (?,?)',array($id_evento,$items));
       echo (int) trim($items)."<br/>";;
-      /*
-              $id_directivo = DB::table('temporal')-> insertGetId(
-                array(
-                      'id_evento' => $id_evento,
-                      'cldoc' => echo (int) trim($items);
-                     )
-              );
-      
-      echo ($id_directivo)."<br/>";
-      */
+
     }
-    
-   // DB::statement('call pr_genera_inscripcion_asamblea()');
-    // $datoscliente = DB::table('data_clientes')->whereIn('clasoc',$codigos );
-    // var_dump ($datoscliente );
-    
-    // $eventos = eventoModel::select(['*'])->where('id',$id_evento)->get();
-    //
-    
-    // $datoscliente = DataClientes::select(['*'])->where('CLASOC',$elcldoc)->toSql();
-    // $datoscliente = DB::select("select *  from data_clientes where CLASOC='".$elcldoc."'" )->toArray();
-    
-    // $datoscliente = DB::select('select * from data_clientes where clasoc= ?', array($elcldoc));
-    
-    // $datoscliente = DataClientes::select('*');
-    // $datoscliente = DataClientes::whereRaw('clasoc = ?', array($elcldoc))->toSql();
-    // var_dump ($datoscliente );
-    // echo $id_evento."-".$elcldoc."<br/>";
+
    
   }
 
@@ -814,7 +791,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
          
          
 
-              
+
               
          /*
              if($eventos[0]->tipo==2)
@@ -849,14 +826,15 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                                   {  
                                       //dd($datoscliente[0]->AGENCIA);
                                         
-                                        /*
+                                      if($eventos[0]->tipo==2)
+                                      {
                                         $xdato = DB::select("select * from asistencia where id_evento=".$id_evento ." and num_cliente= '".$elcldocval ."'" );
 
                                         if (count($xdato)==0 )
                                         {  
                                           DB::statement('INSERT INTO asistencia (id_evento, tipoevent, num_cliente, trato,nombre, agencia, fecha_nacimiento, asistire) VALUES ('.$id_evento.','. $eventos[0]->tipo .', '.$elcldocval.', "'.$datoscliente[0]->trato.'", "'.$datoscliente[0]->NOMBRE.'", "'.$datoscliente[0]->AGENCIA.'", "'.$datoscliente[0]->fecha_nac.'" , '.$siasistencia.');');
                                         }
-                                        */
+                                      }
                                     
                                      DB::statement('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE,tipo_envio) values('. $id_evento  .','. $datoscliente[0]->IDAGEN .','. $elcldocval .',"'. $correo_new .'","'.$datoscliente[0]->NOMBRE.'",'.$tipo_invitacion.')' );
 

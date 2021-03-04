@@ -2,6 +2,8 @@
 
 @section('content')
 
+<div  id="widget1">
+  
 <div class="row ">
      <div class="col-md-12">
 
@@ -26,7 +28,7 @@
           
                             <div class="card" >
                               <div class="card-header bg-light resaltado">ADJUNTOS</div>
-                              <div class="card-body" id="widget1">
+                              <div class="card-body">
                                 <!-- dropzone  -->
                                 <form action="{{ url('/sistema/uploaddocumentosevento') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
                                   <input type="hidden"  id="up_id_evento" name="up_id_evento"  data-bindto="parametros.up_id_evento"  value="">
@@ -45,7 +47,7 @@
 			</div>
 </div>
 
-<div id="widget1">
+
 		<div class="row ">
       		<div class="col-md-12" >
 
@@ -307,33 +309,7 @@ $(function() {
   });
 });  
       
-/*
-         Dropzone.options.myDropzone = {
-          paramName: 'file',
-          maxFilesize: 20, // MB
-          maxFiles: 20,
-          //acceptedFiles: ".jpeg,.jpg,.png,.gif",
-          init: function()
-          {
-              this.on("success", function(file, response) {
-                  cargaadjuntosx(1);
-                  console.log('Termino');
-              });
-          }
-         };
-*/
-/*  
-         Dropzone.options.myDropzone = {
-          paramName: "file", // The name that will be used to transfer the file
-          maxFilesize: 2, // MB
-          accept: function(file, done) {
-            if (file.name == "justinbieber.jpg") {
-              done("Naha, you don't.");
-            }
-            else { done(); }
-          }
-        };
-*/
+
 
 											CKEDITOR.replace('contenidoemail', { 
 													toolbar : [
@@ -563,10 +539,12 @@ $(document).ready(function ()
 			var gdb1=new GDB({parametros: model},{rootElementSelectorString: '#widget1',
 				modelChangeCallback: function(e){
 				  //model.comentario = CKEDITOR.instances.template.getData();
-				  //alert(model.asunto);
+				  //alert(model.asuntoemail);
 				  $('#json').text(JSON.stringify(model, null, '    '));
 				}
 			});
+  
+  $('#eventos').val('x');
 });
 
 </script>

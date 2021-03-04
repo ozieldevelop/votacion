@@ -151,7 +151,7 @@ class NewAspiranteController extends Controller
            {
 				   $buscando = $request->input('buscando');
 				   //dd($buscando);
-                   $data = aspiranteModel::select(['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo','memoria','tipo','foto','adjunto','eliminado'])->where('id_delegado',$buscando)->get();
+                   $data = aspiranteModel::select(['id_delegado','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo','memoria','experiencia','tipo','foto','adjunto','eliminado'])->where('id_delegado',$buscando)->get();
 				   //dd($data);
 				   //return $data;
                  return json_decode(json_encode($data),true);
@@ -371,6 +371,70 @@ class NewAspiranteController extends Controller
     }
 	 
   
+    function almacenarfilecustom(Request $request)
+    {
+        $id_retorno ='';
+       $validation = Validator::make($request->all(), [
+        'select_file2' => 'required|mimes:pdf,docx,jpeg,png,jpg,gif|max:2048'
+       ]);
+      
+   
+     if($validation->passes())
+     {
+      $image = $request->file('select_file2');
+       //dd($request->input('clasoc_id'));
+      $extension = $image->getClientOriginalExtension();
+      $tipoarchivo = $image->getMimeType();    
+      $new_name = rand() . '.' . $image->getClientOriginalExtension();
+        //dd($new_name);
+      //$nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);  
+      //$image->move(public_path('images'), $new_name);
+      $upload_success = $image->move(base_path('public/adjuntos'),$new_name);
+      
+      if ($upload_success) {
+        
+          //$nombrefile = $image->getClientOriginalName();
+
+         //dd( $tipoarchivo );  
+          //$nombre = strtolower(Auth::user()->id."_".date('YmdHms')."_".uniqid('file_'.uniqid()).".".$extension);
+
+          $peso = filesize(base_path('/public/adjuntos/').$new_name);
+         
+        	 $entidad  = new adjuntos_Model();
+				   $entidad->name_system = trim($new_name);
+           $entidad->cldoc = $request->input('clasoc_id2');
+           $entidad->etiqueta = 'Hoja de Vida';
+				   $entidad->extension = $extension;
+           $entidad->tipoarchivo = $tipoarchivo;
+           $entidad->sizefile = $peso;
+				   $entidad->save();
+           //dd($entidad->id);
+           // \DB::connection('mysql')->statement('call pr_subir_file (?,?,?,?,?,?,?)', array($id_evento,$request->session()->get('cldoc'),strtolower($nombrefile),strtolower($nombre),strtolower($extension),$tipoarchivo,$peso));
+           $id_retorno =$entidad->id;
+      }
+       
+       
+       
+      return response()->json([
+       'message'   => 'Documento Adjuntado',
+       'uploaded_doc' => $new_name,
+       'id_uploaded_doc' => $id_retorno,        
+       'class_name'  => 'alert-success'
+      ]);
+       
+     }
+     else
+     {
+      return response()->json([
+       'message'   => $validation->errors()->all(),
+       'uploaded_doc' => '',
+       'id_uploaded_doc' => $id_retorno, 
+       'class_name'  => 'alert-danger'
+      ]);
+     }
+    }
+  
+  
     function almacenarfotoperfil(Request $request)
     {
         $id_retorno ='';
@@ -416,7 +480,7 @@ class NewAspiranteController extends Controller
        
 
       return response()->json([
-       'message'   => 'Documento Adjuntado',
+       'message'   => 'Imagen de perfil adjuntada',
        'uploaded_doc' => $new_name,
        'tipo_imagen' => $tipoarchivo ,
        'class_name'  => 'alert-success'

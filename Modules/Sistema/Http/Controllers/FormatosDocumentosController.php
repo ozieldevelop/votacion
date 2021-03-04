@@ -178,6 +178,8 @@ class FormatosDocumentosController extends Controller
         $buscando = $request->input('id_evento');
         $files = $request->input('campos');
         $osi = json_decode($files);
+      
+        //dd($osi);
         $aa = $osi->{'asuntoemail'};
         $bb = $osi->{'contenidoemail'};
         $data1 = documento_envioModel::where('id_evento', $buscando)->update(['asunto' => $aa, 'texto' => $bb]);

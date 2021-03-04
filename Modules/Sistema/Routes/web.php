@@ -40,6 +40,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	
 	Route::post('/almacenarfile', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@almacenarfile'] );
   
+	Route::post('/almacenarfilecustom', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@almacenarfilecustom'] );  
+  
   Route::post('/almacenarfotoperfil', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@almacenarfotoperfil'] );
 	
   Route::get('/obteneradjunto', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@obteneradjunto'] );

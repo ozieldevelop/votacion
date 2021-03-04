@@ -59,7 +59,8 @@
                             <input id="email_confirmation" name="email_confirmation" type="email" class="form-control" placeholder="Ejemplo: juan.perez@cooprofesionales.com.pa"
                                 v-model="datos.email_confirmation">
                         </div>
-                    </div><br>
+                    </div>
+                    <br>
                     <div>
                         <input type="hidden" name="numero_asoc" value="{{ $cldoc }}" id="numero_asoc">
                         <input type="hidden" name="nombre_asoc" value="{{ $nombre }}" id="nombre_asoc">

@@ -29,6 +29,7 @@ Route::prefix('cliente')->group(function()
     Route::prefix('inscripcion')->group(function() {
         Route::get('/', 'ClienteController@index');
         Route::post('/guardaasistencia', 'ClienteController@guardaasistencia');
+        Route::post('/guardaasistenciaasamblea', 'ClienteController@guardaasistenciaasamblea');
     });
   
     Route::get('/registro', [App\Http\Controllers\HomeController::class, 'showRegistro'])->name('showRegistro');
