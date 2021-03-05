@@ -60,7 +60,7 @@ table tr th input[type="checkbox"] !important{
 
 
                                    <li class="list-group-item">
-                                        <b style="color:blue;font-size:18px">Los puestos directivos a elecci&oacute;n son  (Seleccione uno o varios):</b> 
+                                        <b style="color:blue;font-size:18px">Los puestos directivos a elecci&oacute;n son:</b> 
                                   </li>                         
 
  
