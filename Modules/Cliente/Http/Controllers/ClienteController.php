@@ -41,7 +41,7 @@ class ClienteController extends Controller
         $ideven = isset($ideven) ? urldecode($ideven) : 0;
         $idevendesc = GeneralHelper::lara_desencriptar($ideven);
 
-        $results = eventoModel::select(['id', 'nombre', 'preinscripAsambleaLimite', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
+        $results = eventoModel::select(['id', 'nombre', 'preinscripActivo', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
             ->where('id', $idevendesc)
             ->where('status', 1)
             ->get();
@@ -58,14 +58,13 @@ class ClienteController extends Controller
       
       
       
-        if ( $results[0]["tipo"] == 2) 
-        {
-              $startDateval = $carbon::createFromFormat('Y-m-d H:i:s', trim($carbon::now()))->format('Y-m-d H:i:s');
-              $endDateval = $carbon::createFromFormat('Y-m-d H:i:s', trim($results[0]["preinscripAsambleaLimite"]))->format('Y-m-d H:i:s');
-              //dd($startDate.'  '.$endDate);
-              if ($startDateval < $endDateval) {
-                 $periacticoFormulario = 1;
+        //if ( $results[0]["tipo"] == 2) 
+        //{
+              if ( $results[0]["preinscripActivo"] == 1) 
+              {
+                  $periacticoFormulario = 1;
               } else {
+                  $periacticoFormulario = 0;
                   $request->session()->flush();
                   $mensaje = "";
                   $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
@@ -76,9 +75,7 @@ class ClienteController extends Controller
                       ->with('nombre', '')
                       ->with('ideven', '');
               }                        
-        }
-      
-     
+        //}
 
         // si ya coloco asistire en tabla asistencia
         // a manera de referencia saaber si el periodo de votacion o del evento ya esta activo para habilitar el acceso a boton
@@ -89,16 +86,10 @@ class ClienteController extends Controller
             if (count($results) > 0) {
                 //echo ( " <br/> ".$date. "  ".$startDate. "  ". $endDate."");
 
-
                 $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion, fecha_nac from data_clientes_vt WHERE clasoc = " . $cldoc . " ");
-
-
 
                 //$results2 = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$idevendesc)->where('status',1)->get();
                 if ($results[0]["tipo"] == 1) {
-                    //echo "<br/><br/>----CAPITULAR----<br/>";
-
-                    //echo "<br/>PERIODO ACTIVO<br/>".$periactico;
 
                     $xdato = DB::select("select * from asistencia where id_evento=" . $idevendesc . " and num_cliente=" . $cldoc . "  ");
                     
@@ -117,25 +108,21 @@ class ClienteController extends Controller
                     }
 
                     $xdato2 = DB::select("select * from asistencia where id_evento=" . $idevendesc . " and num_cliente=" . $cldoc . " and asistire = 1  ");
-                    //dd($xdato2);
-                    if (count($xdato2) > 0) {
-                      
-                        $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h2>Muchas gracias por confirmar tu asistencia!</h2></div>";
-                        $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h4>Te esperamos</h4></div>";                      
-                        $elasistira = 1;
-                    } else {                        
-                        $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h2>Confirma tu asistencia!</h2></div>";
-                        $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h4>Estas cordialmente invitado,</h4></div>";
-                        $elasistira = 0;
+
+                    
+                    if (count($xdato2) > 0) 
+                    {
+                          $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h2>Muchas gracias por confirmar tu asistencia!</h2></div>";
+                          $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h4>Te esperamos</h4></div>";                      
+                          $elasistira = 1;
+                    } 
+                    else {                        
+                          $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h2>Confirma tu asistencia!</h2></div>";
+                          $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h4>Estas cordialmente invitado,</h4></div>";
+                          $elasistira = 0;
                     }
 
-                    //echo "<br/>EL ASISTIRA<br/>".$elasistira;
-
-                    //echo "<br/>";
-                  // var_dump( $datoscliente);
-
                     $direccionimagenperfil = "../../images/logo-footer.png";
-
                     $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> <h3><i> " . trim($datoscliente[0]->trato) ."." ."&nbsp;" . trim($datoscliente[0]->NOMBRE) . "</i></h3></div>";
 
                     Auth::loginUsingId(3);
@@ -161,71 +148,62 @@ class ClienteController extends Controller
                         ->with('fecha_nac', trim($datoscliente[0]->fecha_nac))
                         ->with('agencia', trim($datoscliente[0]->AGENCIA));
 
-                    /*
-       
-                  
-                  
-									
-									if (count($xdato) >0 )
-									{
-               
-										//$detalles = DB::select("SELECT num_cliente,trato,nombre,agencia from asistencia WHERE num_cliente = ".$cldoc. " AND id_evento = ".$idevendesc. "");
-                    
+                          /*
+                        if (count($xdato) >0 )
+                        {
 
-                    $referenciafoto = DB::select("SELECT id_delegado as id_sec,COUNT(num_cliente) AS existencia , num_cliente as cldoc,CASE WHEN foto IS NULL THEN 0 WHEN foto IS NOT NULL THEN 1 END AS tienefoto,foto,tipo from directivos WHERE num_cliente = ".$cldoc. " ");
-                    
+                          //$detalles = DB::select("SELECT num_cliente,trato,nombre,agencia from asistencia WHERE num_cliente = ".$cldoc. " AND id_evento = ".$idevendesc. "");
 
-                    
-                    if($referenciafoto[0]->tienefoto==1 )
-                    {
-                      $direccionimagenperfil=$referenciafoto[0]->tipo."base64,".$referenciafoto[0]->foto;
-                    }
-                    else{
-                      $direccionimagenperfil="../../images/logo-footer.png";
-                    }
 
-                    
-                    
-                       //  dd(($request->all()));                  
-										
-									}
-									else
-									{
-  
-										$request->session()->put('cldoc', $cldoc);
-										$request->session()->put('idevendesc', $idevendesc);
-										$request->session()->put('tipoevent', $results2[0]["tipo"] );
+                          $referenciafoto = DB::select("SELECT id_delegado as id_sec,COUNT(num_cliente) AS existencia , num_cliente as cldoc,CASE WHEN foto IS NULL THEN 0 WHEN foto IS NOT NULL THEN 1 END AS tienefoto,foto,tipo from directivos WHERE num_cliente = ".$cldoc. " ");
 
-                  
-										$categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$idevendesc. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");
 
-										$listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= ".$idevendesc. " and  a.estado=1 order by a.apellido asc");									
-                    
-               
-                    $datosfoto = DB::select("SELECT * FROM directivos where num_cliente=".$cldoc."");
 
-  									if (count($datosfoto) >0 )
-									  {  
-                      $tienefoto = 1;
-                      $tipo = $datosfoto[0]->tipo;
-                      $foto =  $datosfoto[0]->foto;
-                    }
-                    else
-                    {
-                      $tienefoto = 0;
-                      $tipo = "data:image/png;";
-                      $foto = "../../images/logo-footer.png";                    
-                    }
+                          if($referenciafoto[0]->tienefoto==1 )
+                          {
+                            $direccionimagenperfil=$referenciafoto[0]->tipo."base64,".$referenciafoto[0]->foto;
+                          }
+                          else{
+                            $direccionimagenperfil="../../images/logo-footer.png";
+                          }
+                             //  dd(($request->all()));                  
 
-                  
-                    Auth::loginUsingId(3);
+                        }
+                        else
+                        {
 
-                  
-										return view('cliente::index')->with('foto', $foto)->with('aspirantes', $listadoaspirantes)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] )->with('f_inicia', $results2[0]["rangofecha1"] )->with('f_termina', $results2[0]["rangofecha2"] )->with('num_cliente', $cldoc )->with('ocupacion', trim($datoscliente[0]->ocupacion) )->with('profesion', trim($datoscliente[0]->profesion) )->with('trato', trim($datoscliente[0]->trato) )->with('nombre', trim($datoscliente[0]->nombre) )->with('agencia', trim($datoscliente[0]->agencia) );	 										
-									}
-								}
+                          $request->session()->put('cldoc', $cldoc);
+                          $request->session()->put('idevendesc', $idevendesc);
+                          $request->session()->put('tipoevent', $results2[0]["tipo"] );
 
-							}*/
+
+                          $categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$idevendesc. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");
+
+                          $listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= ".$idevendesc. " and  a.estado=1 order by a.apellido asc");									
+
+
+                          $datosfoto = DB::select("SELECT * FROM directivos where num_cliente=".$cldoc."");
+
+                          if (count($datosfoto) >0 )
+                          {  
+                            $tienefoto = 1;
+                            $tipo = $datosfoto[0]->tipo;
+                            $foto =  $datosfoto[0]->foto;
+                          }
+                          else
+                          {
+                            $tienefoto = 0;
+                            $tipo = "data:image/png;";
+                            $foto = "../../images/logo-footer.png";                    
+                          }
+
+                          Auth::loginUsingId(3);
+
+                          return view('cliente::index')->with('foto', $foto)->with('aspirantes', $listadoaspirantes)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] )->with('f_inicia', $results2[0]["rangofecha1"] )->with('f_termina', $results2[0]["rangofecha2"] )->with('num_cliente', $cldoc )->with('ocupacion', trim($datoscliente[0]->ocupacion) )->with('profesion', trim($datoscliente[0]->profesion) )->with('trato', trim($datoscliente[0]->trato) )->with('nombre', trim($datoscliente[0]->nombre) )->with('agencia', trim($datoscliente[0]->agencia) );	 										
+                          }
+                         }
+
+                        }*/
                 } else {
                     //echo("ASAMBLEA<br/>");
 
@@ -794,17 +772,7 @@ class ClienteController extends Controller
                     $files['asistire'] .
                     ", f_asistire_regis='" .
                     $files['f_asistire_regis'] .
-                    "', soy_aspirante=" .
-                    $files['soy_aspirante'] .
-                    ", cantidato_delegado=" .
-                    $files['cantidato_delegado'] .
-                    ", junta_directores=" .
-                    $files['junta_directores'] .
-                    ", junta_vigilancia=" .
-                    $files['junta_vigilancia'] .
-                    ", comite_credito=" .
-                    $files['comite_credito'] .
-                    ",veri_zoom_email='" .
+                    "',veri_zoom_email='" .
                     $files['email_confirmation'] . //*
                     "' where id_evento=" .
                     $files['id_evento'] .

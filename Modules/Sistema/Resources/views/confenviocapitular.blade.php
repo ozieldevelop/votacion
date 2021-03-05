@@ -275,11 +275,12 @@
   
 function generarcola(){
 	var eleccion = $('#eventos').val();
+    var tipo_invitacion = $('#tipo_invitacion').val();
 	espere('Cargando');
 									$.ajax({
 										type: "GET",
 										datatype: 'json',
-										data: {"eleccion": eleccion },
+										data: {"eleccion": eleccion ,'tipo_invitacion':tipo_invitacion },
 										url: '{{ url("sistema/insertarnuevosavisos")}}',  
 										success: function(result){
 										//var data = JSON.parse(result);

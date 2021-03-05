@@ -8,7 +8,9 @@
               <table class="table">
                 <tr><td colspan="2" style="font-weight:bold;font-size:24px">Areas a la que pertenece</td></tr>
  							@foreach ($areaspostuladas as $dataareaspostuladas)
-								<tr><td>{{ $dataareaspostuladas->nombreevento }}</td><td>{{ $dataareaspostuladas->area_etiqueta }}</td></tr>
+								<tr><td>{{ $dataareaspostuladas->nombreevento }}</td><td>{{ $dataareaspostuladas->area_etiqueta }}</td><td> <button type="button" class="btn btn-primary" onclick="delAspiranteCustom({{ $dataareaspostuladas->id_evento }} , {{ $dataareaspostuladas->tipo_evento }} ,{{ $dataareaspostuladas->num_cliente }} ,  {{ $dataareaspostuladas->id_area }})">
+                  Quitar
+                  </button>  </td></tr>
 							@endforeach               
             </table>
 
@@ -537,6 +539,49 @@ function Cargar(dato)
 
 }  
 
+  function delAspiranteCustom(id_evento,tipo_evento,num_cliente,id_area)
+{
+	
+	
+alert(id_evento+ ' - '+tipo_evento+ ' - '+num_cliente+ ' - '+id_area);
+/*
+		Lobibox.confirm({
+                    msg: "Desea eleminar este aspirante ?",
+                    callback: function ($this, type) {
+                        if (type === 'yes') {
+							
+							$.ajax({
+								url: '{{ url("sistema/eliminaraspiranteevento")}}',
+								data: {  'id_evento': id_evento ,'id_delegado': idbd,"id_area": id_area },
+								method: 'post',
+								headers: {
+										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+								},
+								success: function(result){
+										var secciones = $('#secciones').val();
+										if(secciones=="1"){
+											evaluaragregaaspitante();
+										}
+										else{
+											evaluarasignararea();
+										}
+								},
+								error: function (r) {
+									console.log("ERROR");
+									console.log(r);
+								}
+							});
+							
+										  
+                        } else if (type === 'no') {
+									
+                        }
+                    }
+                });
+                
+                */
+			
+}
 
 function delAspirante(idbd)
 {

@@ -231,8 +231,9 @@ class NewAspiranteController extends Controller
              //dd($files);
             $osi = json_decode($files);  
             $memoria= $osi->{'memoria'} ? $osi->{'memoria'} : '...';
+            $experiencia= $osi->{'experiencia'} ? $osi->{'experiencia'} : '...';
             //dd($memoria);
-            $data = aspiranteModel::where('id_delegado',$id_delegado)->update(['num_cliente'=> $numasoc , 'nombre'=> $nombreasoc , 'apellido'=> $apellidoasoc , 'memoria'=> $memoria, 'adjunto'=> $id_cv, 'foto'=> $osi->{'avatarBase64'} ,  'tipo'=> $osi->{'tipo_imagen'} ]);
+            $data = aspiranteModel::where('id_delegado',$id_delegado)->update(['num_cliente'=> $numasoc , 'nombre'=> $nombreasoc , 'apellido'=> $apellidoasoc , 'memoria'=> $memoria, 'experiencia'=> $experiencia, 'adjunto'=> $id_cv, 'foto'=> $osi->{'avatarBase64'} ,  'tipo'=> $osi->{'tipo_imagen'} ]);
 				   return $data;
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
@@ -266,7 +267,8 @@ class NewAspiranteController extends Controller
            {		
           $files = $request->input('otrosobjetos');
           $osi = json_decode($files);  
-          $memoria= $osi->{'memoria'} ;
+          $memoria= $osi->{'memoria'} ? $osi->{'experiencia'} :'...';
+          $experiencia= $osi->{'experiencia'} ? $osi->{'experiencia'} :'...';
           $id_cv = $osi->{'id_cv'} ;
              
           //$porcion = explode("base64,",  $osi->{'avatarBase64'});
@@ -289,6 +291,7 @@ class NewAspiranteController extends Controller
                 $entidad->tipo = $tipo_imagen;   
                 $entidad->foto = $avatarBase64;               
                 $entidad->memoria =  $memoria;
+                $entidad->experiencia =  $experiencia;
                 $entidad->adjunto =  $id_cv;
                 $entidad->estado =  1;
                 $entidad->save();              
@@ -507,7 +510,7 @@ class NewAspiranteController extends Controller
         //dd($id_aspirante);
         $eventos = eventoModel::select(['id','nombre','rangofecha1'])->where('id','>',0)->orderBy('rangofecha1', 'DESC')->get();
         $tipos = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
-        $data = vtaspiranteModel::select(['id_evento','nombreevento','id_delegado','id_area','area_etiqueta','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'])->where('id_delegado',$id_aspirante)->get();
+        $data = vtaspiranteModel::select(['id_evento','tipo_evento','nombreevento','id_delegado','id_area','area_etiqueta','num_cliente','nombre','apellido','img_delegado','estado','user_audit','fecha_aud','foto','tipo'])->where('id_delegado',$id_aspirante)->get();
         
       //dd($data);
         return view('sistema::confaspiranterelacion')->with('areaspostuladas', $data)->with('id_delegado', $id_aspirante)->with('eventos', $eventos)->with('tipos', $tipos); 

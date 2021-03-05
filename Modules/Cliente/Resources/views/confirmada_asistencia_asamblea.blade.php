@@ -36,11 +36,11 @@ table tr th input[type="checkbox"] !important{
                   <i><strong>Éxito, cooperación y confianza</strong></i>
                </div>
                <div>
-                  <h4>Formulario de Inscripci&oacute;n al Evento</h4>
+                  <h4>Inscripci&oacute;n de Candidatos a Puestos Directivos</h4>
                </div>
             </div>
             <hr>
-            <div class="form-row">
+            <div class="form-row" style="display:none">
                <div class="col-md-12">
                   <p>Tema: <span><strong>{{ $nombreevento }}</strong></span></p>
                </div>
@@ -60,7 +60,7 @@ table tr th input[type="checkbox"] !important{
 
 
                                    <li class="list-group-item">
-                                        <b style="color:blue;font-size:18px">Nos gustar&iacute;a saber a que &oacute;rgano de gobierno te gustar&iacute;a ser aspirante  :</b> 
+                                        <b style="color:blue;font-size:18px">Los puestos directivos a elecci&oacute;n son  (Seleccione uno o varios):</b> 
                                   </li>                         
 
  
@@ -98,19 +98,20 @@ table tr th input[type="checkbox"] !important{
            <div class="form-row">
              <div class="alert  col-md-12 col-sm-12" id="message" style="display: none"></div>
                         <div class="form-group col-md-12 col-sm-12">
-                            <label for="numero_asoc">Foto de perfil:</label>
-                          
+                            <label for="numero_asoc"  style="color:blue;font-size:18px">Adjunte foto:</label><label style="color:red"> (Campo obligatorio) </label><!--que ser&aacute; utilizada para la votaci&oacute;n -->
+                          <!--label for=""  style="color:#c3c3c3;font-size:10px"><br/></br/>&eacute;sta ser&aacute; utilizada para la votaci&oacute;n:</label-->
                                                    <form method="post" id="upload_form" enctype="multipart/form-data">
                                                     {{ csrf_field() }}
                                                      <input type="hidden" name="clasoc_id" id="clasoc_id" value="{{ $cldoc }}"/>
                                                     <input type="hidden" name="id_tipo_doc" id="id_tipo_doc" value="1"/>
                                                     <input type="file" name="select_file" id="select_file" />
+                                                    
                                                    </form>
-                          
+                                           
                                                    <br/><a href="#" id="fotoexistente"  target="_blank" style="display:none">Ver foto de perfil</a>                          
                         </div>
                         <div class="form-group col-md12 col-sm-12">
-                            <label for="nombre_asoc">Hoja de vida:</label>
+                            <label for="nombre_asoc"  style="color:blue;font-size:18px">Adjunte copia de c&eacute;dula: </label><label style="color:red"> (Campo obligatorio) </label>
 
                           
                                                    <form method="post" id="upload_form2" enctype="multipart/form-data">
@@ -118,8 +119,8 @@ table tr th input[type="checkbox"] !important{
                                                      <input type="hidden" name="clasoc_id2" id="clasoc_id2" value="{{ $cldoc }}"/>
                                                      <input type="file" name="select_file2" id="select_file2" />
                                                    </form>
-                          
-                                                  <br/><a href="#" id="cvexistente"  target="_blank" style="display:none">Descargar hoja de vida existente</a>
+                                <br/>
+                                                  <a href="#" id="cvexistente"  target="_blank" style="display:none">Ver copia de c&eacute;dula</a>
                         </div>
                     </div>
                     <br>
@@ -206,8 +207,8 @@ function Cargar(dato)
             var junta_directores =datozval[0]['junta_directores'];	
             var junta_vigilancia =datozval[0]['junta_vigilancia'];	
             var comite_credito =datozval[0]['comite_credito'];	
-            modelo.memoria =datozval[0]['memoria'] ? datozval[0]['memoria'] : '...';
-            modelo.experiencia =datozval[0]['experiencia'] ? datozval[0]['experiencia'] : '...';
+            modelo.memoria =datozval[0]['memoria'] ? datozval[0]['memoria'] : '';
+            modelo.experiencia =datozval[0]['experiencia'] ? datozval[0]['experiencia'] : '';
 						var foto = datozval[0]['foto'] ? datozval[0]['foto'] : '';
             var tipo = datozval[0]['tipo'] ? datozval[0]['tipo'] : '';	
             var id_cv = datozval[0]['adjunto'] ? datozval[0]['adjunto'] : ''; 
@@ -278,13 +279,7 @@ function Cargar(dato)
 									
 											CKEDITOR.replace('memoria', { 
 													toolbar : [
-														{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-
-
-														'/',
-														{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline' ] },
-														{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-
+								
 
 													],
 													on: {
@@ -304,14 +299,7 @@ function Cargar(dato)
         
 											CKEDITOR.replace('experiencia', { 
 													toolbar : [
-														{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-
-
-														'/',
-														{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline' ] },
-														{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-
-
+												
 													],
 													on: {
 														change: function( evt ) {
@@ -675,6 +663,7 @@ $( document ).ready(function()
     if({{$junta_directores}} == 1){
        modelo.junta_directores =1;
       $("#juntadire").prop('checked', true);
+
     }
     else
     {
@@ -684,6 +673,7 @@ $( document ).ready(function()
     if({{$junta_vigilancia}} == 1){
        modelo.junta_vigilancia = 1;
       $("#juntavigi").prop('checked', true);
+
     }   
     else
     {
@@ -693,12 +683,16 @@ $( document ).ready(function()
     if({{$comite_credito}} == 1){
        modelo.comite_credito = 1;
       $("#comite_credi").prop('checked', true);
+
     }   
     else
     {
         modelo.comite_credito = 0;
     }
   
+
+
+
   
     setTimeout(function(){ asignardatospantalla();  }, 2000);
 });     

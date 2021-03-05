@@ -8,8 +8,8 @@
 		
 
 
-			  <div class="form-group col-sm-12 col-md-12 col-lg-12" style="display:none" id="areaimagen" >
-				         <div class="widget-user-image" id="outputimg-circle"><img onclick="abrirmodal();" class="img-circle" src="" alt="User Avatar"></div>
+			  <div class="form-group col-sm-12 col-md-12 col-lg-12"   >
+				           <button type="btn" class="btn btn-success form-control" onclick="mostrarmodalaspirantes()">Buscar / Listado Actual </button>
 			  </div>
        
  			   <div class="form-group col-sm-12 col-md-12 col-lg-12">
@@ -18,30 +18,32 @@
 			  </div>
        
 
- 			   <div class="form-group col-sm-12 col-md-12 col-lg-12" id="verparticipaciones" style="display:none">
-
-				  <button type="btn" id="verparticipacionesobjetoclick"  class="btn btn-success form-control" onclick="verparticipacionesfncion()">Junta o Comit&eacute;s </button>
-           
-			  </div>       
-       
 
 
 
-       <div class="card" >
-            <div class="card-header bg-light resaltado"> IMPORTAR LISTADO CSV </div>
-                <div class="card-body" >
-                                <!-- dropzone  -->
-                                <form action="{{ url('/sistema/subirlistadoaspirantes') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
-                                  <input type="hidden"  id="up_id_evento" name="up_id_evento"  data-bindto="parametros.up_id_evento"  value="">
-                                  <input type="hidden"  id="tipo_invitacion" name="tipo_invitacion"  data-bindto="parametros.tipo_invitacion"  >
-                                  {{ csrf_field() }}
-                                </form>
-                                <!-- AREA DONDE SE LISTARAN LOS ARCHIVOS ADJUNTOS UNA VEZ SUBIDOS -->
-            </div>
-      </div>
+
+         <div class="card" >
+              <div class="card-header bg-light resaltado"> IMPORTAR LISTADO CSV </div>
+                  <div class="card-body" >
+                                  <!-- dropzone  -->
+                                  <form action="{{ url('/sistema/subirlistadoaspirantes') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
+                                    <input type="hidden"  id="up_id_evento" name="up_id_evento"  data-bindto="parametros.up_id_evento"  value="">
+                                    <input type="hidden"  id="tipo_invitacion" name="tipo_invitacion"  data-bindto="parametros.tipo_invitacion"  >
+                                    {{ csrf_field() }}
+                                  </form>
+                                  <!-- AREA DONDE SE LISTARAN LOS ARCHIVOS ADJUNTOS UNA VEZ SUBIDOS -->
+              </div>
+        </div>
                 
 
   
+  
+	  
+			  
+	</div>
+	<div class="col-md-9">
+
+    
   
 			   <input type="hidden" class="form-control" id="id_delegado" >
 			   <div class="form-group col-sm-12 col-md-12 col-lg-12">
@@ -60,7 +62,12 @@
 			  </div>
        
 
+ 			   <div class="form-group col-sm-12 col-md-12 col-lg-12" id="verparticipaciones" style="display:none">
 
+				  <button type="btn" id="verparticipacionesobjetoclick"  class="btn btn-warning form-control" onclick="verparticipacionesfncion()">Click para ver a que Junta o Comit&eacute;s al que pertenece</button>
+           
+			  </div>       
+       
 				<div class="form-group col-sm-12 col-md-12 col-lg-12">
 				<label for="inputapellidoasoc">Seleccionar tipo de documento a subir</label>
             <select id="tipodoc" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="console.log(this.value)" >
@@ -90,33 +97,47 @@
 			  </div>   
        
        
-       
+       <hr/>
+    
 				<div class="form-group col-sm-12 col-md-12 col-lg-12">
-				<label for="inputapellidoasoc">Memorias</label>
+				<label for="inputapellidoasoc">Datos profesionales relevantes:</label>
           <textarea class="form-control" id="memoria" style="resize:none" ></textarea>
 			  </div>
        
 
- 
+ 				<div class="form-group col-sm-12 col-md-12 col-lg-12">
+				<label for="inputapellidoasoc">Experiencia cooperativista:</label>
+          <textarea class="form-control" id="experiencia" style="resize:none" ></textarea>
+			  </div>
 
        
 			 <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
 							
 										<button type="text" id="btnagregar" class="btn btn-secondary form-control" onclick="agregarNuevo()">AGREGAR</button>
 										<button type="text" id="btnactualizar" class="btn btn-info form-control" onclick="actualizar()" style="display:none">ACTUALIZAR</button>
-			  </div>
-	  
-			  
+			  </div>  
+                      
 	</div>
-	<div class="col-md-9">
-					<style>
+</div>
+  					<style>
                 #lstaspirantes_wrapper{
                     width:100%;
                 }
 						</style>
-									<div class="row">
-									
+	  
 
+
+
+<div class="modal" tabindex="-1" role="dialog" id="myModal"  data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog  modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Seleccione un aspirante del listado</h5>
+        <button type="button" class="close" id="cerrarModal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 											<table id="lstaspirantes" class="display stripe" cellspacing="0" style="width:100%">
 												<thead>
 													<tr>
@@ -130,38 +151,16 @@
 
 												</tbody>
 											</table>
-
-									</div>	   
-	</div>
-</div>
-
-	  
-  <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content ">
-  
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Listado</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-  
-        <!-- Modal body -->
-        <div class="modal-body">
-
-          
-       
-          
-          
-          
-        </div>
-
-  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
-  
+</div>
+
+
 
 @endsection
 
@@ -213,10 +212,37 @@
 													}										
 											});  
         
+											CKEDITOR.replace('experiencia', { 
+													toolbar : [
+														{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+
+
+														'/',
+														{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline' ] },
+														{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+
+
+													],
+													on: {
+														change: function( evt ) {
+                           
+															var dddd2 =  evt;
+															//model.asuntoemail =$('#asuntoemail').val();
+															//alert(dddd1.editor.name);
+															if( dddd2.editor.name == 'experiencia')
+															{
+																model.experiencia =dddd2.editor.getData();
+															}	
+                          
+														}
+													}										
+											});          
+        
     </script>        
 <script>
   var model = {
       memoria : '',
+      experiencia : '',
       id_cv:'',
       tipo_imagen:'',
       avatarBase64:''
@@ -332,7 +358,8 @@ function agregarNuevo()
 
 function mostrarmodalaspirantes()
 {
-  $('#myModal').show();
+    //$('#myModal').modal({backdrop: 'static', keyboard: false}) ;
+    $('#myModal').show();
 }
   
   
@@ -472,8 +499,9 @@ function cargarlistado(valor)
 function Cargar(dato)
 {
     //verparticipacionesfncion(dato)
+    //$('#myModal').modal({backdrop: 'static', keyboard: false}) ;
     $('#verparticipacionesobjetoclick').attr('onclick','verparticipacionesfncion('+dato+')');  
-  
+
     localStorage.setItem("aspirante_selecionado",dato);
   	$('#btnagregar').css('display','none');  
 		$('#btnactualizar').css('display','block');	  
@@ -489,6 +517,7 @@ function Cargar(dato)
     $('#numasoc').attr('disabled','disabled');  
   
 		CKEDITOR.instances['memoria'].setData('')   ;
+    CKEDITOR.instances['experiencia'].setData('')   ;
 	
 		$.ajax({
 			type: "GET",
@@ -503,6 +532,7 @@ function Cargar(dato)
                //console.log(apellido);
 					  var num_cliente =datoz[0]['num_cliente'];	
             var memoria =datoz[0]['memoria'] ? datoz[0]['memoria'] : '...';
+            var experiencia =datoz[0]['experiencia'] ? datoz[0]['experiencia'] : '...';
 						var foto = datoz[0]['foto'] ? datoz[0]['foto'] : '';
             var tipo = datoz[0]['tipo'] ? datoz[0]['tipo'] : '';	
             var id_cv = datoz[0]['adjunto'] ? datoz[0]['adjunto'] : '';  
@@ -545,6 +575,7 @@ function Cargar(dato)
 					  $('#numasoc').val(num_cliente);
             $('#clasoc_id').val(num_cliente);
             CKEDITOR.instances['memoria'].setData(memoria);
+            CKEDITOR.instances['experiencia'].setData(experiencia);
      /*   
    var model = {
       memoria : '',
@@ -562,8 +593,10 @@ function Cargar(dato)
 					  
         
             $('#verparticipaciones').css('display','block');
-          //$('#myModal').hide();
-        
+        //$('#myModal').modal({backdrop: 'none', keyboard: true}) ; 
+        //$('#myModal').hide();
+         cerrarModal();
+       //
 			},
 			error: function (r) {
 				console.log("ERROR");
@@ -685,7 +718,11 @@ function updateRango()
 
     var myDropzone = new Dropzone(".dropzone",config);
 
-
+  function cerrarModal(){
+          $('#myModal').hide();
+        $('.modal-backdrop').hide();  
+  }
+  
 $(document).ready(function () {
   
 /*
@@ -702,6 +739,19 @@ $(document).ready(function () {
 	$('#lstaspirantes').DataTable();
 	cargarlistado(1);	
 	 
+  
+  //$('#myModal').modal({backdrop: 'static', keyboard: false}) ;
+  
+$('#cerrarModal').click(function(){
+  //$('#myModal').modal({backdrop: 'static', keyboard: true}) ; 
+  cerrarModal();
+});
+  
+  
+  /*
+  $('#cerrarModal').
+
+  */
   
     $('#tipodoc').on('change', function() {
       $('#id_tipo_doc').val(this.value);

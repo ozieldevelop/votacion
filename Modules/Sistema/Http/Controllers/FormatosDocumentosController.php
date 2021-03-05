@@ -42,7 +42,7 @@ class FormatosDocumentosController extends Controller
             {
                 $peso = filesize(base_path('/public/adjuntos/') . $new_name);
 
-                \DB::connection('mysql')->statement('call pr_subir_file (?,?,?,?,?,?,?)', array(
+               /* \DB::connection('mysql')->statement('call pr_subir_file (?,?,?,?,?,?,?)', array(
                     $id_evento,
                     0,
                     strtolower($file->getClientOriginalName()) ,
@@ -50,7 +50,9 @@ class FormatosDocumentosController extends Controller
                     strtolower($extension) ,
                     $tipoarchivo,
                     $peso
-                ));
+                ));*/
+              
+                \DB::connection('mysql')->statement('call pr_subir_file (?,?,?,?,?,?,?)', [$id_evento,0, strtolower($nombrefile), strtolower($new_name), strtolower($extension), $tipoarchivo, $peso]);
                 return $file->getClientOriginalName();
             }
             else

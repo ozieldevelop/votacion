@@ -63,6 +63,9 @@ class ConfEnvioController extends Controller
            try
            {
 				$buscando = $request->input('eleccion');
+             
+        $tipo_invitacion = $request->input('tipo_invitacion');
+             
 				$results1 = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$buscando)->get();
 				
 
@@ -82,15 +85,19 @@ class ConfEnvioController extends Controller
 				
 				foreach ($resultsxa as $xcc) {
 
-            if ($results1[0]->tipo ==2 )
+            /*if ($results1[0]->tipo ==2 )
             {  
+
+            }*/
+          
                 $xdato = DB::select("select * from asistencia where id_evento=".$buscando ." and num_cliente= '".$xcc->CLASOC ."'" );
                 if (count($xdato)==0 )
                 {  
                     DB::statement('INSERT INTO asistencia (id_evento, tipoevent, num_cliente, trato,nombre, agencia, fecha_nacimiento, asistire) VALUES ('.$buscando.','. $results1[0]->tipo .', '.$xcc->CLASOC.', "'.$xcc->trato.'", "'.$xcc->NOMBRE.'", "'.$xcc->AGENCIA.'", "'.$xcc->fecha_nac.'" , 0);');
                 }
-            }
-					   DB::statement('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE) values('.$buscando .",".$xcc->IDAGEN.','.$xcc->CLASOC.',"'. $xcc->CORREO .'","'.$xcc->NOMBRE.'")' );
+          
+          
+					   DB::statement('insert into envios (id_evento,tipo_envio,IDAGEN,CLDOC,CORREO,NOMBRE) values('.$buscando .",".$tipo_invitacion.",".$xcc->IDAGEN.','.$xcc->CLASOC.',"'. $xcc->CORREO .'","'.$xcc->NOMBRE.'")' );
 				}				
 
            } catch (Exception $e) {
@@ -297,13 +304,13 @@ class ConfEnvioController extends Controller
 
 
 
-              switch($resultsevento[0]->tipo)
+              switch($tipo_envio)
                 {
                 case 1:
-                   $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                   $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
                 break;
                 case 2:
-                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
+                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
                 break;   
               }
                
@@ -807,37 +814,26 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 
                      while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
                      {
-                                  //echo('->'. $data [0]. '<-<br/>');
-                                  //dd($data);
                                   $parametros = explode (";",$data [0]);
-                       
                                   $elcldoc = filter_var($parametros [0], FILTER_SANITIZE_NUMBER_INT);
                                   $correo_new = trim($parametros [1]);   
-                       
                                   $elcldocval = intval( $elcldoc );
-                                  
-                                  //$unionx =  $elcldocval. " -  ". $correo_new;
-                        
-                                  //dd($unionx);
-                       
                                   $datoscliente = DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->where('CLASOC',$elcldocval)->get();
 
                                   if (count($datoscliente)>=1 )
                                   {  
-                                      //dd($datoscliente[0]->AGENCIA);
-                                        
+                                    /*
                                       if($eventos[0]->tipo==2)
                                       {
-                                        $xdato = DB::select("select * from asistencia where id_evento=".$id_evento ." and num_cliente= '".$elcldocval ."'" );
-
-                                        if (count($xdato)==0 )
-                                        {  
-                                          DB::statement('INSERT INTO asistencia (id_evento, tipoevent, num_cliente, trato,nombre, agencia, fecha_nacimiento, asistire) VALUES ('.$id_evento.','. $eventos[0]->tipo .', '.$elcldocval.', "'.$datoscliente[0]->trato.'", "'.$datoscliente[0]->NOMBRE.'", "'.$datoscliente[0]->AGENCIA.'", "'.$datoscliente[0]->fecha_nac.'" , '.$siasistencia.');');
-                                        }
                                       }
+                                    */
+                                   $xdato = DB::select("select * from asistencia where id_evento=".$id_evento ." and num_cliente= '".$elcldocval ."'" );
+                                   if (count($xdato)==0 )
+                                   {                                      
+                                    DB::statement('INSERT INTO asistencia (id_evento, tipoevent, num_cliente, trato,nombre, agencia, fecha_nacimiento, asistire) VALUES ('.$id_evento.','. $eventos[0]->tipo .', '.$elcldocval.', "'.$datoscliente[0]->trato.'", "'.$datoscliente[0]->NOMBRE.'", "'.$datoscliente[0]->AGENCIA.'", "'.$datoscliente[0]->fecha_nac.'" , '.$siasistencia.');');
+                                   }
                                     
-                                     DB::statement('insert into envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE,tipo_envio) values('. $id_evento  .','. $datoscliente[0]->IDAGEN .','. $elcldocval .',"'. $correo_new .'","'.$datoscliente[0]->NOMBRE.'",'.$tipo_invitacion.')' );
-
+                                    DB::statement('INSERT INTO envios (id_evento,IDAGEN,CLDOC,CORREO,NOMBRE,tipo_envio) values('. $id_evento  .','. $datoscliente[0]->IDAGEN .','. $elcldocval .',"'. $correo_new .'","'.$datoscliente[0]->NOMBRE.'",'.$tipo_invitacion.')' );
                                   }
                      }
                      fclose ( $handle );
