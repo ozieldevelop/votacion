@@ -41,7 +41,7 @@
    </div>
    <div class="form-row" id="widget1">
       <div class="col-md-6 col-sm-12">
-         <label for="numero_asoc">Número de Asociado:</label>
+         <label for="numero_asoc">Número de Cliente:</label>
          <input type="text" class="form-control" placeholder="Escriba su n&uacute;mero de cliente"  id="num_cliente" data-bindto="parametros.num_cliente"    value="" >
       </div>
       <div class="col-md-6 col-sm-12">
