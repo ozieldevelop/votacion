@@ -723,13 +723,7 @@ class ClienteController extends Controller
                     $osi->num_cliente .
                     ",'" .
                     $elnombre .
-                    "','" .
-                    $datoscliente[0]->AGENCIA .
-                    "','" .
-                    $datoscliente[0]->trato .
-                    "','" .
-                     $datoscliente[0]->fecha_nac .
-                    "',1)"
+                    "','','DR.','',1)"
             );
         }
       
