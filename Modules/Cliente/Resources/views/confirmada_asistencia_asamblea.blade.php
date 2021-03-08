@@ -60,15 +60,15 @@
             <tbody>
                <tr>
                   <th scope="row" ><input type="checkbox"  id="juntadire" class="juntadire_class form-control"> </th>
-                  <td>Junta de Directores</td>
+                  <td>5- Junta de Directores</td>
                </tr>
                <tr>
                   <th scope="row" ><input type="checkbox"  id="juntavigi" class="juntavigi_class form-control"> </th>
-                  <td>Junta de Vigilancia</td>
+                  <td>2- Junta de Vigilancia</td>
                </tr>
                <tr>
                   <th scope="row" ><input type="checkbox"  id="comite_credi" class="comite_credi_class form-control"> </th>
-                  <td>Comit&eacute; de Cr&eacute;dito</td>
+                  <td>2- Comit&eacute; de Cr&eacute;dito</td>
                </tr>
             </tbody>
          </table>
