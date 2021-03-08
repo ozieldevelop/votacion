@@ -19,8 +19,8 @@
 </style>
 <div id="register_form"  >
    <div class="text-center" >
-      <div style="">
-       <img src="http://portal.cooprofesionales.com.pa/mercadeo/files/00fc06_newlogo_oficial.png" style="width: 470px;">
+      <div style="row">
+       <img src="http://portal.cooprofesionales.com.pa/mercadeo/files/00fc06_newlogo_oficial.png" style="width: 360px;">
       </div>
 
       <div>
