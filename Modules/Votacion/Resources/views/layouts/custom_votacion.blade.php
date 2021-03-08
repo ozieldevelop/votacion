@@ -521,10 +521,10 @@
                   <a href="#" type="button" class="btn btn-danger pull-right btn-lg"  data-original-title="" title="" onclick="siguientepaso()">Siguiente</a>
                </div>
               
-               <div class="col-lg-12">
+               <!--div class="col-lg-12">
                   <label style="color:white;font-weight: bold;font-size: 19px;">Seleccione el candidato por el cual desea votar.</label>
                   <label style="color:white;font-weight: bold;font-size: 19px;"> Puede escoger hasta 10 candidatos </label>
-               </div>
+               </div-->
 
             </div>
          </div>

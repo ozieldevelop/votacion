@@ -37,4 +37,8 @@ Route::prefix('votacion')->group(function() {
 	
 	Route::get('/contenedordetalle', 'VotacionController@contenedordetalle'); 
 	
+  Route::get('/existente', 'VotacionController@existente'); 
+  
+  Route::get('/satisfactorio', 'VotacionController@satisfactorio'); 
+  
 });

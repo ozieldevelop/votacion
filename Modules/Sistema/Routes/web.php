@@ -52,6 +52,8 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
   
   Route::get('/consultaraspiranteenevento', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@consultaraspiranteenevento'] );  
 
+  Route::get('/getaspiranteenevento', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@getaspiranteenevento'] );    
+
   Route::get('/consultaaspirante', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@consultaaspirante'] );  
   
   Route::post('/subirlistadoaspirantes', ['middleware' => ['permission:newaspirante'], 'uses' => 'NewAspiranteController@subirlistadoaspirantes'] );

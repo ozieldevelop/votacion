@@ -82,7 +82,41 @@ class VotacionController extends Controller
             //throw $th;
             return view('votacion::errorencrypt', compact('th'));
         }
-    }          
+    } 
+  
+  
+  
+    public function existente(Request $request)
+    { 
+      
+       $nombre_evento = $request->input('nombre');
+           $mensaje = "";
+            $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
+            $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>ya se registro se encuentra en nuestra base de datos !</div> ";
+
+            return view('votacion::existente')
+                ->with('mensaje', $mensaje)
+                ->with('nombre', '')
+                ->with('enlace', $request->all());
+
+    }
+
+    public function satisfactorio(Request $request)
+    { 
+      
+       $nombre_evento = $request->input('nombre');
+           $mensaje = "";
+            $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
+            $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Su inscripción de candidatos a puestos directivos fue guardada !</div> ";
+
+            return view('votacion::existente')
+                ->with('mensaje', $mensaje)
+                ->with('nombre', '')
+                ->with('enlace', $request->all());
+
+    }
+  
+
     public function index(Request $request)
     {
         try

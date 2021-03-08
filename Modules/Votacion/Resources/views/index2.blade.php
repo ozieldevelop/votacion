@@ -430,21 +430,43 @@ function estilotab()
                  tagsPosition: 'top'
              });  
     
+    
+        $('.gallery-items-row').css('display','none');
+    
+  
+        $(".nav-item").on('click', function(){
+                 $('.gallery-items-row').css('display','block');
+        });   
+    
+    
+  
         $("a").each(function(){
-            //if($(this).attr("nav-link")=='all'){   console.log(this.innerHTML) }   
-              if(this.innerHTML == 'Junta de Directores'){ 
-                //alert(this.innerHTML);
-                //console.log(this);
-                 //this.attr('type', 'button');
+          console.log(this.innerHTML) ;
+          var aaa = $(this).attr('data-images-toggle');
 
-                 //this.attr('onclick', 'click');
-                  //this.click();
-                //this.trigger("click");
+if(aaa=='all'){   $(this).css('display','none') ; }   
+      
+
+              
+              
+              
+            //if($(this).attr("nav-link")=='all'){   console.log(this.innerHTML) }   
+          //if($(this).attr("nav-link")=='all'){   alert(this.innerHTML) }   
+          /*
+              if(this.innerHTML == 'Junta de Directores'){ 
                 console.log(this);
-                 //this.attr('onclick', 'click');
-              }   
+              }  
+              */
+          /*
+                if(this.innerHTML=='all'){  
+                   $('.'+this.innerHTML).css('display','none');
+                  alert(this.innerHTML);
+                }  
+                */
         });
 
+    
+    
   }
 
 
@@ -739,7 +761,11 @@ function votosxarea()
                   localStorage.setItem("aspirantes{{ $ideven }}",[]);
 
               });
+          
+          
 
+     
+          
         </script>
 
 

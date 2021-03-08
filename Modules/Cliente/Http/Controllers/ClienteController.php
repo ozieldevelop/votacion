@@ -25,6 +25,8 @@ use Response;
 class ClienteController extends Controller
 {
 
+  
+
     public function index(Request $request)
     {
         $carbon = new \Carbon\Carbon();
@@ -54,12 +56,7 @@ class ClienteController extends Controller
         } else {
             $periactico = 0;
         }
-      
-      
-      
-      
-        //if ( $results[0]["tipo"] == 2) 
-        //{
+
               if ( $results[0]["preinscripActivo"] == 1) 
               {
                   $periacticoFormulario = 1;
@@ -75,16 +72,180 @@ class ClienteController extends Controller
                       ->with('nombre', '')
                       ->with('ideven', '');
               }                        
-        //}
+    //dd($cldoc ."  " .$idevendesc);
 
-        // si ya coloco asistire en tabla asistencia
-        // a manera de referencia saaber si el periodo de votacion o del evento ya esta activo para habilitar el acceso a boton
+    if ($cldoc == 0 && $idevendesc > 0) {
 
-        // que haya recibido los parametros
-        if ($cldoc > 0 && $idevendesc > 0) {
-            // si el evento existe
             if (count($results) > 0) {
-                //echo ( " <br/> ".$date. "  ".$startDate. "  ". $endDate."");
+
+                //$results2 = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$idevendesc)->where('status',1)->get();
+                if ($results[0]["tipo"] == 1) {
+
+
+
+                    $xdato2 = DB::select("select * from asistencia where id_evento=" . $idevendesc . " and num_cliente=" . $cldoc . " and asistire = 1  ");
+
+                    //$direccionimagenperfil = "../../images/logo-footer.png";
+                    
+
+                    Auth::loginUsingId(3);
+                  
+                    return view('cliente::confirmada_asistencia_capitular')
+                        ->with('periactico', $periactico)
+                        ->with('enlace', $request->all())
+                        ->with('mensaje', $mensaje)
+                        ->with('nombreevento', trim($results[0]["nombre"]))
+                        ->with('tipoevent', $results[0]["tipo"])
+                        ->with('id_evento', $idevendesc)
+                        ->with('f_inicia', $results[0]["rangofecha1"])
+                        ->with('f_termina', $results[0]["rangofecha2"]);
+
+                        /*  return view('cliente::confirmada_asistencia_capitular')
+                              ->with('periactico', $periactico)
+                              ->with('cldoc', $cldoc)
+                              ->with('existecuentazoom', $existecuentazoom)
+                              ->with('cuentazoom', $cuentazoom)
+                              ->with('existencia', $elasistira)
+                              ->with('foto', $direccionimagenperfil)
+                              ->with('enlace', $request->all())
+                              ->with('mensaje', $mensaje)
+                              ->with('nombreevento', trim($results[0]["nombre"]))
+                              ->with('tipoevent', $results[0]["tipo"])
+                              ->with('id_evento', $idevendesc)
+                              ->with('f_inicia', $results[0]["rangofecha1"])
+                              ->with('f_termina', $results[0]["rangofecha2"])
+                              ->with('num_cliente', $cldoc)
+                              ->with('ocupacion', trim($datoscliente[0]->ocupacion))
+                              ->with('profesion', trim($datoscliente[0]->profesion))
+                              ->with('trato', trim($datoscliente[0]->trato))
+                              ->with('nombre', trim($datoscliente[0]->NOMBRE))
+                              ->with('fecha_nac', trim($datoscliente[0]->fecha_nac))
+                              ->with('agencia', trim($datoscliente[0]->AGENCIA));
+                        */
+
+               
+                } else {
+
+                    $mensaje = "";
+                    $elasistira = 1;
+
+                    $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;font-size:33px;font-weight: bold;'>REGISTRO A PUESTOS DIRECTIVOS</div>";
+
+                    Auth::loginUsingId(3);
+
+
+                    return view('cliente::confirmada_asistencia_asamblea')
+                        //->with('id_delegado', $referenciafoto[0]->id_sec)
+                        //->with('asistire', $xdato[0]->asistire)
+                        //->with('id_asistencia', $xdato[0]->id_asistencia)
+                        //->with('soy_aspirante', $xdato[0]->soy_aspirante)
+                        //->with('cantidato_delegado', $xdato[0]->cantidato_delegado)
+                        //->with('junta_directores', $xdato[0]->junta_directores)
+                        //->with('junta_vigilancia', $xdato[0]->junta_vigilancia)
+                        //->with('comite_credito', $xdato[0]->comite_credito)
+                        //->with('veri_zoom_email', $xdato[0]->veri_zoom_email)
+                        ->with('periactico', $periactico)
+                        //->with('cldoc', $cldoc)
+                        //->with('existecuentazoom', $existecuentazoom)
+                        //->with('cuentazoom', $cuentazoom)
+                        //->with('foto', $direccionimagenperfil)
+                        ->with('enlace', $request->all())
+                        ->with('mensaje', $mensaje)
+                        ->with('nombreevento', trim($results[0]["nombre"]))
+                        ->with('tipoevent', $results[0]["tipo"])
+                        ->with('id_evento', $idevendesc)
+                        ->with('f_inicia', $results[0]["rangofecha1"])
+                        ->with('f_termina', $results[0]["rangofecha2"]);
+                        //->with('num_cliente', $cldoc)
+                        //->with('ocupacion', trim($datoscliente[0]->ocupacion))
+                        //->with('profesion', trim($datoscliente[0]->profesion))
+                       // ->with('trato', trim($datoscliente[0]->trato))
+                       // ->with('nombre', trim($datoscliente[0]->NOMBRE))
+                       // ->with('agencia', trim($datoscliente[0]->AGENCIA));
+                }
+            } 
+            else 
+            {
+                $request->session()->flush();
+                $mensaje = "";
+                $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
+                $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Evento no exite o esta desactivado</div> ";
+                return view('votacion::advertencia')
+                    ->with('mensaje', $mensaje)
+                    ->with('enlace', $request->all())
+                    ->with('nombre', '')
+                    ->with('ideven', '');
+            }
+        } else {
+            $request->session()->flush();
+            $mensaje = "sssss";
+            $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
+            if ($idevendesc == 0) {
+                $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Identifici&oacute;n de evento no fue reconocido</div>";
+            }
+            return view('votacion::advertencia')
+                ->with('mensaje', $mensaje)
+                ->with('enlace', $request->all())
+                ->with('nombre', "")
+                ->with('ideven', $idevendesc);
+        }
+
+    }
+  
+  
+  
+  /*
+    public function index(Request $request)
+    {
+        $carbon = new \Carbon\Carbon();
+        $date = $carbon->now();
+        $dateServer = $date->format('Y-m-d');
+
+        $cldoc_temp = $request->input('wget');
+
+        $ideven = $request->input('id_evento');
+
+        $cldoc_temp = isset($cldoc_temp) ? urldecode($cldoc_temp) : 0;
+        $cldoc = GeneralHelper::lara_desencriptar($cldoc_temp);
+
+        $ideven = isset($ideven) ? urldecode($ideven) : 0;
+        $idevendesc = GeneralHelper::lara_desencriptar($ideven);
+
+        $results = eventoModel::select(['id', 'nombre', 'preinscripActivo', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
+            ->where('id', $idevendesc)
+            ->where('status', 1)
+            ->get();
+
+        $startDate = $carbon::createFromFormat('Y-m-d H:i:s', trim($results[0]["rangofecha1"]))->format('Y-m-d H:i:s');
+        $endDate = $carbon::createFromFormat('Y-m-d H:i:s', trim($results[0]["rangofecha2"]))->format('Y-m-d H:i:s');
+
+        if ($date > $startDate && $date < $endDate) {
+            $periactico = 1;
+        } else {
+            $periactico = 0;
+        }
+
+              if ( $results[0]["preinscripActivo"] == 1) 
+              {
+                  $periacticoFormulario = 1;
+              } else {
+                  $periacticoFormulario = 0;
+                  $request->session()->flush();
+                  $mensaje = "";
+                  $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
+                  $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Periodo de actualización de datos a expirado</div> ";
+                  return view('votacion::advertencia')
+                      ->with('mensaje', $mensaje)
+                      ->with('enlace', $request->all())
+                      ->with('nombre', '')
+                      ->with('ideven', '');
+              }                        
+
+
+        if ($cldoc > 0 && $idevendesc > 0) {
+
+            if (count($results) > 0) {
+
 
                 $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion, fecha_nac from data_clientes_vt WHERE clasoc = " . $cldoc . " ");
 
@@ -148,66 +309,9 @@ class ClienteController extends Controller
                         ->with('fecha_nac', trim($datoscliente[0]->fecha_nac))
                         ->with('agencia', trim($datoscliente[0]->AGENCIA));
 
-                          /*
-                        if (count($xdato) >0 )
-                        {
-
-                          //$detalles = DB::select("SELECT num_cliente,trato,nombre,agencia from asistencia WHERE num_cliente = ".$cldoc. " AND id_evento = ".$idevendesc. "");
-
-
-                          $referenciafoto = DB::select("SELECT id_delegado as id_sec,COUNT(num_cliente) AS existencia , num_cliente as cldoc,CASE WHEN foto IS NULL THEN 0 WHEN foto IS NOT NULL THEN 1 END AS tienefoto,foto,tipo from directivos WHERE num_cliente = ".$cldoc. " ");
-
-
-
-                          if($referenciafoto[0]->tienefoto==1 )
-                          {
-                            $direccionimagenperfil=$referenciafoto[0]->tipo."base64,".$referenciafoto[0]->foto;
-                          }
-                          else{
-                            $direccionimagenperfil="../../images/logo-footer.png";
-                          }
-                             //  dd(($request->all()));                  
-
-                        }
-                        else
-                        {
-
-                          $request->session()->put('cldoc', $cldoc);
-                          $request->session()->put('idevendesc', $idevendesc);
-                          $request->session()->put('tipoevent', $results2[0]["tipo"] );
-
-
-                          $categoriaspapeletas = DB::select("SELECT b.id_area,c.area_etiqueta AS nombrearea from evento_directivos AS b INNER JOIN conf_areas AS c ON b.id_area = c.id_area WHERE b.id_evento = ".$idevendesc. "  GROUP BY b.id_area,c.area_etiqueta ORDER BY b.id_evento");
-
-                          $listadoaspirantes = DB::select("SELECT * FROM directivos as a inner join evento_directivos as b on a.id_delegado = b.id_delegado where b.id_evento= ".$idevendesc. " and  a.estado=1 order by a.apellido asc");									
-
-
-                          $datosfoto = DB::select("SELECT * FROM directivos where num_cliente=".$cldoc."");
-
-                          if (count($datosfoto) >0 )
-                          {  
-                            $tienefoto = 1;
-                            $tipo = $datosfoto[0]->tipo;
-                            $foto =  $datosfoto[0]->foto;
-                          }
-                          else
-                          {
-                            $tienefoto = 0;
-                            $tipo = "data:image/png;";
-                            $foto = "../../images/logo-footer.png";                    
-                          }
-
-                          Auth::loginUsingId(3);
-
-                          return view('cliente::index')->with('foto', $foto)->with('aspirantes', $listadoaspirantes)->with('nombreevento', trim($results2[0]["nombre"]))->with('tipoevent', $results2[0]["tipo"] )->with('id_evento', $idevendesc )->with('ideven', $idevendesc )->with('max_votos', $results2[0]["maxvotos"] )->with('f_inicia', $results2[0]["rangofecha1"] )->with('f_termina', $results2[0]["rangofecha2"] )->with('num_cliente', $cldoc )->with('ocupacion', trim($datoscliente[0]->ocupacion) )->with('profesion', trim($datoscliente[0]->profesion) )->with('trato', trim($datoscliente[0]->trato) )->with('nombre', trim($datoscliente[0]->nombre) )->with('agencia', trim($datoscliente[0]->agencia) );	 										
-                          }
-                         }
-
-                        }*/
+               
                 } else {
-                    //echo("ASAMBLEA<br/>");
 
-                    //$mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h1>Hola por el momento necesitamos que nos mantengas actualizados los siguientes datos!</h1></div>";
                     $mensaje = "";
                     $elasistira = 1;
 
@@ -217,10 +321,9 @@ class ClienteController extends Controller
                             " "
                     );
                     
-                  //dd(  $referenciafoto);
+
                   
                     $xdato = DB::select("select * from asistencia where id_evento=" . $idevendesc . " and num_cliente=" . $cldoc . "  ");
-                    //dd( $xdato);
 
                     if ($xdato[0]->asistire == 1) {
                         $existecuentazoom = "";
@@ -232,7 +335,7 @@ class ClienteController extends Controller
                             $existecuentazoom = 0;
                         }
                         $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;font-size:33px;font-weight: bold;'>Sus datos estar&aacute;n siendo revisados; para luego ser incluidos</div>";
-                        //dd( $xdato);
+
                     } else {
                         $cuentazoom = '';
                         $existecuentazoom = 0;
@@ -245,7 +348,6 @@ class ClienteController extends Controller
                         $direccionimagenperfil = "../../images/logo-footer.png";
                     }
 
-                    //echo "<br/>".$direccionimagenperfil."<br/>";
 
                     $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'> " . trim($datoscliente[0]->trato) . "&nbsp;" . trim($datoscliente[0]->NOMBRE) . "</div>";
                     Auth::loginUsingId(3);
@@ -308,11 +410,9 @@ class ClienteController extends Controller
                 ->with('nombre', $resultsxx[0]->nombre)
                 ->with('ideven', $idevendesc);
         }
-        //return view('cliente::tablero');
 
-        //return view('cliente::index');
-        //return view('cliente::tablero');
     }
+  */
 
     function almacenarfilecv(Request $request)
     {
@@ -574,14 +674,19 @@ class ClienteController extends Controller
     }
 
   
+  
+  
+
+
+
     public function guardaasistenciaasamblea(Request $request)
     {
         // recibo los parametros
 
         $files = $request->input('datos');//dd($files);
         $osi = json_decode($files);
-
-      //  dd( $osi);
+        
+        //dd($osi);
       
         $memoria = $osi->memoria ? $osi->memoria : '';
         $experiencia =  $osi->experiencia ? $osi->experiencia : '' ;
@@ -592,86 +697,74 @@ class ClienteController extends Controller
         $elnombre = $osi->nombre_asoc;
       
         $retorno = "";
+      
         $results2 = eventoModel::select(['id', 'nombre', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo', 'veri_id_zoom'])
             ->where('id', $osi->id_evento)
             ->get();
+        
+        $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, fecha_nac, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $osi->num_cliente . " ");
       
-        $datoscliente = DB::select("SELECT clasoc as num_cliente,trato, nombre, agencia, ocupacion,profesion from data_clientes_vt WHERE clasoc = " . $osi->num_cliente . " ");
+        $xdato = DB::select("select * from asistencia where id_evento=" .$osi->id_evento . " and num_cliente=" . $osi->num_cliente . "");
+
+        if (count($xdato) == 0) 
+        {
+            
+
+            DB::statement(
+                "INSERT INTO asistencia (id_evento, tipoevent,  num_cliente, nombre, agencia, trato, fecha_nacimiento, asistire) VALUES (" .
+                    $osi->id_evento.
+                    "," .
+                    $osi->tipoevent .
+                    "," .
+                    $osi->num_cliente .
+                    ",'" .
+                    $elnombre .
+                    "','" .
+                    $datoscliente[0]->AGENCIA .
+                    "','" .
+                    $datoscliente[0]->trato .
+                    "','" .
+                     $datoscliente[0]->fecha_nac .
+                    "',1)"
+            );
+        }
       
-        DB::statement(
-                "UPDATE asistencia set asistire=" .
-                    $osi->asistire .
-                    ", f_asistire_regis='" .
-                    $osi->f_asistire_regis .
-                    "', soy_aspirante=" .
-                    $osi->soy_aspirante .
-                    ", cantidato_delegado=" .
-                    $osi->cantidato_delegado .
-                    ", junta_directores=" .
-                    $osi->junta_directores .
-                    ", junta_vigilancia=" .
-                    $osi->junta_vigilancia .
-                    ", comite_credito=" .
-                    $osi->comite_credito .
-                    " where id_evento=" .
-                    $osi->id_evento .
-                    " and num_cliente=" .$osi->num_cliente .""
-        );
-        DB::statement('update asistencia set veri_id_zoom="' . $results2[0]->veri_id_zoom . '" where id_evento=' . $osi->id_evento . '');
+        $xdato2 = DB::select("select *  from directivos where num_cliente=" . $osi->num_cliente . "");
 
-            // CONSULTO SI ESTA EN TABLA -> DIRECTIVOS PARA CREARLO AUTOMATICAMENTE PERO MANTENERLO EN US STATUS PENDIENTE
-            if ($osi->junta_directores == 1 || $osi->junta_vigilancia    == 1 || $osi->comite_credito  == 1) {
+        if (count($xdato2) == 0) {  
+             
+                $id_directivo = DB::table('directivos')->insertGetId([
+                            'num_cliente' => $osi->num_cliente ,
+                            'nombre' => $elnombre,
+                            'apellido' => "",
+                            'estado' => 0,
+                            'user_audit' => 'usuario',
+                            'tipo' => $tipo_imagen,
+                            'foto' => $avatarBase64,
+                            'memoria' => $memoria,
+                            'experiencia' => $experiencia,
+                            'adjunto' => $id_cv,
+                 ]);
 
-                $xdato2 = DB::select("select *  from directivos where num_cliente=" . $osi->num_cliente . "");
+         }
+            
+          
+         DB::statement("DELETE from evento_directivos where id_evento = " .$osi->id_evento  . " and id_delegado=" . $id_directivo . "");
 
-                if (count($xdato2) == 0) {
-                    // SI NO EXISTE LO INSERTO
-                    //DB::statement("INSERT INTO directivos (num_cliente, nombre,  user_audit) VALUES (".$osi->num_cliente.", '".$osi->nombre."',0, 'sistema')");
-                    $id_directivo = DB::table('directivos')->insertGetId([
-                        'num_cliente' => $osi->num_cliente ,
-                        'nombre' => $elnombre,
-                        'apellido' => "",
-                        'estado' => 0,
-                        'user_audit' => 'usuario',
-                        'tipo' => $tipo_imagen,
-                        'foto' => $avatarBase64,
-                        'memoria' => $memoria,
-                        'experiencia' => $experiencia,
-                        'adjunto' => $id_cv,
-                    ]);
-
-                        aspiranteModel::where('num_cliente', $osi->num_cliente )->update(['user_audit' => 'usuario','experiencia' => $experiencia,'memoria' => $memoria, 'adjunto' => $id_cv, 'foto' => $avatarBase64, 'tipo' => $tipo_imagen]);
-                        DB::statement("DELETE from evento_directivos where id_evento = " .$osi->id_evento  . " and id_delegado=" . $id_directivo . "");
-                        if ($osi->junta_directores == 1) {
-                            DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $id_directivo . ", 2)");
-                        }
-                        if ($osi->junta_vigilancia == 1) {
-                            DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $id_directivo . ", 3)");
-                        }
-                        if ($osi->comite_credito == 1) {
-                            DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" .$osi->id_evento . ", " . $id_directivo . ", 4)");
-                        }
-                    $retorno = $id_directivo;
-                } else {
-                    aspiranteModel::where('num_cliente', $osi->num_cliente   ) ->update(['user_audit' => 'usuario','experiencia' => $experiencia,'memoria' => $memoria, 'adjunto' => $id_cv, 'foto' => $avatarBase64, 'tipo' => $tipo_imagen]);
-                    DB::statement("DELETE from evento_directivos where id_evento = " . $osi->id_evento . " and id_delegado=" . $xdato2[0]->id_delegado . "");
-                    if ($osi->junta_directores == 1) {
-                        DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $xdato2[0]->id_delegado . ", 2)");
-                    }
-                    if ($osi->junta_vigilancia == 1) {
-                        DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $xdato2[0]->id_delegado . ", 3)");
-                    }
-                    if ($osi->comite_credito == 1) {
-                        DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $xdato2[0]->id_delegado . ", 4)");
-                    }
-                    $retorno = $xdato2[0]->id_delegado;
-                }
-            }
-  
+          if ($osi->junta_directores == 1) {
+              DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $id_directivo . ", 2)");
+          }
+          if ($osi->junta_vigilancia == 1) {
+              DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $id_directivo . ", 3)");
+          }
+          if ($osi->comite_credito == 1) {
+              DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" .$osi->id_evento . ", " . $id_directivo . ", 4)");
+          }   
+      
+        //$retorno = $xdato2[0]->id_delegado;
         return $retorno;
+
     }
-  
-  
   
   
     public function guardaasistencia(Request $request)

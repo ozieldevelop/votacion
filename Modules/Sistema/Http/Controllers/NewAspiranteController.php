@@ -121,12 +121,28 @@ class NewAspiranteController extends Controller
            }
      }
   
+  
+     public function getaspiranteenevento(Request $request)
+     {
+           try
+           {
+             $num_cliente = $request->input('num_cliente');
+             $id_evento = $request->input('id_evento');
+             $dataxx =DB::select('select * from asistencia where num_cliente='.$num_cliente.' and id_evento='.$id_evento.'');
+             return json_decode(json_encode($dataxx),true);
+           } catch (Exception $e) {
+                  return json(array('error'=> $e->getMessage()));
+           }
+     }
+  
+  
+  
      public function actualizarstatusaspirante(Request $request)
      {
            try
            {
-				   $buscando = $request->input('buscando');
-				   aspiranteModel::where('num_cliente',$buscando)->update(['eliminado'=> 0]);
+				      $buscando = $request->input('buscando');
+				      aspiranteModel::where('num_cliente',$buscando)->update(['eliminado'=> 0]);
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }
@@ -405,7 +421,7 @@ class NewAspiranteController extends Controller
          
         	 $entidad  = new adjuntos_Model();
 				   $entidad->name_system = trim($new_name);
-           $entidad->cldoc = $request->input('clasoc_id2');
+           //$entidad->cldoc = $request->input('clasoc_id2');
            $entidad->etiqueta = 'Hoja de Vida';
 				   $entidad->extension = $extension;
            $entidad->tipoarchivo = $tipoarchivo;
