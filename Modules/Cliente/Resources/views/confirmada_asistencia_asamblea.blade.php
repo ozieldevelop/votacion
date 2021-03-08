@@ -358,15 +358,15 @@
      
      
             // consultar si el numero de asociado ya guardo su informacion
-
+    
             $.ajax({
               url: '{{ url("sistema/getaspiranteenevento")}}',
               data: { 'num_cliente' : val_num_cliente ,'id_evento' : {{ $id_evento }}  },
               method: 'get',
               success: function(result)
               {
-
-                    if(result<=0)
+                //alert(result);
+                   if(result =="" || result==undefined || result.length < 0)
                     {
                             Swal.fire({
                                     title: 'Confirma el registro!',
