@@ -33,15 +33,19 @@ class ClienteController extends Controller
         $date = $carbon->now();
         $dateServer = $date->format('Y-m-d');
 
-        $cldoc_temp = $request->input('wget');
+        //$cldoc_temp = $request->input('wget');
 
         $ideven = $request->input('id_evento');
 
-        $cldoc_temp = isset($cldoc_temp) ? urldecode($cldoc_temp) : 0;
-        $cldoc = GeneralHelper::lara_desencriptar($cldoc_temp);
+        //$cldoc_temp = isset($cldoc_temp) ? urldecode($cldoc_temp) : 0;
+        //$cldoc = GeneralHelper::lara_desencriptar($cldoc_temp);
+        
+        $cldoc = 0;
 
-        $ideven = isset($ideven) ? urldecode($ideven) : 0;
-        $idevendesc = GeneralHelper::lara_desencriptar($ideven);
+       // $ideven = isset($ideven) ? urldecode($ideven) : 0;
+        //$idevendesc = GeneralHelper::lara_desencriptar($ideven);
+      
+        $idevendesc = 1;
 
         $results = eventoModel::select(['id', 'nombre', 'preinscripActivo', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
             ->where('id', $idevendesc)

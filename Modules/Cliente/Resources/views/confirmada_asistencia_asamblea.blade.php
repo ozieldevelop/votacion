@@ -395,7 +395,7 @@
                                              },
                                              success: function(result){
                                                lobibox_emergente('success','top right',true,'Registro  agregado satisfactoriamente! ');
-                                               setTimeout(function(){ window.location.href = '{{ url("votacion/satisfactorio")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                                               setTimeout(function(){ window.location.href = '{{ url("votacion/satisfactorio")}}' ; }, 1000);
                                              },
                                              error: function (r) {
                                                  //lobibox_emergente('success','top right',true,'de seguro error.');
@@ -410,7 +410,7 @@
                     }
                     else
                     {
-                       setTimeout(function(){ window.location.href = '{{ url("votacion/existente")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                       setTimeout(function(){ window.location.href = '{{ url("votacion/existente")}}' ; }, 1000);
                     }
    
               },
