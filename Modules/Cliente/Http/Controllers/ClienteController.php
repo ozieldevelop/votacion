@@ -713,9 +713,22 @@ class ClienteController extends Controller
         if (count($xdato) == 0) 
         {
             
-
+        $valjd = 0;
+        $valjv = 0;
+        $valcc = 0;
+      
+          if ($osi->junta_directores == 1) {
+              $valjd = 1;
+          }
+          if ($osi->junta_vigilancia == 1) {
+              $valjv = 1;
+          }
+          if ($osi->comite_credito == 1) {
+              $valcc = 1;
+          }  
+          
             DB::statement(
-                "INSERT INTO asistencia (id_evento, tipoevent,  num_cliente, nombre, agencia, trato, fecha_nacimiento, asistire) VALUES (" .
+                "INSERT INTO asistencia (id_evento, tipoevent,  num_cliente, nombre, agencia, trato, fecha_nacimiento, asistire,junta_directores,junta_vigilancia,comite_credito) VALUES (" .
                     $osi->id_evento.
                     "," .
                     $osi->tipoevent .
@@ -729,12 +742,13 @@ class ClienteController extends Controller
                     $datoscliente[0]->trato .
                     "','" .
                      $datoscliente[0]->fecha_nac .
-                    "',1)"
+                    "',1,".$valjd.",".$valjv.",".$valcc.")"
             );
         }
       
         $xdato2 = DB::select("select *  from directivos where num_cliente=" . $osi->num_cliente . "");
 
+      
         if (count($xdato2) == 0) {  
              
                 $id_directivo = DB::table('directivos')->insertGetId([
@@ -754,7 +768,9 @@ class ClienteController extends Controller
             
           
          DB::statement("DELETE from evento_directivos where id_evento = " .$osi->id_evento  . " and id_delegado=" . $id_directivo . "");
-
+        
+       // dd($osi->junta_directores);
+      
           if ($osi->junta_directores == 1) {
               DB::statement("INSERT INTO evento_directivos (id_evento, id_delegado, id_area) VALUES (" . $osi->id_evento . ", " . $id_directivo . ", 2)");
           }
