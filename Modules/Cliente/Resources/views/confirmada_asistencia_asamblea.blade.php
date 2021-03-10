@@ -96,7 +96,7 @@
          </form>
          <br/>
          <a href="#" id="cvexistente"  target="_blank" style="display:none">Ver copia de c&eacute;dula</a>
-        <label style="color:#ca6f4b">Art&iacute;culo 3.46 del Estatuto: No podr&aacute; ocupar cargos directivos los asociados que tengan entre s&iacute; parentesco por afinidad hasta el 2&#176; grado de consanguinidad hasta el 4&#176; grado.</label>
+        <label style="color:#ca6f4b">Art&iacute;culo 3.46 del Estatuto:    No podr&aacute;n ocupar cargos directivos los asociados que tengan entre s&iacute; parentesco por afinidad hasta el 2&#176; grado, o de consanguinidad hasta el 4&#176; grado.</label>
       </div>
    </div>
    <br>
