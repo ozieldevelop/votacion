@@ -63,7 +63,7 @@ class ReportesController extends Controller
 						  
 				$html .= $dataa[0]['superior'];
 
-                $html .='<div style="text-align:justify;"><p>Fueron electos :</p></div>';
+                //$html .='<div style="text-align:justify;"><p>Fueron electos :</p></div>';
 
 
 
