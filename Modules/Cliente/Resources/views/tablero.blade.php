@@ -5,17 +5,6 @@
 
 
 
-    <div class="col-sm-12 col-md-12 col-lg-12">     
-                   <button type="button" style="display:none" class="btn btn-block btn-primary" disabled> Acceder a Reuni&oacute;n</button>
-                    @if($periodoactivo==1)
-                        <a type="button" href="{{ env('APP_URL', './') }}/votacion/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-primary">Votaci&oacute;n</a>
-                    @else
-                        <button type="button" href="#" class="btn btn-block btn-primary" disabled>Votaci&oacute;n</button>
-                    @endif                   
-    </div>
-
-
-    <div class="col-sm-12 col-md-12 col-lg-12"> &nbsp;</div>
 
 
     <div class="col-sm-12 col-md-12 col-lg-12">     
@@ -65,7 +54,7 @@
       
       
 @if($tipoevent==2)
-       <div class="col-sm-12 col-md-12 col-lg-12"> 
+       <div class="col-sm-12 col-md-12 col-lg-12" style="display:none"> 
                             <div class="card" >
                               <div class="card-header bg-light resaltado">POSTULADOS</div>
                               <div class="card-body" >

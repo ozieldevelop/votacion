@@ -9,8 +9,18 @@
       <link href="../../../css/bootstrap3.min.css" rel="stylesheet">
       <meta name="csrf-token" content="{{ csrf_token() }}">
       <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>  
+     
+  <link rel="stylesheet" href="../../css/lolibox.min.css"/>
+  <script src="../../js/lobibox.js"></script>     
       <style type="text/css">
       
+        
+.nav-pills>li+li {
+    width: 97% !important;
+      border: solid 1px #fff !important;
+}
+        
+        
          .chat-room {
          border-collapse: collapse;
          border-spacing: 0;
@@ -33,26 +43,26 @@
          -webkit-border-radius: 4px 0 0 4px;
          }
          .chat-room .tengah-side {
-         width: 75%;
+         width: 70%;
          background: #fff;
          border-right: 1px solid #e5e8ef;
          }
          .chat-room .kanan-side {
-         width: 25%;
+         width: 30%;
          background: #fff;
          }
          .chat-room .kiri-side .user-head {
-         background: #008d5e;
+         background: #009640;
          color: #FFFFFF;
          min-height: 70px;
          padding: 15px;
          }
          .chat-room .kanan-side .user-head {
-         background: #008d5e;
+         background: #009640;
          color: #FFFFFF;
          min-height: 70px;
          padding: 10px;
-         border-left: 1px solid #008d5e;
+         border-left: 1px solid #009640;
          margin-left: -1px;
          position: relative;
          }
@@ -67,7 +77,7 @@
          letter-spacing: 1px;
          }
          .chat-room-head {
-         background: #008d5e;
+         background: #009640;
          color: #FFFFFF;
          min-height: 70px;
          padding: 15px;
@@ -331,7 +341,7 @@
          background: transparent;
          }
          .navbar-custom {
-         background-color: #008d5e;
+         background-color: #009640;
          }
          /* change the brand and text color */
          .navbar-custom .navbar-brand,
@@ -427,7 +437,7 @@
   counter-reset: li;
   list-style: none;
   *list-style: decimal;
-  font-size: 19px;
+  font-size: 12px;
   font-family: 'Raleway', sans-serif;
   margin-bottom: 4em;
   font-weight: bold;
@@ -449,7 +459,7 @@
   -webkit-border-radius: .3em;
   /*border-radius: 10em;*/
   transition: all .2s ease-in-out;
-  font-size:19px;
+  /*font-size:19px;*/
   }
   
   .chat__messages  a:hover{
@@ -492,7 +502,11 @@
    <body>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-custom navbar-fixed-top">
-         <div class="container">
+        
+        
+        
+        
+         <div class="container" style="display:none">
             <div class="navbar-header">
                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                <span class="sr-only">Toggle navigation</span>
@@ -500,31 +514,42 @@
                <span class="icon-bar"></span>
                <span class="icon-bar"></span>
                </button>
-               <a class="navbar-brand" href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" style="font-size: 26px;">  {{  isset($nombreevento) ? $nombreevento :  '' }}</a>
+               
        
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
+            <div id="navbar" class="">
                <ul class="nav navbar-nav navbar-right">
                   <!--li><a href="../navbar/">Default</a></li-->
-                  <li><label style="color:white;font-weight: bold;font-size: 19px;"> Cantidad de candidatos seleccionados:</label></li>
-                  <li><label style="color:white;font-weight: bold;font-size: 19px;" id="contadorSeleccionados"> (0) </label></li>
+                  <li>
+                 
+                 
+                 
+                 
+                 </li>
                </ul>
             </div>
          </div>
+        
+        
+        
+        
          <div class="col-lg-12" aria-labelledby="navbarDropdownMenuLink3">
+           <div class="row">
+                <div class="col-lg-12 pull-left position">
+                    <label style="font-size: 26px;color:white">  {{  isset($nombreevento) ? $nombreevento :  '' }}</label>
+                </div>
+           </div>
+           
             <div class="row">
-               <div class="col-lg-8 pull-lef position">
-                  <input id="elfiltro" type="text" placeholder="Buscar por nombre o número de cliente..." class="form-control">
+               <div class="col-lg-8 pull-left position">
+                <label style="color:white;font-weight: bold;font-size: 12px;"> Cantidad de candidatos seleccionados:</label>
+                 <label style="color:white;font-weight: bold;font-size: 12px;" id="contadorSeleccionados"> (0) </label>
+                  <input id="elfiltro" type="text" placeholder="Buscar por nombre o número de cliente..." class="form-control" style="display:none">
                </div>
               
-               <div class="col-lg-4 pull-lef position">
+               <div class="col-lg-4 pull-rigth position">
                   <a href="#" type="button" class="btn btn-danger pull-right btn-lg"  data-original-title="" title="" onclick="siguientepaso()">Siguiente</a>
                </div>
-              
-               <!--div class="col-lg-12">
-                  <label style="color:white;font-weight: bold;font-size: 19px;">Seleccione el candidato por el cual desea votar.</label>
-                  <label style="color:white;font-weight: bold;font-size: 19px;"> Puede escoger hasta 10 candidatos </label>
-               </div-->
 
             </div>
          </div>

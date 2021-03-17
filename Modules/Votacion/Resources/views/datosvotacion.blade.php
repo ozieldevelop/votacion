@@ -31,7 +31,7 @@ localStorage.setItem("lasboletas{{ $ideven }}",[]);
 							@foreach ($areas as $pape)
 									<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team"> 
 										<div class="card ">
-																	<div class="card-header" style="background:#97a37b;text-align: center;color:white;font-size: 33px;font-weight: bold;">
+																	<div class="card-header" style="background:#009640;text-align: center;color:white;font-size: 33px;font-weight: bold;">
 																	 {{$pape->voto_area_etiqueta }}
 																	</div>
 											<div class="row">

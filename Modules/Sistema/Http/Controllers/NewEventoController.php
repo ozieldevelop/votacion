@@ -29,7 +29,7 @@ class NewEventoController extends Controller
 	{
            try
            {
-                   $data = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('status',1);
+                   $data = eventoModel::select(['id','nombre','preinscripActivo','votacionActivo','maxvotos','capitulos','estadosasoc','status','tipo'])->where('status',1);
                    return Datatables::of($data)
                    ->addColumn('action', function ($data) {
                      return ' <button class="dropdown-item btn-danger"  onclick="Eliminar('. trim($data->id). ')"><i class="icon-book-open"></i> Eliminar</button><button class="dropdown-item btn-primary"  onclick="Cargar('. trim($data->id). ')"><i class="icon-book-open"></i> Selecci&oacute;n</button>';
@@ -44,12 +44,10 @@ class NewEventoController extends Controller
      {
            try
            {
-				   $buscando = $request->input('evento');
-				   //dd($buscando);
-                   $data = eventoModel::select(['id','nombre','preinscripActivo','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo','veri_id_zoom'])->where('id',$buscando)->get();
-				   //dd($data);
-				   return $data;
-                   return json_decode(json_encode($data),true);
+				        $buscando = $request->input('evento');
+                $data = eventoModel::select(['id','nombre','preinscripActivo','votacionActivo','maxvotos','capitulos','estadosasoc','status','tipo','veri_id_zoom'])->where('id',$buscando)->get();
+				        return $data;
+                //return json_decode(json_encode($data),true);
            } catch (Exception $e) {
                   return json(array('error'=> $e->getMessage()));
            }
@@ -62,9 +60,10 @@ class NewEventoController extends Controller
            {
 				   $entidad  = new eventoModel();
 				   $entidad->nombre = $request->input('nombre');
-				   $entidad->rangofecha1 = $request->input('rangofecha1');
-				   $entidad->rangofecha2 = $request->input('rangofecha2');
+				   //$entidad->rangofecha1 = $request->input('rangofecha1');
+				   //$entidad->rangofecha2 = $request->input('rangofecha2');
            $entidad->preinscripActivo = $request->input('preinscripActivo');
+           $entidad->votacionActivo = $request->input('votacionActivo');
 				   $entidad->maxvotos = $request->input('maxvotos');
 				   $entidad->tipo = $request->input('tipo');
 				   $entidad->capitulos = $request->input('capitulos');
@@ -99,17 +98,15 @@ class NewEventoController extends Controller
            {
 				   $id = $request->input('id');
 				   $nombre = $request->input('nombre');
-				   $rangofecha1 = $request->input('rangofecha1');
-				   $rangofecha2 = $request->input('rangofecha2');
+				   //$rangofecha1 = $request->input('rangofecha1');
+				   //$rangofecha2 = $request->input('rangofecha2');
            $preinscripActivo = $request->input('preinscripActivo');
-        
-             if($preinscripActivo=="true"){
-               $preinscripActivo = 1;
-             }
-             else
-             {
-               $preinscripActivo=0;
-             }
+           $votacionActivo = $request->input('votacionActivo');
+             
+            // dd( $preinscripActivo ."-". $votacionActivo);
+             
+
+             
               //dd( $preinscripActivo);
 				   $maxvotos = $request->input('maxvotos');
 				   $tipo = $request->input('tipo');
@@ -117,7 +114,7 @@ class NewEventoController extends Controller
 				   $estadosasoc = $request->input('estadosasoc');
 				   $veri_id_zoom = $request->input('idzoom');
            
-           $data = eventoModel::where('id',$id)->update(['preinscripActivo'=> $preinscripActivo ,'nombre'=> $nombre , 'rangofecha1'=> $rangofecha1 , 'rangofecha2'=> $rangofecha2, 'maxvotos'=> $maxvotos , 'tipo'=> $tipo , 'capitulos'=> $capitulos , 'estadosasoc'=> $estadosasoc ,'veri_id_zoom'=> $veri_id_zoom  ]);
+           $data = eventoModel::where('id',$id)->update(['preinscripActivo'=> $preinscripActivo ,'votacionActivo'=> $votacionActivo ,'nombre'=> $nombre , 'maxvotos'=> $maxvotos , 'tipo'=> $tipo , 'capitulos'=> $capitulos , 'estadosasoc'=> $estadosasoc ,'veri_id_zoom'=> $veri_id_zoom  ]);
 				   
 				   return $data;
            } catch (Exception $e) {

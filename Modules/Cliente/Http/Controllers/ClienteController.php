@@ -494,22 +494,32 @@ class ClienteController extends Controller
         if ($cldoc > 0 && $idevendesc > 0) {
             // si todo va bien
 
-            $results = eventoModel::select(['id', 'nombre', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
+            $results = eventoModel::select(['id', 'nombre',  'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
                 ->where('id', $idevendesc)
                 ->get();
 
             if (count($results) > 0) {
-                $results2 = eventoModel::select(['id', 'nombre', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
+                $results2 = eventoModel::select(['id', 'nombre',  'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
                     ->where('id', $idevendesc)
                     ->where('status', 1)
                     ->get();
 
+              
+  
+              
+                   if ($results2[0]["votacionActivo"]==1)
+                   {   
+                       $pactivo = 1;
+                   } else {
+                       $pactivo = 0;
+                   } 
+                     
                 //dd($results2);
 
-                $carbon = new \Carbon\Carbon();
+                /*$carbon = new \Carbon\Carbon();
                 $date = $carbon->now();
                 $dateServer = $date->format('Y-m-d');
-
+        
                 $startDate = $carbon::createFromFormat('Y-m-d H:i:s', trim($results2[0]["rangofecha1"]))->format('Y-m-d');
                 $endDate = $carbon::createFromFormat('Y-m-d H:i:s', trim($results2[0]["rangofecha2"]))->format('Y-m-d');
                 $pactivo = 0;
@@ -517,7 +527,7 @@ class ClienteController extends Controller
                     $pactivo = 1;
                 } else {
                     $pactivo = 0;
-                }
+                }*/
 
                 /*
                   $xdato = DB::select("select *  from votantes where id_evento=".$idevendesc." and (cast(aes_decrypt(`asociado`,'xyz123') as char charset utf8mb4)=".$cldoc.")");

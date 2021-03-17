@@ -20,7 +20,7 @@ class ReportesController extends Controller
         $capitulos = capitulosModel::select(['IDAGEN','AGENCIA'])->where('IDAGEN','>',0)->get();
 		$asamblea_estructura = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
 		$estados_asoc = estados_asocModel::select(['id_estado','estado'])->where('id_estado','>',0)->get();		
-		$eventos = eventoModel::select(['id','nombre','rangofecha1'])->where('status',1)->orderBy('rangofecha1', 'DESC')->get();
+		$eventos = eventoModel::select(['id','nombre'])->where('status',1)->orderBy('nombre', 'asc')->get();
 		$tipos = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
 		return view('sistema::reportes')->with('eventos', $eventos)->with('tipos', $tipos)->with('capitulos', $capitulos)->with('asamblea_estructura', $asamblea_estructura)->with('estados_asoc', $estados_asoc); 		
     }	
@@ -82,7 +82,7 @@ class ReportesController extends Controller
 				foreach ($datos1 as $grupovotacion)
 				{
 					
-					$datos2 = \DB::connection('mysql')->select('SELECT * from vt_totales as a where a.id_evento = '.$id_evento.' and  a.id_area = '.$grupovotacion->id_area.' order by a.id_area,cantidadvotos DESC');
+					$datos2 = \DB::connection('mysql')->select('SELECT * from vt_totales as a where a.id_evento = '.$id_evento.' and  a.id_area = '.$grupovotacion->id_area.' order by a.id_area,apellido,cantidadvotos DESC');
 					
 				  
 					$html.='<table border="1" style="border-collapse: collapse;width:100%;padding:15px;">

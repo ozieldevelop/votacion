@@ -59,8 +59,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <img src="../../images/logo-cooperativa.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Portal de Eventos</span>
+      <img src="../../images/logocope.png" alt="AdminLTE Logo" class="brand-image" style="float: none !important;line-height: 0; margin-left: 0;margin-right: 0;margin-top: 0;max-height: 105px !important;width: 100%;">
+      <span class="brand-text font-weight-light" style="opacity:-2.5">Portal de Eventos</span>
     </a>
 
     <!-- Sidebar -->
@@ -78,7 +78,7 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" id="usuarioslinea">
-
+                  <li></li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
