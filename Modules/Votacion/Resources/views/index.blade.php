@@ -33,7 +33,6 @@
                    </div>
             </div>
         </div>
-        
 
 @endsection
 
@@ -56,7 +55,7 @@ var aspirtantesall = '';
         url: '{{ url("votacion/verificaparticipacion")}}'
         , method: 'GET'
         , success: function(result){
-          alert(result);
+          //alert(result);
 				if(result>0)
 					{
 						location.href = '{{ url("votacion/contenedordetalle")}}';

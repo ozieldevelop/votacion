@@ -97,7 +97,7 @@ class ReportesController extends Controller
 					  {
 
 								$html.='<tr>
-								<td>&nbsp;'.htmlentities($registrosvotacion->nombre).' &nbsp;  '.htmlentities($registrosvotacion->apellido).'</td>
+								<td>&nbsp;'.htmlentities($registrosvotacion->apellido).' &nbsp; '.htmlentities($registrosvotacion->nombre).'  </td>
 								<td  style="width:75;text-align:center;padding:7px;">'.$registrosvotacion->aspirante.'</td>
 								<td style="width:135px;text-align:center;padding:7px;">'.$registrosvotacion->cantidadvotos.'</td>
 								</tr>';					
