@@ -71,7 +71,7 @@
           <img src="../../images/logo-cooperativa.png" class="img-circle elevation-2" alt="User Image">
         </div-->
         <div class="info">
-          <a href="#" class="d-block"> {{ $trato }} {{ $nombre }} </a>
+          <a href="#" class="d-block"> {{ $trato ?? ''  }} {{ $nombre ?? '' }} </a>
         </div>
       </div>
 
@@ -93,7 +93,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1> {{ $nombreevento }} </h1>
+            <h1> {{ $nombreevento ?? '' }} </h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
