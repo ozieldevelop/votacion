@@ -1350,4 +1350,9 @@ class ClienteController extends Controller
             return json(['error' => $e->getMessage()]);
         }
     }
+
+    public function adminDashboard()
+    {
+        return view('cliente::admin');
+    }
 }
