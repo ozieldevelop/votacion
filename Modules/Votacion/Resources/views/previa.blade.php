@@ -15,7 +15,7 @@
 
 
 	<div class="row">
-					<label style="color:black;font-weight: bold;margin-left: 17px;">Valide su selección de candidatos en esta pantalla. Si desea corregir algo de clic al bot&oacute;n "Regresar". Para confirmar su voto de clic al bot&oacute;n de "Votar".</label>
+					<label style="color:black;font-weight: bold;margin-left: 17px;font-size:19px">Valide sus votos en esta pantalla.  Si desea corregir, de CLIC al bot&oacute;n REGRESAR. Para confirmar sus votos, de CLIC al bot&oacute;n VOTAR.</label>
 
 			        <div class="col-md-12 DirectivosDir">
   
@@ -46,7 +46,17 @@
  
 <script>
 
-
+      $.ajax({
+        url: '{{ url("votacion/verificaparticipacion")}}'
+        , method: 'GET'
+        , success: function(result){
+          var retorno = JSON.parse(result);
+				if(retorno)
+					{
+						location.href = '{{ url("votacion/contenedordetalle")}}';
+					}
+        }
+      });
 
 
 
@@ -54,7 +64,7 @@
 function imprimir()
 {
 		var lasPapeletas = JSON.parse(localStorage.getItem("lasboletas{{ $id_evento }}"));
-		console.log(lasPapeletas);
+		//console.log(lasPapeletas);
 		
 							$.ajax({
 								url: '{{ url("votacion/coopexe3")}}'  
@@ -69,7 +79,7 @@ function imprimir()
 											});		
 											//localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
 
-                    setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 5000);
+                    setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
                       //setTimeout(function(){ location.reload();  }, 2000);
 								},
 								error: function (r) {
@@ -90,11 +100,53 @@ function regresar(){
 
 
 	var lasPapeletas='';
+  
+  /*
+ function sortJson(element, prop, propType, asc) {
+  switch (propType) {
+    case "int":
+      element = element.sort(function (a, b) {
+        if (asc) {
+          return (parseInt(a[prop]) > parseInt(b[prop])) ? 1 : ((parseInt(a[prop]) < parseInt(b[prop])) ? -1 : 0);
+        } else {
+          return (parseInt(b[prop]) > parseInt(a[prop])) ? 1 : ((parseInt(b[prop]) < parseInt(a[prop])) ? -1 : 0);
+        }
+      });
+      break;
+    default:
+      element = element.sort(function (a, b) {
+        if (asc) {
+          return (a[prop].toLowerCase() > b[prop].toLowerCase()) ? 1 : ((a[prop].toLowerCase() < b[prop].toLowerCase()) ? -1 : 0);
+        } else {
+          return (b[prop].toLowerCase() > a[prop].toLowerCase()) ? 1 : ((b[prop].toLowerCase() < a[prop].toLowerCase()) ? -1 : 0);
+        }
+      });
+  }
+}
+  */
+  
+  
+function GetSortOrder(prop) {    
+    return function(a, b) {    
+        if (a[prop] > b[prop]) {    
+            return 1;    
+        } else if (a[prop] < b[prop]) {    
+            return -1;    
+        }    
+        return 0;    
+    }    
+}    
+    
+
+  
+  
 function visualizarselecciones()
 	{  		
 	
 	var contenedor = localStorage.getItem("lasboletas{{ $id_evento }}");
-	//alert( typeof (contenedor));
+    console.log(contenedor);
+    
+	//alert(  (contenedor));
 	if( contenedor.length <=0)
 	{
 			location.reload();
@@ -104,7 +156,7 @@ function visualizarselecciones()
 	{
 //alert('contenedor vacio2');
 			lasPapeletas = JSON.parse(localStorage.getItem("lasboletas{{ $id_evento }}"));
-		  	console.log(lasPapeletas);
+		  	//console.log(lasPapeletas);
 			$.ajax({
 			 url: '{{ url("votacion/categoriaslist") }}' 
 			, data: { 'campos': JSON.stringify(lasPapeletas) }
@@ -118,16 +170,26 @@ function visualizarselecciones()
 					var TodosValoresEntradostemp = $.grep(lasPapeletas, function (n, i) {
 						return (n.id_area == result[ii].id_area );
 					});
+
+          
+            // ordernarlos por apellido asc 
+    //TodosValoresEntradostemp = JSON.parse(sortJson(TodosValoresEntradostemp , "apellido", "string", true) );
+          TodosValoresEntradostemp = TodosValoresEntradostemp.sort(GetSortOrder("apellido"));
+//sortJson(people , "sequence", "int", true);
+          
+          //console.log(TodosValoresEntradostemp);
+          //return false;
+          
 					if((TodosValoresEntradostemp.length) >0){
 						
-						  html += "<div class='col-md-12 d-flex justify-content-center' ><div class='list-group  col-md-6'><a href='#' class='list-group-item list-group-item-action active'><i class='fa-shield '></i> "+ result[ii].nombrearea +"</a>";	
+						  html += "<div class='col-md-12 d-flex justify-content-center' ><div class='list-group  col-md-6'><a href='#' class='list-group-item list-group-item-action active' style='font-size:22px;'><i class='fa-shield '></i> "+ result[ii].nombrearea +"</a>";	
 		
 						  for (var i = 0; i < TodosValoresEntradostemp.length; i++){  
 					 
 							//html += "<li><b style='font-family: Ordinary;font-size: 32px;'> "+ lasPapeletas[i].apellido +'  '  + lasPapeletas[i].nombre + "</b></li>";
 							
 
-							html += "<label style='font-size: 28px'><i class='fa fa-book fa-fw' aria-hidden='true'></i> "+ TodosValoresEntradostemp[i].apellido + ", &nbsp;"  + TodosValoresEntradostemp[i].nombre+ ",&nbsp;" + TodosValoresEntradostemp[i].num_cliente+" </label>";
+							html += "<label style='font-size: 18px;margin-top: 18px;'><i class='fa fa-book fa-fw' aria-hidden='true'></i> "+ TodosValoresEntradostemp[i].apellido + ", &nbsp;"  + TodosValoresEntradostemp[i].nombre+ ",&nbsp;" + TodosValoresEntradostemp[i].num_cliente+" </label>";
 							
 							@if($tipo == 2)
 								var iddel = (TodosValoresEntradostemp[i].id_delegado);
@@ -146,7 +208,7 @@ function visualizarselecciones()
 								} 
 
 								//elavatar = "../../images/logo-footer.png";
-								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' style='border:solid 2px #c5c5c5;margin-right: unset !important;margin-top: -47px;width: 90px;height:90px;cursor:pointer' src='"+elavatar+"'>";
+								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' style='border:solid 2px #c5c5c5;margin-right: unset !important;margin-top: -47px;width: 90px;height:90px;cursor:auto' src='"+elavatar+"'>";
 
 							@endif 							
 
@@ -168,7 +230,7 @@ $( document ).ready(function() {
 
 	visualizarselecciones();
 	losaspirantes = JSON.parse(localStorage.getItem("aspirantes{{ $id_evento }}")); 
-	console.log(losaspirantes);
+	//console.log(losaspirantes);
 	//validando();		  
 });	
 

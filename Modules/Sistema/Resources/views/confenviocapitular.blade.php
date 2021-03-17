@@ -27,7 +27,7 @@
 		<select id="eventos" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="Cargar()" >
 							<option value=""> -- Elegir</option>
 							@foreach ($eventos as $dataeventos)
-								<option value="{{ $dataeventos->id }}">{{ $dataeventos->rangofecha1 }} | {{ $dataeventos->nombre }}</option>
+								<option value="{{ $dataeventos->id }}"> {{ $dataeventos->nombre }}</option>
 							@endforeach
 		</select>
 	  </div> 
@@ -95,13 +95,13 @@
 		<input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="nombre" disabled placeholder="Ingrese el nombre del evento">
 	  </div> 
 	</div>
-	<div class="row">
+	<div class="row" style="display:none">
   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
     <label for="inputnumasociado">Inicia</label>
     <input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="rangofecha1"  disabled placeholder="2020-11-01 00:00:00">
   </div>
 </div>
-<div class="row">
+<div class="row"  style="display:none">
     <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
     <label for="inputnombreasoc">Termina</label>
     <input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="rangofecha2" disabled placeholder="2020-11-01 00:00:00">
@@ -354,8 +354,8 @@ function Cargar()
 			 
 	$('#id_evento').val('');
 	$('#nombre').val('');
-	$('#rangofecha1').val('');
-	$('#rangofecha2').val('');
+	//$('#rangofecha1').val('');
+	//$('#rangofecha2').val('');
 	$('#maxvotos').val('');
 	$('#id_zoom').val('');	 
   
@@ -382,8 +382,8 @@ function Cargar()
 				  var mvotos = datoz[0]['maxvotos'];	
           var id_zoom = datoz[0]['id_zoom'];	
          
-				  var f1 = datoz[0]['rangofecha1'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha1'].length - 3);
-				  var f2 = datoz[0]['rangofecha2'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha2'].length - 3);
+				 // var f1 = datoz[0]['rangofecha1'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha1'].length - 3);
+				  //var f2 = datoz[0]['rangofecha2'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha2'].length - 3);
 				  
 				  
 				  var capitulos =  JSON.parse(datoz[0]['capitulos']);	

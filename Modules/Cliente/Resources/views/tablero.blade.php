@@ -5,15 +5,6 @@
 
 
 
-<div class="col-sm-12 col-md-12 col-lg-12">     
-    <button type="button" style="display:none" class="btn btn-block btn-primary" disabled> Acceder a Reuni&oacute;n</button>
-    @if($periodoactivo==1)
-    <a type="button" href="{{ env('APP_URL', './') }}/votacion/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}" class="btn btn-block btn-primary">Votaci&oacute;n</a>
-    @else
-    <button type="button" href="#" class="btn btn-block btn-primary" disabled>Votaci&oacute;n</button>
-    @endif                   
-</div>
-
 
 <div class="col-sm-12 col-md-12 col-lg-12"> &nbsp;</div>
 
@@ -65,6 +56,7 @@
 
 
 @if($tipoevent==2)
+<<<<<<< HEAD
 <div class="col-sm-12 col-md-12 col-lg-12"> 
     {{-- <div class="card" >
         <div class="card-header bg-light resaltado">POSTULADOS</div>
@@ -134,6 +126,27 @@
                                     <input type="text" name="titulo" class="form-control" placeholder="Título de su propuesta" 
                                         v-model="propuesta.titulo">
                                 </div>
+=======
+       <div class="col-sm-12 col-md-12 col-lg-12" style="display:none"> 
+                            <div class="card" >
+                              <div class="card-header bg-light resaltado">POSTULADOS</div>
+                              <div class="card-body" >
+
+                                  <table class="table" style="width:100%">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="DirectivosDir">
+
+                                    </tbody>
+                                  </table>
+                                
+                              </div>
+>>>>>>> master
                             </div>
                             <br>
                             <div class="form-row mb-2">

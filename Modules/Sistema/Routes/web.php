@@ -143,6 +143,9 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	Route::post('/reinsertar', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@reinsertar'] );
 	Route::post('/fnreenviarnoti', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@fnreenviarnoti'] );
 	
+	Route::get('/pruebaenvio', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@pruebaenvio'] );  
+  
+  
   
 	Route::get('/vistaenviocapitular', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@vistaenviocapitular'] );						// VISTA
   Route::get('/vistaenvioasamblea', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@vistaenvioasamblea'] );						// VISTA

@@ -11,7 +11,7 @@ class eventoModel extends Model
 	public $timestamps = false;
 	
 	public $table = 'evento';
-	public $fillable = ['id','nombre','preinscripActivo','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo','veri_id_zoom'];
+	public $fillable = ['id','nombre','preinscripActivo','votacionActivo','maxvotos','capitulos','estadosasoc','status','tipo','veri_id_zoom'];
 	
 }
 	
