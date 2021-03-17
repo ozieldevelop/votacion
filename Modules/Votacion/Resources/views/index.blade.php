@@ -3,7 +3,7 @@
 @section('content')
 <style>
   
-  
+   
   $(document).ready(function()
   {
 				$('.navbar-brand').css( "color" , 'white' );
