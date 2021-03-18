@@ -69,7 +69,7 @@ class ClienteController extends Controller
                   $request->session()->flush();
                   $mensaje = "";
                   $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
-                  $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Periodo de actualización de datos a expirado</div> ";
+                  $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>El periodo de inscripci&oacute;n a puestos directivos ha finalizado.</div> ";
                   return view('votacion::advertencia')
                       ->with('mensaje', $mensaje)
                       ->with('enlace', $request->all())
@@ -475,6 +475,7 @@ class ClienteController extends Controller
         //Auth::logout();
         //$request->session()->flush();
 
+        //                        Auth::loginUsingId(3);
         $cldoc_temp = $request->input('wget');
 
         $ideven = $request->input('id_evento');
@@ -482,7 +483,7 @@ class ClienteController extends Controller
         $cldoc_temp = isset($cldoc_temp) ? urldecode($cldoc_temp) : 0;
         $cldoc = GeneralHelper::lara_desencriptar($cldoc_temp);
         //$cldoc= 1;
-
+      
         $ideven = isset($ideven) ? urldecode($ideven) : 0;
         $idevendesc = GeneralHelper::lara_desencriptar($ideven);
         //$idevendesc= 5;

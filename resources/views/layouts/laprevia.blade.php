@@ -43,17 +43,21 @@
           });
   
 
-
-		function nobackbutton()
-    {
-
-		   window.location.hash="no-back-button";
-
-		   window.location.hash="Again-No-back-button" //chrome
-
-		   window.onhashchange=function(){window.location.hash="no-back-button";}
-			
-		}
+function verificar(){
+  
+      $.ajax({
+        url: '{{ url("votacion/verificaparticipacion")}}'
+        , method: 'GET'
+        , success: function(result){
+          var retorno = JSON.parse(result);
+				if(retorno)
+					{
+						location.href = '{{ url("votacion/contenedordetalle")}}';
+					}
+        }
+      });
+  
+}
 
 
     </script>

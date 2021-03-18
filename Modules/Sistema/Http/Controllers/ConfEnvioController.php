@@ -291,7 +291,7 @@ class ConfEnvioController extends Controller
 						  
               <img src="https://portal.cooprofesionales.com.pa/mercadeo/files/333f41_newlogo1.png" style="width: 470px;">
 						
-							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE;
+							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '&nbsp;'.$registrosenvio->NOMBRE;
                
         switch($tipo_envio)
           {
@@ -670,7 +670,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 						
 							<br/>
               
-              <label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE;
+              <label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '&nbsp;'.$registrosenvio->NOMBRE;
 
           
         switch($tipo_envio)

@@ -46,51 +46,47 @@
  
 <script>
 
-      $.ajax({
-        url: '{{ url("votacion/verificaparticipacion")}}'
-        , method: 'GET'
-        , success: function(result){
-          var retorno = JSON.parse(result);
-				if(retorno)
-					{
-						location.href = '{{ url("votacion/contenedordetalle")}}';
-					}
-        }
-      });
-
-
-
-
+  
 function imprimir()
 {
-		var lasPapeletas = JSON.parse(localStorage.getItem("lasboletas{{ $id_evento }}"));
-		//console.log(lasPapeletas);
-		
-							$.ajax({
-								url: '{{ url("votacion/coopexe3")}}'  
-								, data: { 'campos': JSON.stringify(lasPapeletas) }
-								, method: 'post'
-								, headers: {
-										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-								},
-								success: function(result){
-											Lobibox.notify('info', {
-												msg: 'Gracias por su voto.'
-											});		
-											//localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
 
-                    setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
-                      //setTimeout(function(){ location.reload();  }, 2000);
-								},
-								error: function (r) {
-										console.log("ERROR");
-										console.log(r);
-								}
-							});
-							
+    var lasPapeletasStorage = localStorage.getItem("lasboletas{{ $id_evento }}")  || 'x';
+                    
+    
+    if(lasPapeletasStorage=='x')
+    {
+       location.href = '{{ url("votacion/contenedordetalle")}}'; 
+    }
+    else
+    {   
+      
+                var lasPapeletasStorage = JSON.parse(lasPapeletasStorage);      
+                      $.ajax({
+                        url: '{{ url("votacion/coopexe3")}}'  
+                        , data: { 'campos': JSON.stringify(lasPapeletas) }
+                        , method: 'post'
+                        , headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(result){
+                              Lobibox.notify('info', {
+                                msg: 'Gracias por su voto.'
+                              });		
+                              //localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
+                            setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                          setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                              //setTimeout(function(){ location.reload();  }, 2000);
+                        },
+                        error: function (r) {
+                            console.log("ERROR");
+                            console.log(r);
+                        }
+                      });
+
+    }
+
 }
 
-  
   
 function regresar(){
 	console.log('regresar');
@@ -99,31 +95,7 @@ function regresar(){
 }
 
 
-	var lasPapeletas='';
-  
-  /*
- function sortJson(element, prop, propType, asc) {
-  switch (propType) {
-    case "int":
-      element = element.sort(function (a, b) {
-        if (asc) {
-          return (parseInt(a[prop]) > parseInt(b[prop])) ? 1 : ((parseInt(a[prop]) < parseInt(b[prop])) ? -1 : 0);
-        } else {
-          return (parseInt(b[prop]) > parseInt(a[prop])) ? 1 : ((parseInt(b[prop]) < parseInt(a[prop])) ? -1 : 0);
-        }
-      });
-      break;
-    default:
-      element = element.sort(function (a, b) {
-        if (asc) {
-          return (a[prop].toLowerCase() > b[prop].toLowerCase()) ? 1 : ((a[prop].toLowerCase() < b[prop].toLowerCase()) ? -1 : 0);
-        } else {
-          return (b[prop].toLowerCase() > a[prop].toLowerCase()) ? 1 : ((b[prop].toLowerCase() < a[prop].toLowerCase()) ? -1 : 0);
-        }
-      });
-  }
-}
-  */
+var lasPapeletas='';
   
   
 function GetSortOrder(prop) {    
@@ -144,9 +116,6 @@ function visualizarselecciones()
 	{  		
 	
 	var contenedor = localStorage.getItem("lasboletas{{ $id_evento }}");
-    console.log(contenedor);
-    
-	//alert(  (contenedor));
 	if( contenedor.length <=0)
 	{
 			location.reload();
@@ -154,9 +123,7 @@ function visualizarselecciones()
 	}
 	else
 	{
-//alert('contenedor vacio2');
 			lasPapeletas = JSON.parse(localStorage.getItem("lasboletas{{ $id_evento }}"));
-		  	//console.log(lasPapeletas);
 			$.ajax({
 			 url: '{{ url("votacion/categoriaslist") }}' 
 			, data: { 'campos': JSON.stringify(lasPapeletas) }
@@ -169,25 +136,16 @@ function visualizarselecciones()
 				{  
 					var TodosValoresEntradostemp = $.grep(lasPapeletas, function (n, i) {
 						return (n.id_area == result[ii].id_area );
-					});
+				});
 
-          
-            // ordernarlos por apellido asc 
-    //TodosValoresEntradostemp = JSON.parse(sortJson(TodosValoresEntradostemp , "apellido", "string", true) );
+
           TodosValoresEntradostemp = TodosValoresEntradostemp.sort(GetSortOrder("apellido"));
-//sortJson(people , "sequence", "int", true);
-          
-          //console.log(TodosValoresEntradostemp);
-          //return false;
           
 					if((TodosValoresEntradostemp.length) >0){
 						
 						  html += "<div class='col-md-12 d-flex justify-content-center' ><div class='list-group  col-md-6'><a href='#' class='list-group-item list-group-item-action active' style='font-size:22px;'><i class='fa-shield '></i> "+ result[ii].nombrearea +"</a>";	
 		
 						  for (var i = 0; i < TodosValoresEntradostemp.length; i++){  
-					 
-							//html += "<li><b style='font-family: Ordinary;font-size: 32px;'> "+ lasPapeletas[i].apellido +'  '  + lasPapeletas[i].nombre + "</b></li>";
-							
 
 							html += "<label style='font-size: 18px;margin-top: 18px;'><i class='fa fa-book fa-fw' aria-hidden='true'></i> "+ TodosValoresEntradostemp[i].apellido + ", &nbsp;"  + TodosValoresEntradostemp[i].nombre+ ",&nbsp;" + TodosValoresEntradostemp[i].num_cliente+" </label>";
 							
@@ -196,7 +154,6 @@ function visualizarselecciones()
 							    var valoresfiltro = $.grep(losaspirantes, function (n, i) {
 											return (n.id_delegado == iddel );
 								});		
-								//console.log( valoresfiltro );
 								
 								if(valoresfiltro.length<0)
 								{
@@ -207,11 +164,9 @@ function visualizarselecciones()
 									elavatar = "../../adjuntos/"+valoresfiltro[0]['foto'];
 								} 
 
-								//elavatar = "../../images/logo-footer.png";
 								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' style='border:solid 2px #c5c5c5;margin-right: unset !important;margin-top: -47px;width: 90px;height:90px;cursor:auto' src='"+elavatar+"'>";
 
 							@endif 							
-
 
 						  }
 						  html+="</div>";  
@@ -226,12 +181,12 @@ function visualizarselecciones()
 }
 	var losaspirantes = '';
 	
-$( document ).ready(function() {
+$( document ).ready(function() 
+{
 
 	visualizarselecciones();
 	losaspirantes = JSON.parse(localStorage.getItem("aspirantes{{ $id_evento }}")); 
-	//console.log(losaspirantes);
-	//validando();		  
+	  
 });	
 
 </script>

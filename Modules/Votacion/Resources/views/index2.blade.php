@@ -626,18 +626,16 @@ function newVoto(dato,id_area,area)
 	$('#papeletacard_'+dato+'_'+id_area).attr('class','card seleccionadocard');
     Papeletas = Papeletas || [];
   
-      $.ajax({
-        url:  '{{ url("votacion/coopexe2")}}'
-        , data: { indice: dato }
-        , method: 'GET'
-        , success: function(result){
-			   var datoz = result;
-          //console.log(datoz);
-				  Papeletas.push({ "id_delegado": datoz[0].id_delegado,"num_cliente": datoz[0].num_cliente,"nombre": datoz[0].nombre,"apellido": datoz[0].apellido,"id_area": id_area,"area":area,"tipo": '',"foto": ''   });
-				  localStorage.setItem("lasboletas{{ $ideven }}",JSON.stringify (Papeletas));
-				  renderizarselecciones();
-        }
-      });
+        var datoz = $.grep(aspirtantesall, function (n, i) {
+          return (n.id_delegado == dato );
+        }); 
+  
+
+
+
+    Papeletas.push({ "id_delegado": datoz[0]['id_delegado'],"num_cliente": datoz[0]['num_cliente'],"nombre": datoz[0]['nombre'],"apellido": datoz[0]['apellido'],"id_area": id_area,"area":area,"tipo": datoz[0]['tipo'],"foto": datoz[0]['foto']   });
+    localStorage.setItem("lasboletas{{ $ideven }}",JSON.stringify (Papeletas));
+    renderizarselecciones();
 
 }
 
@@ -713,44 +711,28 @@ function votosxarea()
 
 
   
-  $(document).ready(function(){
+  $(document).ready(function()
+  {
 
-		if(isMobile.mobilecheck() == false){
-				$('.navbar-toggler').trigger( "click" );
-			
-		}	
-	/*
-	var cat = localStorage.getItem('coopesisvot{{ $ideven }}');
-	if(cat==1){
-		location.href = '{{ url("votacion/contenedordetalle")}}';
-	}
-	*/
+        if(isMobile.mobilecheck() == false){
+            $('.navbar-toggler').trigger( "click" );
 
-	
-	
-	var Papeletastex1 = localStorage.getItem("lasboletas{{ $ideven }}");
+        }	
 
-	//console.log(Papeletastex);
+        var Papeletastex1 = localStorage.getItem("lasboletas{{ $ideven }}");
 
 
-	if(Papeletastex1!=""){
-    var Papeletastex = localStorage.getItem("lasboletas{{ $ideven }}");
-		Papeletas = JSON.parse(Papeletastex);
-		//console.log(Papeletas);
-		PapeletasIniciales('');		
-	}
-	else{
-		PapeletasIniciales('');	
-	}
-	
-	//renderizarselecciones();
-	//localStorage.setItem("lasboletas{{ $ideven }}",[]);
-	localStorage.setItem("aspirantes{{ $ideven }}",[]);
-	
-	
-	
-	//pintarpapeletas();
-		
+        if(Papeletastex1!=""){
+          var Papeletastex = localStorage.getItem("lasboletas{{ $ideven }}");
+          Papeletas = JSON.parse(Papeletastex);
+          PapeletasIniciales('');		
+        }
+        else{
+          PapeletasIniciales('');	
+        }
+
+        localStorage.setItem("aspirantes{{ $ideven }}",[]);
+
   });
   
 </script>
