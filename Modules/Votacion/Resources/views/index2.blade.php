@@ -32,7 +32,7 @@
 			</div>	
 
 			<div class="text-center">
-			  <button class="btn btn-primary" onclick="siguientepaso()" style="height:130px;width: 100%;font-size:34px">SIGUIENTE</button>
+			              <button class="btn btn-primary" onclick="siguientepaso()" style="height:130px;width: 100%;font-size:34px">SIGUIENTE</button>
 			</div>
 
 			<div id="output">
