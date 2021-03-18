@@ -38,6 +38,8 @@ Route::prefix('cliente')->group(function()
     Route::get('/admin/dashboard', 'ClienteController@AdminDashboard');
 
     Route::get('/propuestas', 'PropuestaController@index');
+    Route::get('/propuestas/{id}', 'PropuestaController@getPropuestas');
+
     Route::prefix('/propuesta')->group( function() {
         Route::post('/store', 'PropuestaController@store');
         Route::put('/{id}', 'PropuestaController@update');

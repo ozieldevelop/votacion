@@ -88,33 +88,6 @@
 
             <div id="propuestas_board">
                 {{-- <template> --}}
-                    {{-- <div class="col-md-6">
-                        <h3>Listado de Propuestas Actuales</h3>
-                        <br>
-                        <ul class="list-group">
-                            <li class="list-group-item" v-for="(item, index) in propuestas" :key="index">
-                                <div class="d-flex justify-content-between align-items-center px-3" style="background-color: honeydew">
-                                    <h5><strong class="mb-1" >@{{ item.titulo }}</strong></h5>
-                                    <div>
-                                        <button class="btn" @click="like(item.id)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
-                                                <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
-                                            </svg>
-                                        </button>
-                                        <span class="badge badge-primary badge-pill">@{{ item.aprovaciones }}</span>
-                                        <button class="btn" @click="dislike(item.id)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
-                                                <path d="M8.864 15.674c-.956.24-1.843-.484-1.908-1.42-.072-1.05-.23-2.015-.428-2.59-.125-.36-.479-1.012-1.04-1.638-.557-.624-1.282-1.179-2.131-1.41C2.685 8.432 2 7.85 2 7V3c0-.845.682-1.464 1.448-1.546 1.07-.113 1.564-.415 2.068-.723l.048-.029c.272-.166.578-.349.97-.484C6.931.08 7.395 0 8 0h3.5c.937 0 1.599.478 1.934 1.064.164.287.254.607.254.913 0 .152-.023.312-.077.464.201.262.38.577.488.9.11.33.172.762.004 1.15.069.13.12.268.159.403.077.27.113.567.113.856 0 .289-.036.586-.113.856-.035.12-.08.244-.138.363.394.571.418 1.2.234 1.733-.206.592-.682 1.1-1.2 1.272-.847.283-1.803.276-2.516.211a9.877 9.877 0 0 1-.443-.05 9.364 9.364 0 0 1-.062 4.51c-.138.508-.55.848-1.012.964l-.261.065zM11.5 1H8c-.51 0-.863.068-1.14.163-.281.097-.506.229-.776.393l-.04.025c-.555.338-1.198.73-2.49.868-.333.035-.554.29-.554.55V7c0 .255.226.543.62.65 1.095.3 1.977.997 2.614 1.709.635.71 1.064 1.475 1.238 1.977.243.7.407 1.768.482 2.85.025.362.36.595.667.518l.262-.065c.16-.04.258-.144.288-.255a8.34 8.34 0 0 0-.145-4.726.5.5 0 0 1 .595-.643h.003l.014.004.058.013a8.912 8.912 0 0 0 1.036.157c.663.06 1.457.054 2.11-.163.175-.059.45-.301.57-.651.107-.308.087-.67-.266-1.021L12.793 7l.353-.354c.043-.042.105-.14.154-.315.048-.167.075-.37.075-.581 0-.211-.027-.414-.075-.581-.05-.174-.111-.273-.154-.315l-.353-.354.353-.354c.047-.047.109-.176.005-.488a2.224 2.224 0 0 0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.866.866 0 0 0-.121-.415C12.4 1.272 12.063 1 11.5 1z"/>
-                                            </svg>
-                                        </button>
-                                        <span class="badge badge-danger badge-pill">@{{ item.desaprovaciones }}</span>
-                                    </div>
-                                </div>
-                                <p class="mb-1">@{{ item.detalle }}</p>
-                                <small class="d-flex justify-content-center">@{{ item.user_name}}</small>
-                            </li>
-                        </ul>
-                    </div> --}}
                     <div class="col-md-12">
                         {{-- <h3>Realizar una nueva Propuesta</h3> --}}
                         <form action="" method="">
@@ -123,7 +96,7 @@
                                 <div class="col-md-12 col-sm-12">
                                     <label for="titulo">Título:</label>
                                     <input type="text" name="titulo" class="form-control" placeholder="Título de su propuesta" 
-                                        v-model="propuesta.titulo">
+                                        v-model="propuesta.titulo" required>
                                 </div>
                             </div>
                             <br>
@@ -138,22 +111,54 @@
                             <div class="form-row mb-2">
                                 <div class="col-md-6 col-sm-12">
                                     <label for="secunda_asoc">Secunda la propuesta:</label>
-                                    <input type="text" name="secunda_asoc" class="form-control" placeholder="Secundata Por:" 
-                                        v-model="propuesta.secunda_asoc">
+                                    <input type="text" name="secunda_asoc" class="form-control" placeholder="Secundada Por:" 
+                                        v-model="propuesta.secunda_asoc" required>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
                                     <label for="secunda_asoc_id">Número de Cliente:</label>
-                                    <input type="text" name="secunda_asoc_id" class="form-control" placeholder="# de cliente:" 
-                                        v-model="propuesta.secunda_asoc_id">
+                                    <input type="number" name="secunda_asoc_id" class="form-control" placeholder="# de cliente:" 
+                                        v-model="propuesta.secunda_asoc_id" required>
                                 </div>
                             </div>
                             <br>
                             <div>
-                                <input type="hidden" name="numero_asoc" value="{{ Auth::user()->id }}" id="numero_asoc">
-                                <input type="hidden" name="nombre_asoc" value="{{ Auth::user()->name }}" id="nombre_asoc">
+                                <input type="hidden" name="numero_asoc" value="{{ $num_cliente }}" id="numero_asoc">
+                                <input type="hidden" name="nombre_asoc" value="{{ $nombre }}" id="nombre_asoc">
                             </div>
                             <button class="btn btn-primary" @click="registrar($event)">Proponer</button>
                         </form>
+                    </div>
+                    <br><hr>
+                    <div class="col-md-12">
+                        <h3>Listado de mis Propuestas</h3>
+                        <br>
+                        <template>
+                        <ul class="list-group">
+                            <li class="list-group-item" v-for="(item, index) in propuestas" :key="index">
+                                <div class="d-flex justify-content-between align-items-center px-3" style="background-color: honeydew">
+                                    <h5><strong class="mb-1" >@{{ item.titulo }}</strong></h5>
+                                    {{-- <div>
+                                        <button class="btn" @click="like(item.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+                                                <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="badge badge-primary badge-pill">@{{ item.aprovaciones }}</span>
+                                        <button class="btn" @click="dislike(item.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-down" viewBox="0 0 16 16">
+                                                <path d="M8.864 15.674c-.956.24-1.843-.484-1.908-1.42-.072-1.05-.23-2.015-.428-2.59-.125-.36-.479-1.012-1.04-1.638-.557-.624-1.282-1.179-2.131-1.41C2.685 8.432 2 7.85 2 7V3c0-.845.682-1.464 1.448-1.546 1.07-.113 1.564-.415 2.068-.723l.048-.029c.272-.166.578-.349.97-.484C6.931.08 7.395 0 8 0h3.5c.937 0 1.599.478 1.934 1.064.164.287.254.607.254.913 0 .152-.023.312-.077.464.201.262.38.577.488.9.11.33.172.762.004 1.15.069.13.12.268.159.403.077.27.113.567.113.856 0 .289-.036.586-.113.856-.035.12-.08.244-.138.363.394.571.418 1.2.234 1.733-.206.592-.682 1.1-1.2 1.272-.847.283-1.803.276-2.516.211a9.877 9.877 0 0 1-.443-.05 9.364 9.364 0 0 1-.062 4.51c-.138.508-.55.848-1.012.964l-.261.065zM11.5 1H8c-.51 0-.863.068-1.14.163-.281.097-.506.229-.776.393l-.04.025c-.555.338-1.198.73-2.49.868-.333.035-.554.29-.554.55V7c0 .255.226.543.62.65 1.095.3 1.977.997 2.614 1.709.635.71 1.064 1.475 1.238 1.977.243.7.407 1.768.482 2.85.025.362.36.595.667.518l.262-.065c.16-.04.258-.144.288-.255a8.34 8.34 0 0 0-.145-4.726.5.5 0 0 1 .595-.643h.003l.014.004.058.013a8.912 8.912 0 0 0 1.036.157c.663.06 1.457.054 2.11-.163.175-.059.45-.301.57-.651.107-.308.087-.67-.266-1.021L12.793 7l.353-.354c.043-.042.105-.14.154-.315.048-.167.075-.37.075-.581 0-.211-.027-.414-.075-.581-.05-.174-.111-.273-.154-.315l-.353-.354.353-.354c.047-.047.109-.176.005-.488a2.224 2.224 0 0 0-.505-.804l-.353-.354.353-.354c.006-.005.041-.05.041-.17a.866.866 0 0 0-.121-.415C12.4 1.272 12.063 1 11.5 1z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="badge badge-danger badge-pill">@{{ item.desaprovaciones }}</span>
+                                    </div> --}}
+                                </div>
+                                <p class="mb-1">@{{ item.detalle }}</p>
+                                <small class="d-flex justify-content-center">
+                                    Propuesta realizada por: <b>@{{ item.user_name }}</b>, Secundada por: <b>@{{ item.secunda_asoc }}</b>
+                                </small>
+                            </li>
+                        </ul>
+                        </template>
                     </div>
                 {{-- </template> --}}
             </div>
@@ -629,7 +634,7 @@
             data: {
                 descripcion: 'Listado de propuestas de los candidatos',
                 hora: '29 de marzo 2021',
-                // propuestas: [],
+                propuestas: [],
                 propuesta: {
                     titulo: null,
                     detalle: null,
@@ -639,19 +644,21 @@
                     user_name: $("#nombre_asoc").val(),
                     // user_id: document.getElementById('numero_asoc').value,
                     // user_name: document.getElementById('nombre_asoc').value,
-                }
+                },
             },
             
             created() {
-                // this.cargarPropuestas();
+                this.cargarPropuestas();
             }, 
 
             methods: {
                 cargarPropuestas: function() {
-                    axios.get('/api/propuestas')
+                    id = $("#numero_asoc").val();
+
+                    axios.get('/cliente/propuestas/'+id)
                     .then( (response) => {
-                        this.loaded = true;
                         this.propuestas = response.data;
+                        this.loaded = true;
                     })
                     .catch( function(err) {
                         alert("Hubo un error: " + err);
@@ -660,29 +667,38 @@
                 registrar: function(event) {
                     event.preventDefault();
 
-                    if ( this.propuesta.titulo != null ) {
-                        if ( this.propuesta.secunda_asoc != null ) {
-                            if ( this.propuesta.secunda_asoc_id != null ) {
-                                axios.post('cliente/propuesta/store', {
-                                    propuesta: this.propuesta
-                                }).then( response => {
-                                    // this.cargarPropuestas();
-                                    if (response.status == 201) {
-                                        lobibox_emergente('success','top right', true, 'Propuesta Registrada.');
-                                        // setTimeout(function(){ location.reload();  }, 2000);
-                                    }
-                                }).catch( err => {
-                                    lobibox_emergente('warning','top right',true,"Hubo un error: " + err);
-                                });                                
-                            }else {
-                                lobibox_emergente('warning','top right',true,"Debe ingresar un el número de asociado que secunda su propuesta.");
-                            }
-                        }else {
-                            lobibox_emergente('warning','top right',true,"Debe ingresar el nombre de quien secunda su propuesta.");
-                        }
-                    } else {
+                    if ( this.propuesta.titulo == null || this.propuesta.titulo == '' || this.propuesta.titulo ==undefined || this.propuesta.titulo.length <=0) 
+                    {
                         lobibox_emergente('warning','top right',true,"Debe al menos, ingresar un titulo para su propuesta.");
+                        
+                        return false;
                     }
+
+                    if ( this.propuesta.secunda_asoc == null || this.propuesta.secunda_asoc == '' || this.propuesta.secunda_asoc ==undefined || this.propuesta.secunda_asoc.length <=0) 
+                    {
+                        lobibox_emergente('warning','top right',true,"Debe ingresar el nombre de quien secunda su propuesta.");
+                        
+                        return false;
+                    }
+
+                    if ( this.propuesta.secunda_asoc_id == null || this.propuesta.secunda_asoc_id == '' || this.propuesta.secunda_asoc_id ==undefined || this.propuesta.secunda_asoc_id.length <=0) 
+                    {
+                        lobibox_emergente('warning','top right',true,"Debe ingresar un el número de asociado que secunda su propuesta.");
+                        
+                        return false;
+                    }
+
+                    axios.post('/cliente/propuesta/store', {
+                        propuesta: this.propuesta
+                    }).then( response => {
+                        this.cargarPropuestas();
+                        if (response.status == 201) {
+                            lobibox_emergente('success','top right', true, 'Propuesta Registrada.');
+                            // setTimeout(function(){ location.reload();  }, 2000);
+                        }
+                    }).catch( err => {
+                        lobibox_emergente('warning','top right',true,"Hubo un error: " + err);
+                    });
                 },
                 /* like: function(id) {
                     axios.put('api/propuesta/'+id, {
