@@ -20,6 +20,8 @@ Route::prefix('votacion')->group(function() {
 	Route::get('/coopexe2', 'VotacionController@coopexe2');
 	
 	Route::post('/coopexe3', 'VotacionController@coopexe3');
+  
+  Route::post('/coopexe33', 'VotacionController@coopexe33');
 	
 	Route::get('/coopexe4', 'VotacionController@coopexe4');
 	

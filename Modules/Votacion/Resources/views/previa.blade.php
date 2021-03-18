@@ -50,20 +50,19 @@
 function imprimir()
 {
 
-    var lasPapeletasStorage = localStorage.getItem("lasboletas{{ $id_evento }}")  || 'x';
-                    
-    
-    if(lasPapeletasStorage=='x')
+  var lasPapeletasStorage = localStorage.getItem("lasboletas{{ $id_evento }}")  || [];
+  lasPapeletasStorage = JSON.parse(lasPapeletasStorage);      
+  
+  console.log(lasPapeletasStorage.length);
+
+  
+  
+	 if( lasPapeletasStorage.length <=0)
     {
-       location.href = '{{ url("votacion/contenedordetalle")}}'; 
-    }
-    else
-    {   
-      
-                var lasPapeletasStorage = JSON.parse(lasPapeletasStorage);      
+
                       $.ajax({
-                        url: '{{ url("votacion/coopexe3")}}'  
-                        , data: { 'campos': JSON.stringify(lasPapeletas) }
+                        url: '{{ url("votacion/coopexe33")}}'  
+                        , data: { 'campos': JSON.stringify(lasPapeletasStorage) }
                         , method: 'post'
                         , headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -74,7 +73,34 @@ function imprimir()
                               });		
                               //localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
                             setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
-                          setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                            //setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                              //setTimeout(function(){ location.reload();  }, 2000);
+                        },
+                        error: function (r) {
+                            console.log("ERROR");
+                            console.log(r);
+                        }
+                      });
+    }
+    else
+    {   
+      
+      
+
+                      $.ajax({
+                        url: '{{ url("votacion/coopexe3")}}'  
+                        , data: { 'campos': JSON.stringify(lasPapeletasStorage) }
+                        , method: 'post'
+                        , headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(result){
+                              Lobibox.notify('info', {
+                                msg: 'Gracias por su voto.'
+                              });		
+                              //localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
+                            setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                            //setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
                               //setTimeout(function(){ location.reload();  }, 2000);
                         },
                         error: function (r) {

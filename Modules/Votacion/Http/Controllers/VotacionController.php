@@ -41,7 +41,8 @@ class VotacionController extends Controller
         try
         {
           
-        
+            // testsssssss
+            
             $request->session()
                 ->flush();
 
@@ -239,7 +240,7 @@ class VotacionController extends Controller
                           
                      
 
-            $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Su votaci&oacute;n ya ha sido realizado con &eacute;xito. !Gracias¡</h3></div>";
+            $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Su votaci&oacute;n ya ha sido realizada con &eacute;xito. ¡Gracias!</h3></div>";
             $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'></div>";
 
                                     return view('votacion::datosvotacion')->with('mensaje', $mensaje)->with('nombre', $resultsxx[0]->nombre)
@@ -400,6 +401,218 @@ class VotacionController extends Controller
         }
     }
 
+  
+   public function coopexe33(Request $request)
+    {
+        try
+        {
+
+            $id_evento = $request->session()
+                ->get('idevendesc');
+            $usuario = $request->session()
+                ->get('cldoc');
+            $files = $request->input('campos');
+
+        
+            $detalles = DB::select("insert into votantes(idterminal,id_evento,asociado) values ('".trim(GeneralHelper::getRealIP())."',".$id_evento.",cast(AES_ENCRYPT(".$usuario.",'xyz123') as CHAR charset UTF8MB4 )); ");
+            $detalles2 = DB::select("SELECT LAST_INSERT_ID() AS ultimoid;");
+
+            DB::statement( "update votantes set json_data=cast(AES_ENCRYPT('".$files."','xyz123') as CHAR charset UTF8MB4) where id= ".$detalles2[0]->ultimoid."");
+
+
+            $datos1 = DB::select("select * from data_clientes_vt where clasoc=" . $usuario);
+            $documento_resultados = DB::select("select * from evento where id=" . $id_evento);
+
+            $CantRegistros = count($datos1);
+
+            $configuraciones = DB::select('select modo,correopruebas from conf');
+
+            if ($CantRegistros > 0)
+            {
+
+                switch ((int)date("H"))
+                {
+                    case 0:
+                        $time = 'Buenas noches';
+                    break;
+                    case 1:
+                        $time = 'Buenas noches';
+                    break;
+                    case 2:
+                        $time = 'Buenas noches';
+                    break;
+                    case 3:
+                        $time = 'Buenas noches';
+                    break;
+                    case 4:
+                        $time = 'Buenas noches';
+                    break;
+                    case 5:
+                        $time = 'Buenas noches';
+                    break;
+                    case 6:
+                        $time = 'Buenos días';
+                    break;
+                    case 7:
+                        $time = 'Buenos días';
+                    break;
+                    case 8:
+                        $time = 'Buenos días';
+                    break;
+                    case 9:
+                        $time = 'Buenos días';
+                    break;
+                    case 10:
+                        $time = 'Buenos días';
+                    break;
+                    case 11:
+                        $time = 'Buenos días';
+                    break;
+                    case 12:
+                        $time = 'Buenos días';
+                    break;
+                    case 13:
+                        $time = 'Buenas tardes';
+                    break;
+                    case 14:
+                        $time = 'Buenas tardes';
+                    break;
+                    case 15:
+                        $time = 'Buenas tardes';
+                    break;
+                    case 16:
+                        $time = 'Buenas tardes';
+                    break;
+                    case 17:
+                        $time = 'Buenas tardes';
+                    break;
+                    case 18:
+                        $time = 'Buenas tardes';
+                    break;
+                    case 19:
+                        $time = 'Buenas noches';
+                    break;
+                    case 20:
+                        $time = 'Buenas noches';
+                    break;
+                    case 21:
+                        $time = 'Buenas noches';
+                    break;
+                    case 22:
+                        $time = 'Buenas noches';
+                    break;
+                    case 23:
+                        $time = 'Buenas noches';
+                    break;
+                }
+
+                foreach ($datos1 as $registrosenvio)
+                {
+                    //dd($registrosenvio);
+                    // obtengo el asunto y cuerpo del correo de invitacion
+                    //dd( $documento_resultados);
+                    $contenido = '<!DOCTYPE html>
+						<html>
+						 <head>
+						  <title> Cooperativa Profesionales R.L. </title>
+						  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+						  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+						  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+						  <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+
+						  <!-- Styles -->
+						  <style>
+							  html, body {
+								  background-color: #fff;
+								  color: #636b6f;
+								  font-family: Nunito, sans-serif;
+								  font-weight: 200;
+								  height: 100vh;
+								  margin: 0;
+							  }
+
+							  .full-height {
+								  height: 100vh;
+							  } 
+
+							  .content {
+								  text-align: center;
+							  }
+
+							  .title {
+								  font-size: 84px;
+							  } 
+						  </style>
+						 </head>
+						 <body>
+						  <br />
+						  <br />
+						  <br />
+						  <div class="container box" style="width: 970px;">
+						
+            
+              <img src="https://portal.cooprofesionales.com.pa/mercadeo/files/333f41_newlogo1.png" style="width: 470px;">
+						
+							<br/>
+              
+							<h1>Agradecemos su participaci&oacute;n en las votaciones de la  ' . $documento_resultados[0]->nombre . '</h1>
+
+			
+						
+						  </div>
+						 </body>
+						</html>';
+
+                    if ($configuraciones[0]->modo == 0)
+                    {
+                        $correenviar = $configuraciones[0]->correopruebas;
+                    }
+                    else
+                    {
+                        $correenviar = $registrosenvio->CORREO;
+                    }
+
+                    
+                    Config::set('mail.encryption',env('MAIL_MAILER'));
+                    Config::set('mail.host',env('MAIL_HOST'));
+                    Config::set('mail.port',env('MAIL_PORT'));
+                    Config::set('mail.username',env('MAIL_USERNAME'));
+                    Config::set('mail.password',env('MAIL_PASSWORD'));
+                    Config::set('mail.from',  ['address' => env('MAIL_FROM_ADDRESS') , 'name' =>  env('MAIL_FROM_NAME')]);
+                    
+                    $details =[
+                    'title' => "Participación en Votación Finalizada",
+                    'body' => '',
+                    'num_cliente' => $registrosenvio->CLASOC,
+                    'nombre' => $registrosenvio->NOMBRE,
+                    'correo' => $correenviar ,
+                    'contenido' => $contenido
+                    ];
+                    
+                    Mail::send([], [], function($message) use ($details) {
+                    $message->from(env('MAIL_FROM_ADDRESS'),  env('APP_AUTOR'));
+                    $message->to($details["correo"]);
+                    $message->subject($details["title"]);
+                    $message->setBody($details["contenido"] , 'text/html');
+                    });
+
+                }
+            }         
+          
+
+          
+        }
+        catch(Exception $e)
+        {
+            return json(array(
+                'error' => $e->getMessage()
+            ));
+        }
+    }
+
+  
+  
+  
     public function coopexe3(Request $request)
     {
         try
@@ -564,7 +777,7 @@ class VotacionController extends Controller
 						
 							<br/>
               
-							<h1>Agradecemos su participaci&oacute;n en las votaciones del evento:<br/>  ' . $documento_resultados[0]->nombre . '</h1>
+							<h1>Agradecemos su participaci&oacute;n en las votaciones de la  ' . $documento_resultados[0]->nombre . '</h1>
 
 			
 						
@@ -887,7 +1100,7 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
 						
 							<br/>
               
-							<h1>Agradecemos su participaci&oacute;n en las votaciones del evento:<br/>  ' . $documento_resultados[0]->nombre . '</h1>
+							<h1>Agradecemos su participaci&oacute;n en las votaciones de la ' . $documento_resultados[0]->nombre . '</h1>
 
 			
 						
@@ -934,7 +1147,7 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
           /*
             $results = DB::select('SELECT tipo,nombre,maxvotos FROM evento where id=' . $id_evento . '');
 
-            $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Su votaci&oacute;n se ha realizado con &eacute;xito !Gracias¡</h3></div>";
+            $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Su votaci&oacute;n se ha realizado con &eacute;xito ¡Gracias!</h3></div>";
             $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Gracias por su participaci&oacute;n</div>";
             return view('votacion::advertencia')->with('enlace', $request->all())
                 ->with('mensaje', $mensaje)->with('nombre', $results[0]->nombre)
@@ -971,7 +1184,7 @@ and (num_cliente like '%" . $buscando . "%' or nombre like '%" . $buscando . "%'
                           
                      
 
-            $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Su votaci&oacute;n ya ha sido realizado con &eacute;xito. !Gracias¡</h3></div>";
+            $mensaje = "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Su votaci&oacute;n ya ha sido realizada con &eacute;xito. ¡Gracias!</h3></div>";
             $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'></div>";
 
                                     return view('votacion::datosvotacion')->with('mensaje', $mensaje)->with('nombre', $registrosenvio->NOMBRE )

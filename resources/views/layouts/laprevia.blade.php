@@ -80,7 +80,7 @@ function verificar(){
 								
                             </span> <br/>  
 					@if($id_evento == 1)
-					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0px; !important"> Estamos verificando su voto. </label>
+					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0px; !important"> Estamos verificando sus votos. </label>
 					@else
 					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0px; !important;font-size: 24px !important;backgournd: #009640 !important; "> Verificaci&oacute;n de su voto para escogencia a directivos</label>
 					@endif								

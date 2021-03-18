@@ -293,23 +293,24 @@ class ConfEnvioController extends Controller
 						
 							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '&nbsp;'.$registrosenvio->NOMBRE;
                
-        switch($tipo_envio)
-          {
+         switch($tipo_envio)
+         {
           case 1:
-              $contenido .= ' <br/> Te hemos colocado un enlace para el "ingreso a propuestas" :' ;
+              $contenido .= ' <br/> Te hemos colocado un enlace para ver y administrar propuestas:' ;
           break;
           case 2:
-              $contenido .= ' <br/> "Te damos la bienvenida" ' ;
-          break;     
-        }           
-        
-              //$contenido .=  $documento_resultados[0]->asunto .' &nbsp; - &nbsp; '.$etiquetatipoenvio .'</label>';
-  
+              $contenido .= ' <br/> Te damos la bienvenida a la  '.  $resultsevento[0]->nombre ;
+          break;   
+        } 
+               
       
       $contenido .= '<br/><br/>';
-      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'">DA CLIC EN ESTE ENLACE PARA IR A VOTACI&Oacute;N !</a>';
+      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'">Conozca a los candidatos a puestos directivos y ejerza su voto.</a>';
       $contenido .= '<br/><br/>';
-      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> ACCESO A PROPUESTAS </a>';          
+      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> Ingrese su propuesta y revise las de otros Delegados </a>';          
+          
+          
+          
       $contenido .=$documento_resultados[0]->texto;          
                
                
@@ -670,7 +671,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 						
 							<br/>
               
-              <label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '&nbsp;'.$registrosenvio->NOMBRE;
+              <label style="font-size:20px;color:#202020;font-style: italic;">'.$registrosenvio->NOMBRE;
 
           
         switch($tipo_envio)
@@ -679,15 +680,15 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
               $contenido .= ' <br/> Te hemos colocado un enlace para ver y administrar propuestas:' ;
           break;
           case 2:
-              $contenido .= ' <br/> Te damos la bienvenida al siguiente evento:   '.  $resultsevento[0]->nombre ;
+              $contenido .= ' <br/> Te damos la bienvenida a la  '.  $resultsevento[0]->nombre ;
           break;   
         } 
                
       
       $contenido .= '<br/><br/>';
-      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'">DA CLIC EN ESTE ENLACE PARA IR A VOTACI&Oacute;N !</a>';
+      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'">Conozca a los candidatos a puestos directivos y ejerza su voto.</a>';
       $contenido .= '<br/><br/>';
-      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> ACCESO A PROPUESTAS </a>';          
+      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> Ingrese su propuesta y revise las de otros Delegados </a>';          
       $contenido .=$documento_resultados[0]->texto;   
 
                $contenido.='</p>
