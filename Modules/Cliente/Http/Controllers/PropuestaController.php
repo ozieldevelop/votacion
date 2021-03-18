@@ -81,4 +81,9 @@ class PropuestaController extends Controller
             return response()->json("Propuesta Eliminada!", 200);
         }
     }
+
+    public function getPropuestas($id)
+    {
+        return Propuesta::where('user_id', $id)->orderBy('created_at', 'DESC')->get();
+    }
 }
