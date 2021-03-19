@@ -653,9 +653,7 @@
 
             methods: {
                 cargarPropuestas: function() {
-                    id = $("#numero_asoc").val();
-
-                    axios.get('/cliente/propuestas/'+id)
+                    axios.get('/cliente/propuestas')
                     .then( (response) => {
                         this.propuestas = response.data;
                         this.loaded = true;
