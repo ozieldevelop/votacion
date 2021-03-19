@@ -31,6 +31,8 @@ use Auth;
 use DB;
 use Config;
 
+use Maatwebsite\Excel\Facades\Excel;
+
 class ConfEnvioController extends Controller
 {
     
@@ -797,6 +799,18 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
         return view('sistema::confenvioasamblea')->with('eventos', $eventos)->with('tipos', $tipos)->with('capitulos', $capitulos)->with('asamblea_estructura', $asamblea_estructura)->with('estados_asoc', $estados_asoc); 		
     }	  
   
+    public function vistaenviosoporte()
+    {
+        $capitulos = capitulosModel::select(['IDAGEN','AGENCIA'])->where('IDAGEN','>',0)->get();
+        $asamblea_estructura = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
+        $estados_asoc = estados_asocModel::select(['id_estado','estado'])->where('id_estado','>',0)->get();		
+        $eventos = eventoModel::select(['id','nombre','rangofecha1'])->where('tipo',2)->where('status',1)->orderBy('rangofecha1', 'DESC')->get();
+        $tipos = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
+        return view('sistema::confenviosoporte')->with('eventos', $eventos)->with('tipos', $tipos)->with('capitulos', $capitulos)->with('asamblea_estructura', $asamblea_estructura)->with('estados_asoc', $estados_asoc); 		
+    }	
+  
+  
+    
   public function trabajo($id_evento,$codigos)
   {
 
@@ -892,7 +906,105 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
    }
   
   
-  
+ 
+  public function uploadsoporte(Request $request)
+     {
+       try 
+       {
+             
+             $file = $request->file('file');
+             $id_evento =$request->input('up_id_evento');  
+             $tipo_invitacion =$request->input('tipo_invitacion');  
+
+         
+             $nombrefile = $file->getClientOriginalName();
+             $extension = $file->getClientOriginalExtension();
+             $tipoarchivo = $file->getMimeType();
+             $nombre = strtolower(uniqid('file_' . uniqid()) . "." . $extension);
+
+             $upload_success = $file->move(base_path('public/adjuntos') , $nombre);
+             $eventos = eventoModel::select(['*'])->where('id',$id_evento)->get();
+             
+             $siasistencia =0;
+
+             if ($upload_success) {
+               
+               
+               $dataxxc=[];
+               
+               
+                if (($handle = fopen (base_path('/public/adjuntos/').$nombre, 'r' )) !== FALSE) {
+
+                     while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
+                     {
+
+                           $parametros = explode (";",$data [0]);
+                           $elcldoc = filter_var($parametros [0], FILTER_SANITIZE_NUMBER_INT);
+                           $elcldocval = intval( $elcldoc ); 
+                           //$correo_new = trim($parametros [1]);   
+                           //                    
+                           $enlacexx = '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> Link </a>';          
+                           $datoscliente = DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->where('CLASOC',$elcldocval)->get();
+                           array_push($dataxxc,["asociado"=>$elcldocval,"Nombre"=>$datoscliente[0]["NOMBRE"],"Enlace"=> $enlacexx]);
+                       
+                     }
+                      fclose ( $handle );
+                    
+                  dd($dataxxc);
+                  
+                  //return Excel::download($dataxxc, 'participant-information.xlsx');
+                  
+                  //dd($dataxxc);
+                /*
+                      Excel::create('Listado Asociados', function($excel) use($dataxxc) {
+
+                          $excel->sheet('Listado Asociados', function($sheet) use($dataxxc) {
+
+                              $sheet->loadView('sistema::reportexls',array('cliente' => $dataxxc));
+                            
+                              $sheet->setAutoSize(true);
+                              $sheet->setOrientation('landscape');
+                              $sheet->setStyle(array(
+                                  'font' => array(
+                                      'name'      =>  'Calibri',
+                                      'size'      =>  11,
+                                  )
+                              ));
+                            $sheet->fromArray($dataxxc, null, 'A1', false, false);
+                          });
+                      })->export('xls');
+      */
+                  /*
+                      Excel::create('Seguimientos', function($excel) use($dataxxc) {
+                        // Título
+                        $excel->setTitle('Listado de seguimientos');
+
+                        $excel->sheet('Página 1', function($sheet) use($dataxxc) {
+                          $data = [];
+                          array_push($data, ['Fecha guardado', 'Fecha creación', 'Observaciones']);
+                          foreach ($dataxxc as $key => $value) {
+                            array_push($data, [(string) $value->fechaguardado, (string) $value->fechacreacion, $value->observaciones]);
+                          }
+                          $sheet->fromArray($data, null, 'A1', false, false);
+                        });
+                      })->export('xls');                  
+                  */
+                  
+                  
+
+                 }
+
+
+             }
+        } catch (Exception $e) {
+                     $response = array(
+                         'resabit' => '0001',
+                         'status' => 'Listado ERR',
+                         'error' => $e->getMessage()
+                    );
+        }
+   }
+   
   
   
 
