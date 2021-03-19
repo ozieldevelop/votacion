@@ -2,6 +2,11 @@
 
 namespace Modules\Sistema\Http\Controllers;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Export\ExportarXLS;
+
+
+
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -31,7 +36,7 @@ use Auth;
 use DB;
 use Config;
 
-use Maatwebsite\Excel\Facades\Excel;
+
 
 class ConfEnvioController extends Controller
 {
@@ -943,14 +948,18 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                            $elcldocval = intval( $elcldoc ); 
                            //$correo_new = trim($parametros [1]);   
                            //                    
-                           $enlacexx = '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> Link </a>';          
+                           $enlacexx = '<a href="'.env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> Link </a>';          
                            $datoscliente = DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->where('CLASOC',$elcldocval)->get();
                            array_push($dataxxc,["asociado"=>$elcldocval,"Nombre"=>$datoscliente[0]["NOMBRE"],"Enlace"=> $enlacexx]);
                        
                      }
                       fclose ( $handle );
                     
-                  dd($dataxxc);
+                  
+                  $aaxc = new ExportarXLS($dataxxc);
+                  dd( $aaxc );
+                  //$nombre = strtolower("ReporteEnlaces_".date('YmdHms')."_".uniqid('file_'.uniqid()));
+                  return Excel::export($aaxc,"aaaaaa.xlsx");
                   
                   //return Excel::download($dataxxc, 'participant-information.xlsx');
                   

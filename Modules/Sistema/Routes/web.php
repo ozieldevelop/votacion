@@ -153,7 +153,7 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
   
   
   Route::post('/upload', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@upload'] );		
-    Route::post('/uploadsoporte', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@uploadsoporte'] );	
+  Route::post('/uploadsoporte', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@uploadsoporte'] );	
   Route::post('/eliminardelhistorialenvio', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@eliminardelhistorialenvio'] );		
   
   
