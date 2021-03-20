@@ -2,9 +2,6 @@
 
 namespace Modules\Sistema\Http\Controllers;
 
-use Maatwebsite\Excel\Facades\Excel;
-use App\Export\ExportarXLS;
-
 
 
 use Illuminate\Contracts\Support\Renderable;
@@ -37,6 +34,8 @@ use DB;
 use Config;
 
 
+use App\Export\ExportarXLS;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ConfEnvioController extends Controller
 {
@@ -811,7 +810,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
         $estados_asoc = estados_asocModel::select(['id_estado','estado'])->where('id_estado','>',0)->get();		
         $eventos = eventoModel::select(['id','nombre','rangofecha1'])->where('tipo',2)->where('status',1)->orderBy('rangofecha1', 'DESC')->get();
         $tipos = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
-        return view('sistema::confenviosoporte')->with('eventos', $eventos)->with('tipos', $tipos)->with('capitulos', $capitulos)->with('asamblea_estructura', $asamblea_estructura)->with('estados_asoc', $estados_asoc); 		
+		return view('sistema::confenviosoporte')->with('eventos', $eventos)->with('tipos', $tipos)->with('capitulos', $capitulos)->with('asamblea_estructura', $asamblea_estructura)->with('estados_asoc', $estados_asoc);
     }	
   
   
@@ -962,27 +961,41 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                
                 if (($handle = fopen (base_path('/public/adjuntos/').$nombre, 'r' )) !== FALSE) {
 
-                     while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
-                     {
+
+					while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
+					{
+
                            $parametros = explode (";",$data [0]);
                            $elcldoc = filter_var($parametros [0], FILTER_SANITIZE_NUMBER_INT);
                            $elcldocval = intval( $elcldoc ); 
                            //$correo_new = trim($parametros [1]);   
                            //                    
-                           $enlacexx = '<a href="'.env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> Link </a>';          
-                           $datoscliente = DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->where('CLASOC',$elcldocval)->get();
-                           array_push($dataxxc,["asociado"=>$elcldocval,"Nombre"=>$datoscliente[0]["NOMBRE"],"Enlace"=> $enlacexx]);
-                       
-                     }
-                  
-                      fclose ( $handle );
-                    
-                  return $dataxxc;
-                  
-                  $aaxc = new ExportarXLS($dataxxc);
-                  dd( $aaxc );
+                        //    $enlacexx = env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  );          
+							switch($tipo_invitacion)
+							{
+								case 1:
+									$contenido = '/cliente/dashboard' ;
+								break;
+								case 2:
+									$contenido = '/votacion';
+								break;   
+							} 
+							$enlacexx = env('APP_URL', '127.0.0.1').$contenido.'/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  );          
+						  $datoscliente = DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->where('CLASOC',$elcldocval)->get();
+              array_push($dataxxc,["asociado"=>$elcldocval,"Nombre"=>$datoscliente[0]["NOMBRE"],"Enlace"=> $enlacexx]);
+
+					}
+					fclose ( $handle );
+
+					$request->session()->put('dataxxc', null);
+					$request->session()->put('dataxxc', $dataxxc);
+
+					return redirect('/sistema/vistaenviosoporte');
+                //   $aaxc = new ExportarXLS($dataxxc);
+                //   dd( $aaxc );
+
                   //$nombre = strtolower("ReporteEnlaces_".date('YmdHms')."_".uniqid('file_'.uniqid()));
-                  return Excel::export($aaxc,"aaaaaa.xlsx");
+                //   return Excel::download($aaxc,"aaaaaa.xlsx");
                   
                   //return Excel::download($dataxxc, 'participant-information.xlsx');
                   
@@ -1036,6 +1049,15 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                     );
         }
    }
+
+   	public function generateReporte(Request $request)
+	{
+		$dataReporte = $request->session()->get('dataxxc');
+
+		$reporte = new ExportarXLS($dataReporte); //dd($aaxc);
+		
+		return Excel::download($reporte,"Listado de Enlaces.xlsx");
+	}
    
   
   
