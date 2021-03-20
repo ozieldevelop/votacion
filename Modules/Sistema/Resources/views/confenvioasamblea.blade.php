@@ -586,6 +586,7 @@ function format ( d )
 function fnreinsertar(evento,cldoc,tipo_invitacion)
 {
 	espere('Cargando');	
+  
 	$.ajax({
        url: '{{ url("sistema/reinsertar")}}' 
 		  , data: {"id_evento": evento ,  "cldoc":cldoc,  "tipo_invitacion":tipo_invitacion}

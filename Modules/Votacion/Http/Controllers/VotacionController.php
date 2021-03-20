@@ -625,14 +625,15 @@ class VotacionController extends Controller
             $files = $request->input('campos');
 
             $osi = json_decode($files); /// ESTOS SON LOS VOTOS
+             $osi2 = json_encode($files); /// ESTOS SON LOS VOTOS
             
-        
+          //dd($osi2)
             $detalles = DB::select("insert into votantes(idterminal,id_evento,asociado) values ('".trim(GeneralHelper::getRealIP())."',".$id_evento.",cast(AES_ENCRYPT(".$usuario.",'xyz123') as CHAR charset UTF8MB4 )); ");
             $detalles2 = DB::select("SELECT LAST_INSERT_ID() AS ultimoid;");
 
 
           
-            DB::statement( "update votantes set json_data=cast(AES_ENCRYPT('".$files."','xyz123') as CHAR charset UTF8MB4) where id= ".$detalles2[0]->ultimoid."");
+            DB::statement( "update votantes set json_data=cast(AES_ENCRYPT('".$osi2."','xyz123') as CHAR charset UTF8MB4) where id= ".$detalles2[0]->ultimoid."");
 
             $canti = count($osi) - 1;
           //dd($canti);

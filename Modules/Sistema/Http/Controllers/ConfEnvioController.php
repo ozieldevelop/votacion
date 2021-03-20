@@ -909,9 +909,31 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                     );
         }
    }
-  
-  
- 
+
+  public function imprimirxls(Request $request)
+     {
+       try 
+       {
+         
+         $listado =$request->input('listado');
+         $osi = json_decode($listado);
+        // dd( $osi);
+         
+         $aaxc = new ExportarXLS($osi);
+                  //$nombre = strtolower("ReporteEnlaces_".date('YmdHms')."_".uniqid('file_'.uniqid()));
+         return Excel::download($aaxc,"aaaaaa.xlsx");
+         
+        } catch (Exception $e) {
+                     $response = array(
+                         'resabit' => '0001',
+                         'status' => 'Listado ERR',
+                         'error' => $e->getMessage()
+                    );
+        }
+   }         
+         
+         
+         
   public function uploadsoporte(Request $request)
      {
        try 
@@ -942,7 +964,6 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 
                      while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
                      {
-
                            $parametros = explode (";",$data [0]);
                            $elcldoc = filter_var($parametros [0], FILTER_SANITIZE_NUMBER_INT);
                            $elcldocval = intval( $elcldoc ); 
@@ -953,8 +974,10 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                            array_push($dataxxc,["asociado"=>$elcldocval,"Nombre"=>$datoscliente[0]["NOMBRE"],"Enlace"=> $enlacexx]);
                        
                      }
+                  
                       fclose ( $handle );
                     
+                  return $dataxxc;
                   
                   $aaxc = new ExportarXLS($dataxxc);
                   dd( $aaxc );

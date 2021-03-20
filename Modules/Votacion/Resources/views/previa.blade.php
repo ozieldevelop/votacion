@@ -53,16 +53,16 @@ function imprimir()
   var lasPapeletasStorage = localStorage.getItem("lasboletas{{ $id_evento }}")  || [];
   lasPapeletasStorage = JSON.parse(lasPapeletasStorage);      
   
-  console.log(lasPapeletasStorage.length);
+  //console.log(lasPapeletasStorage);
 
-  
+  //alert(lasPapeletasStorage);
   
 	 if( lasPapeletasStorage.length <=0)
     {
 
                       $.ajax({
                         url: '{{ url("votacion/coopexe33")}}'  
-                        , data: { 'campos': JSON.stringify(lasPapeletasStorage) }
+                        , data: { 'campos': '' }
                         , method: 'post'
                         , headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -85,7 +85,7 @@ function imprimir()
     else
     {   
       
-      
+      console.log(JSON.stringify(lasPapeletasStorage));
 
                       $.ajax({
                         url: '{{ url("votacion/coopexe3")}}'  

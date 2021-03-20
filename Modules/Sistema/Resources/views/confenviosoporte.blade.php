@@ -45,7 +45,7 @@
                               <div class="card-header bg-light resaltado">IMPORTAR LISTADO CSV (2 columnas una con el c&oacute;digos de asociado y la siguiente columna con el correo del asociado) </div>
                               <div class="card-body" >
                                 <!-- dropzone  -->
-                                <form action=" {{ url('/sistema/uploadsoporte') }}"  enctype="multipart/form-data" class="dropzone" id="my-dropzone">
+                                <form action=" {{ url('/sistema/uploadsoporte') }}"   enctype="multipart/form-data" class="dropzone" id="my-dropzone">
                                   <input type="hidden"  id="up_id_evento" name="up_id_evento"  data-bindto="parametros.up_id_evento"  value="">
                                   <input type="hidden"  id="tipo_invitacion" name="tipo_invitacion"  data-bindto="parametros.tipo_invitacion" value="1" >
                                   {{ csrf_field() }}
@@ -172,15 +172,29 @@ function selecciontipo(elemento)
               //maxFiles: 1,
               acceptedFiles: ".csv",
               init: function () {
-                  this.on("queuecomplete", function () {
-                       console.log('Termino de subir');
-                      // setTimeout(function(){ location.reload();  }, 3000);
-                    
-	                      //espere('Cargando');
-												//cargarlistado(1);  
-                        //terminar_espere();
-                    
-                  });
+
+                
+                this.on("success", function(file, responseText) {
+                  
+                    console.log(responseText);
+                  
+                    $.ajax({
+                         url: '{{ url("sistema/imprimirxls")}}' 
+                        , data: {"listado": JSON.stringify(responseText,undefined,2)}
+                        , method: 'get',
+                        success: function(elhtml2){
+            
+
+                        },
+                        error: function (r) {
+                            console.log("ERROR");
+                            console.log(r);
+                        }
+                     });                  
+                  
+                });
+                
+                
               }
           };
 
