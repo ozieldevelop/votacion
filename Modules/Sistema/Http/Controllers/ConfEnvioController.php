@@ -942,32 +942,15 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
              $id_evento =$request->input('up_id_evento');  
              $tipo_invitacion =$request->input('tipo_invitacion');  
 
-         
-             $nombrefile = $file->getClientOriginalName();
-             $extension = $file->getClientOriginalExtension();
-             $tipoarchivo = $file->getMimeType();
-             $nombre = strtolower(uniqid('file_' . uniqid()) . "." . $extension);
 
-             $upload_success = $file->move(base_path('public/adjuntos') , $nombre);
-             $eventos = eventoModel::select(['*'])->where('id',$id_evento)->get();
-             
-             $siasistencia =0;
-
-             if ($upload_success) {
-               
                
                $dataxxc=[];
                
-               
-                if (($handle = fopen (base_path('/public/adjuntos/').$nombre, 'r' )) !== FALSE) {
-
-
-					while ( ($data = fgetcsv ( $handle, 1000, ',' )) !== FALSE ) 
-					{
-
-                           $parametros = explode (";",$data [0]);
-                           $elcldoc = filter_var($parametros [0], FILTER_SANITIZE_NUMBER_INT);
-                           $elcldocval = intval( $elcldoc ); 
+        $datos1 =DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->orderBy('CLASOC','asc')->get();
+		  
+				foreach ($datos1 as $registrosenvio)
+				{
+              $elcldocval = intval( $registrosenvio["CLASOC"] ); 
                            //$correo_new = trim($parametros [1]);   
                            //                    
                         //    $enlacexx = env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  );          
@@ -981,11 +964,10 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 								break;   
 							} 
 							$enlacexx = env('APP_URL', '127.0.0.1').$contenido.'/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  );          
-						  $datoscliente = DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->where('CLASOC',$elcldocval)->get();
-              array_push($dataxxc,["asociado"=>$elcldocval,"Nombre"=>$datoscliente[0]["NOMBRE"],"Enlace"=> $enlacexx]);
+						  $datoscliente = array_push($dataxxc,["asociado"=>$elcldocval,"Nombre"=>$registrosenvio["NOMBRE"],"Enlace"=> $enlacexx]);
 
 					}
-					fclose ( $handle );
+
 
 					$request->session()->put('dataxxc', null);
 					$request->session()->put('dataxxc', $dataxxc);
@@ -1037,10 +1019,6 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                   
                   
 
-                 }
-
-
-             }
         } catch (Exception $e) {
                      $response = array(
                          'resabit' => '0001',
