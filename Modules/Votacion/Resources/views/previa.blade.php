@@ -47,9 +47,13 @@
 <script>
 
   
-function imprimir()
+function imprimir(  )
 {
-
+    $('#botonimprimir').hide();
+  
+    espere("Emitiendo su voto!");
+  
+  
   var lasPapeletasStorage = localStorage.getItem("lasboletas{{ $id_evento }}")  || [];
   lasPapeletasStorage = JSON.parse(lasPapeletasStorage);      
   
@@ -71,8 +75,10 @@ function imprimir()
                               Lobibox.notify('info', {
                                 msg: 'Gracias por su voto.'
                               });		
+                          
+                             window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ;
                               //localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
-                            setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                            //setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
                             //setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
                               //setTimeout(function(){ location.reload();  }, 2000);
                         },
