@@ -174,9 +174,6 @@
 </div>
 @endif
 
-
-
-
 <div class="col-sm-12 col-md-12 col-lg-12" style="display:none">
 
 
@@ -588,13 +585,6 @@
 
 
 
-        socket.on('serviciomensajesala',(parametros) => {
-
-            alert('AQUI LES BLOQUEO' + parametros.mensaje);
-
-        });
-
-
         socket.on('serviciomensajedirecto', function(parametros) {
             alert('serviciomensajedirecto: '+parametros.mensaje);
         });
@@ -603,7 +593,7 @@
             alert('serviciomensajesala: '+parametros.mensaje);
         });
   
-  
+
         socket.on('disconnect', function() {
             console.log('User Disconnected to server');
         });
@@ -628,10 +618,9 @@
             $('#usuarioslinea').html(ol);
         });
 
-
-
     });
   */
+
 </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
