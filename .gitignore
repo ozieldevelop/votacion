@@ -1,5 +1,5 @@
 /node_modules
-/public/hotgit 
+/public/hotgit
 /public/storage
 /public/adjuntos/
 /public/var/
@@ -20,3 +20,4 @@ after.sh
 aliases
 Vagrantfile
 .ftpconfig
+.ftpignore
