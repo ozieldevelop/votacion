@@ -37,15 +37,18 @@ class ReportesController extends Controller
 		  
 		  $evento = eventoModel::select(['id','nombre','tipo'])->where('id',$id_evento)->get();
 
-		  
-          $mpdf = new \Mpdf\Mpdf(['tempDir' => __DIR__ . '/tmp','mode' => 'utf-8', 'format' => 'A4', 'setAutoTopMargin' => 'stretch','autoMarginPadding' => 5]);
+          $datavotantesevento = \DB::connection('mysql')->select('SELECT count(*) as cantidad from votantes where id_evento='.$id_evento.'');
+        
+
+        
+          $mpdf = new \Mpdf\Mpdf(['tempDir' => __DIR__ . '/tmp','mode' => 'utf-8', 'format' => 'Legal']);
           $stylesheet = file_get_contents(url("css").'/reporte.css');
 		  
           $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
           $mpdf->allow_charset_conversion = true;
-          $mpdf->charset_in = 'iso-8859-4';
-          $mpdf->defaultheaderline=1;
-          $mpdf->defaultfooterline=1;
+          //$mpdf->charset_in = 'iso-8859-4';
+          //$mpdf->defaultheaderline=1;
+          //$mpdf->defaultfooterline=1;
 		  
 				 $header='
 				   <table id="firmas1">
@@ -55,17 +58,18 @@ class ReportesController extends Controller
 				   </table>';
 		   
 		   
-				$html ='<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></head>
-                <div style="position: absolute; left:0; right: 0; top: 0; bottom: 0;">
-                <img src="../../assets/images/header.jpg" style="margin: 0;" /></div><br>';
+				$html ='<!DOCTYPE html><html lang="en" style="font-size:9px"><head><meta http-equiv="Content-Type" content="text/html; " /></head>
+
+                <img src="../../assets/images/header.jpg" style="margin: auto 0;height:300px;" /><br/>';
 				
 				$dataa = documento_resultadosModel::select(['superior','inferior'])->where('id_evento',$id_evento)->get();
-						  
-				$html .= $dataa[0]['superior'];
+		
+				$html .='<div style=" left:0; right: 0; top: 0; bottom: 0;">';
+				$html .= $dataa[0]['superior'].'</div>';
 
                 //$html .='<div style="text-align:justify;"><p>Fueron electos :</p></div>';
 
-
+      $html .=  '	Asistieron virtualmente  ____ delegados y __'.$datavotantesevento[0]->cantidad.'__emitieron su voto.<br/><br/> Los resultados de la votación son los siguientes: <br/><br/>';
 
 
           $data = \DB::connection('mysql')->select('SELECT * from vt_totales as a
@@ -85,12 +89,12 @@ class ReportesController extends Controller
 					$datos2 = \DB::connection('mysql')->select('SELECT * from vt_totales as a where a.id_evento = '.$id_evento.' and  a.id_area = '.$grupovotacion->id_area.' order by a.id_area,apellido,cantidadvotos DESC');
 					
 				  
-					$html.='<table border="1" style="border-collapse: collapse;width:100%;padding:15px;">
-					<tr><td colspan=3> '.htmlentities($grupovotacion->area_etiqueta).' </td></tr>
+					$html.='<table border="1" style="border-collapse: collapse;width:100%;">
+					<tr><td colspan=3 style="text-align:left;border:none;"> '.strtoupper( $grupovotacion->area_etiqueta ).' </td></tr>
 					<tr>
-						 <td style="width:310px;text-align:center;padding:7px;">Delegado</td>
-                         <td style="width:75px;text-align:center;padding:7px;">No. Asoc</td>
-						 <td style="width:135px;text-align:center;padding:7px;">Cantidad de Votos</td>
+						 <td style="width:310px;text-align:center;padding:7px;">Nombre</td>
+                         <td style="width:75px;text-align:center;padding:7px;">No.</td>
+						 <td style="width:135px;text-align:center;padding:7px;">Votos</td>
 					</tr>';
 	
 					  foreach ($datos2 as $registrosvotacion)
@@ -105,15 +109,17 @@ class ReportesController extends Controller
 						} 
 						$html .='</table><br/>';						
 				}
+            
+            
 		  }
+ 
+				
 
-
-					
 
 					
 				$html .=  $dataa[0]['inferior'];
 
-                $html .='<div style="position: fixed; bottom: 0;"> <img src="../../assets/images/footer.jpg" style="margin: 0; width:100%;" /></div>';
+              //  $html .='<div style="position: fixed; bottom: 0;"> <img src="../../assets/images/footer.jpg" style="margin: 0; width:100%;" /></div>';
 				
 				$html .= '</html>';
 			//dd($html);	
