@@ -174,9 +174,6 @@
 </div>
 @endif
 
-
-
-
 <div class="col-sm-12 col-md-12 col-lg-12" style="display:none">
 
 
@@ -564,7 +561,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"> </script>
 
 <script>
-    /*
+  /*
     var socket = io("{{ env('PUBLISHER_URL') }}:{{ env('BROADCAST_PORT') }}");
 
 
@@ -586,18 +583,16 @@
 
         });
 
-        socket.on('serviciomensajedirecto',(parametros) => {
 
-            alert('AQUI LES BLOQUEO' + parametros,mensaje);
 
+        socket.on('serviciomensajedirecto', function(parametros) {
+            alert('serviciomensajedirecto: '+parametros.mensaje);
         });
 
-        socket.on('serviciomensajesala',(parametros) => {
-
-            alert('AQUI LES BLOQUEO' + parametros,mensaje);
-
+        socket.on('serviciomensajesala', function(parametros) {
+            alert('serviciomensajesala: '+parametros.mensaje);
         });
-
+  
 
         socket.on('disconnect', function() {
             console.log('User Disconnected to server');
@@ -610,21 +605,22 @@
             $('#users').html('');
             users.forEach(function(user) {
                 // ol.append($('<li class="nav-icon far fa-circle text-success">'+user.num_cliente +'   '+ user.nombre +'   '+ user.agencia+'<button type="button">'+user.id+'</button></li>'));
-                ol+=('<li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon far fa-circle text-success"></i><p class="text">'+user.num_cliente +'   '+ user.nombre +'   '+ user.agencia+'</p></a></li>');
+              var aaaa =user.num_cliente;
+              if(aaaa==0){
+                ol+=('<li class="nav-item" style="color:white;"> <i class="nav-icon far fa-circle text text-success"></i>'+ user.nombre +'</li>');
+              }
+              else
+                {
+                  ol+=('<li class="nav-item" style="color:white;"> <i class="nav-icon far fa-circle text text-success"></i>'+user.num_cliente +'   '+ user.nombre +'</li>');
+                }
+                
             });
             $('#usuarioslinea').html(ol);
         });
 
-        socket.on('serviciomensajedirecto', function(parametros) {
-            alert('serviciomensajedirecto: '+parametros.mensaje);
-        });
-
-        socket.on('serviciomensajesala', function(parametros) {
-            alert('serviciomensajesala: '+parametros.mensaje);
-        });
-
     });
-    */
+  */
+
 </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
