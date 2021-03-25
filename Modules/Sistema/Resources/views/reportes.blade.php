@@ -162,8 +162,7 @@ function Cargar(dato)
   
  $(document).ready(function () { 
  
-    
-   
+    ocultarfooter();
 });
 
   

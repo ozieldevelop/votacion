@@ -153,7 +153,7 @@
                                     </div> --}}
                                 </div>
                                 <p class="mb-1">@{{ item.detalle }}</p>
-                                <small class="d-flex justify-content-center">
+                                <small class="d-flex">
                                     Propuesta realizada por: <b>@{{ item.user_name }}</b>, Secundada por: <b>@{{ item.secunda_asoc }}</b>
                                 </small>
                             </li>
