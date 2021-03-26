@@ -1,42 +1,110 @@
-@extends('votacion::layouts.custom_votacion')
+@extends('layouts.custom')
 
 @section('content')
 
+<br/><br/>
 
-            <div class="chat-room">
-               <br/>
-               <aside class="tengah-side">
-                  <div class="animated fadeIn">
-                     <br/>
-                     <div class="row">
-                        <div class="col-lg-12">
-                          <div class="DirectivosDir"></div>
-                        </div>
-               </aside>
-                   <aside class="kanan-side" style="">
+   <main class="main">
+			<section id="cover" class="min-vh-200">
+			  <div id="cover-caption">
+				  <div class="container">
+					  <div class="row" style="display:none">
 
+					  </div>
+					  <div class="row text-white">
+					  
 
-                        <div  class="chat__messages ">
-                            <ol id="contenedorAspirantes" ></ol>
-                        </div>
+					  </div>
+				  </div>
+			  </div>
+		  </section>
 
+		  <div class="container-fluid" styl="border: none;">
+			  <div class="animated fadeIn" style="margin-top: 41px;">
+					    <br/><br/>
+					<label style="color:black;">Seleccione el candidato por el cual desea votar.</label>
+					@if($tipoevent == 1)
+					<label style="color:red;font-weight: bold;"> Puede escoger hasta {{ $max_votos }} candidatos </label>
+					@endif
 
-                   </aside>
-                   </div>
-            </div>
-        </div>
+			  		<div class="row DirectivosDir"></div>	
+
+			</div>	
+
+			<div class="text-center">
+			              <button class="btn btn-primary" onclick="siguientepaso()" style="height:130px;width: 100%;font-size:34px">SIGUIENTE</button>
+			</div>
+
+			<div id="output">
+
+			</div>	
+
+		</div>
+
+	</main>
+	
+  <aside class="aside-menu">
+
+      <ul class="nav nav-tabs" role="tablist">
+
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+
+        <div class="tab-pane active" id="timeline" role="tabpanel">
+
+          <hr class="transparent mx-3 my-0">
+          <div class="callout callout-warning m-0 py-3 list-type1">
         
+				  <pre><code id="jsonPapeletas" ></code></pre>
+
+				  <div  class="chat__messages ">
+            <br/><br/>
+					<ol id="contenedorAspirantes" style="">
+						
+					</ol>
+
+				  </div>
+				  <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+          </div>
+         
+          <hr class="mx-3 my-0">
+
+        </div>
+
+      </div>
+</aside>
 
 @endsection
 
 @section('page-script')
 
+<style>
+  
+  
+.seleccionadocard{
+	border: solid 8px;
+	border-color:#e8e8e8;
+	background: #8D9D84;
+}
 
+.noseleccionadocard{
+	border: 1px solid #4dceff;
+	background: 'none';
+}
 
+.seleccionadocard .card-body {
+	color: white;
+}
 
-        
+.noseleccionadocard .card-body {
+	color: black;
+}
+
+</style>
+
 <script>
-        
 var Papeletas = []; 
 var datosSeleccionado = null;
 var max_votos = 0;
@@ -225,16 +293,16 @@ function avatardisplayFn(id,id_area,areaetiqueta)
 
 function siguientepaso()
 	{
-  if(Papeletas.length==0){
-    lobibox_emergente('warning','top lef',true,'Debe seleccionar al menos un voto!');
-  }
-  else{
+ // if(Papeletas.length==0){
+   // lobibox_emergente('warning','top lef',true,'Debe seleccionar al menos un voto!');
+  //}
+  //else{
          //var terminal = localStorage.getItem("prm_name");
         //localStorage.setItem("Papeletas",Papeletas);
         //max_votos
         //console.log(terminal);
         location.href = '{{ url("votacion/previa/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}';
-  }
+  //}
 }
 
 function blanqueofiltro()
@@ -326,7 +394,7 @@ function PapeletasIniciales(textolike){
 				//console.log(datoz);
 				//return false;
 
-                var html = "<div class=' our-team' style='border:none'><div class='card' style='border:none'><div class='row gallery'>";
+                var html = '';
                 var elavatar = '';
 				var titulo = '';
 				for (var aa = 1; aa < 5; aa++)
@@ -353,9 +421,9 @@ function PapeletasIniciales(textolike){
 								titulo ='Comite de Crédito';
 							}
 
-						//html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team" style="border:none"><div class="card" style="border:none"><div class="card-header bg-info" style="text-align: center;"><b  style="font-size:36px">';
-						//html += titulo + ' </b><br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'"> '+0+'</label> )</b> </div><div class="row">';
-						 html += "";
+						html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team" style="border:none"><div class="card" style="border:none"><div class="card-header" style="background:#009640;color:white;text-align: center;padding: 1px;"><b  style="font-size:36px">';
+						html += titulo + ' </b><br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'"> '+0+'</label> )</b> </div><div class="row">';
+						
 	
 						for (var ii = 0; ii < datosencabezado.length; ii++)
 						{
@@ -367,10 +435,10 @@ function PapeletasIniciales(textolike){
 							}
 							else
 							{
-								elavatar = "../../../adjuntos/"+datosencabezado[ii]['foto'];
+								elavatar = "./adjuntos/"+datosencabezado[ii]['foto'];
 							}   
 	
-							html +=" <div data-gallery-tag='"+titulo+"'  class='gallery-item cuadritovotante  col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12' style='cursor:pointer' ";
+							html +=" <div class='cuadritovotante col-12 col-xs-12 col-sm-12 col-md-4 col-lg-3' style='cursor:pointer' ";
 							
 							var aa1 =datosencabezado[ii]['id_delegado'];
 							var aa2 =datosencabezado[ii]['id_area'];
@@ -378,11 +446,11 @@ function PapeletasIniciales(textolike){
 							
 							html +=" onclick='avatardisplayFn( " + (aa1) +" ," + (aa2) +" ," + (aa3) +"  )' " ;
 
-							html +="><div class='card' id='papeletacard_"+datosencabezado[ii]['id_delegado']+"_"+datosencabezado[ii]['id_area']+"'><div class='card-header' style='background:#008d5e;text-align: center;color:white;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]['num_cliente']+"</div><div class='card-body' id='collapseExample' style='text-align: center;border: solid 1px #c3c3c3;'>";
+							html +="><div class='card' id='papeletacard_"+datosencabezado[ii]['id_delegado']+"_"+datosencabezado[ii]['id_area']+"'><div class='card-header' style='background:#009640;text-align: center;color:white;font-size: 18px;font-weight: bold;'>"+datosencabezado[ii]['num_cliente']+"</div><div class='card-body' id='collapseExample' style='text-align: center;'>";
 							@if($tipoevent == 2)
-								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
+								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #09915c;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
 							@endif
-								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+",&nbsp;"+datosencabezado[ii]["nombre"]+"</p><p style='text-align: center;font-size: 17px;'>"+titulo+"</p><p style='text-align: center;font-size: 17px;'>";
+								html +="<p style='text-align: center;font-size: 18px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+"<br/>"+datosencabezado[ii]["nombre"]+"</p><p style='text-align: center;font-size: 17px;'>"+titulo+"</p><p style='text-align: center;font-size: 17px;'>";
 							@if($tipoevent == 2)
 								//html +=titulo;
 							@endif								
@@ -391,20 +459,15 @@ function PapeletasIniciales(textolike){
 
 
 						}
-
+						html += '</div></div></div>';
 
 					}
 				//console.log('-------');
 					
 				}
-          html += '</div></div></div>';
         $('.DirectivosDir').html(html);
 		renderizarselecciones();
 		terminar_espere();  
-          
-     
-          estilotab();
-          
      }
 
    });
@@ -413,66 +476,12 @@ function PapeletasIniciales(textolike){
 
 }
 
-function estilotab()
-  {
-    
-            $('.gallery').mauGallery({
-                 columns: {
-                     xs: 1,
-                     sm: 1,
-                     md: 3,
-                     lg: 3,
-                     xl: 4
-                 },
-                 lightBox: true,
-                 lightboxId: 'myAwesomeLightbox',
-                 showTags: true,
-                 tagsPosition: 'top'
-             });  
-    
-    
-        $('.gallery-items-row').css('display','none');
-    
-  
-        $(".nav-item").on('click', function(){
-                 $('.gallery-items-row').css('display','block');
-        });   
-    
-    
-  
-        $("a").each(function(){
-          console.log(this.innerHTML) ;
-          var aaa = $(this).attr('data-images-toggle');
 
-if(aaa=='all'){   $(this).css('display','none') ; }   
-      
-
-              
-              
-              
-            //if($(this).attr("nav-link")=='all'){   console.log(this.innerHTML) }   
-          //if($(this).attr("nav-link")=='all'){   alert(this.innerHTML) }   
-          /*
-              if(this.innerHTML == 'Junta de Directores'){ 
-                console.log(this);
-              }  
-              */
-          /*
-                if(this.innerHTML=='all'){  
-                   $('.'+this.innerHTML).css('display','none');
-                  alert(this.innerHTML);
-                }  
-                */
-        });
-
-    
-    
-  }
 
 
 function PapeletasFiltradas(textolike)
 {
-	       
+	
 				textolike =  textolike.toLowerCase()
   
 				//console.log(aspirtantesall);
@@ -497,14 +506,13 @@ function PapeletasFiltradas(textolike)
                 var datoz = result;
 				//console.log(datoz);
 
-
-                var html = "<div class=' our-team' style='border:none'><div class='card' style='border:none'><div class='row gallery'>";
+                var html = '';
                 var elavatar = '';
 				var titulo = '';
 				for (var aa = 1; aa < 5; aa++)
 				{
 
-					//console.log(aa);
+		
 					
 					var datosencabezado = $.grep(datoz, function (n, i) {
 								return (n.id_area == aa );
@@ -525,9 +533,10 @@ function PapeletasFiltradas(textolike)
 								titulo ='Comite de Crédito';
 							}
 
-						//html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team" style="border:none"><div class="card" style="border:none"><div class="card-header bg-info" style="text-align: center;"><b  style="font-size:36px">';
-						//html += titulo + ' </b><br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'"> '+0+'</label> )</b> </div><div class="row">';
-						 html += "";
+							
+						html += '<div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 our-team"><div class="card "><div class="card-header bg-info" style="text-align: center;"><b  style="font-size:36px">';
+						html +=  ''+titulo + '</b><br/> (Cantidad de candidatos seleccionados : <label id="totales_'+  aa  +'" >'+0+'</label> ) </b></div><div class="row">';
+						
 	
 						for (var ii = 0; ii < datosencabezado.length; ii++)
 						{
@@ -539,10 +548,11 @@ function PapeletasFiltradas(textolike)
 							}
 							else
 							{
-								elavatar = "../../../adjuntos/"+datosencabezado[ii]['foto'];
+								elavatar = "./adjuntos/"+datosencabezado[ii]['foto'];
 							}   
-	
-							html +=" <div data-gallery-tag='"+titulo+"'  class='gallery-item cuadritovotante  col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12' style='cursor:pointer' ";
+							
+
+							html +=" <div class='cuadritovotante col-12 col-xs-12 col-sm-12 col-md-4 col-lg-3' style='cursor:pointer' ";
 							
 							var aa1 =datosencabezado[ii]['id_delegado'];
 							var aa2 =datosencabezado[ii]['id_area'];
@@ -550,33 +560,24 @@ function PapeletasFiltradas(textolike)
 							
 							html +=" onclick='avatardisplayFn( " + (aa1) +" ," + (aa2) +" ," + (aa3) +"  )' " ;
 
-							html +="><div class='card' id='papeletacard_"+datosencabezado[ii]['id_delegado']+"_"+datosencabezado[ii]['id_area']+"'><div class='card-header' style='background:#008d5e;text-align: center;color:white;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]['num_cliente']+"</div><div class='card-body' id='collapseExample' style='text-align: center;border: solid 1px #c3c3c3;'>";
+							html +="><div class='card' id='papeletacard_"+datosencabezado[ii]['id_delegado']+"_"+datosencabezado[ii]['id_area']+"'><div class='card-header' style='background:#009640;text-align: center;color:white;font-size: 18px;font-weight: bold;'>"+datosencabezado[ii]['num_cliente']+"</div><div class='card-body' id='collapseExample' style='text-align: center;'>";
 							@if($tipoevent == 2)
-								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #7e977e;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
-							@endif
-								html +="<p style='text-align: center;font-size: 28px;font-weight: bold;'>"+datosencabezado[ii]["apellido"]+",&nbsp;"+datosencabezado[ii]["nombre"]+"</p><p style='text-align: center;font-size: 17px;'>"+titulo+"</p><p style='text-align: center;font-size: 17px;'>";
-							@if($tipoevent == 2)
-								//html +=titulo;
-							@endif								
-								
-								html +="</p></div></div></div>";
+							html +="<img   class='img-fluid  mx-auto d-block avatardisplay' id='img_"+datosencabezado[ii]['id_delegado']+"' style='background: #09915c;width: 154px;height:155px;cursor:pointer' src='"+elavatar+"'>";
+							@endif 
+							html +="<p style='text-align: center;font-size: 18px;font-weight: bold;'>"+datosencabezado[ii]["nombre"]+"<br/>"+datosencabezado[ii]["apellido"]+"</p><p style='text-align: center;font-size: 17px;'>"+titulo+"</p></div></div></div>";
 
 
 						}
-
+						html += '</div></div></div>';
 
 					}
-				//console.log('-------');
+				//
 					
 				}
-          html += '</div></div></div>';
+				//console.log(html);
         $('.DirectivosDir').html(html);
 		renderizarselecciones();
-		terminar_espere();  
-          
-     
-          estilotab();
-          
+
 }
 
 
@@ -625,18 +626,16 @@ function newVoto(dato,id_area,area)
 	$('#papeletacard_'+dato+'_'+id_area).attr('class','card seleccionadocard');
     Papeletas = Papeletas || [];
   
-      $.ajax({
-        url:  '{{ url("votacion/coopexe2")}}'
-        , data: { indice: dato }
-        , method: 'GET'
-        , success: function(result){
-			   var datoz = result;
-          //console.log(datoz);
-				  Papeletas.push({ "id_delegado": datoz[0].id_delegado,"num_cliente": datoz[0].num_cliente,"nombre": datoz[0].nombre,"apellido": datoz[0].apellido,"id_area": id_area,"area":area,"tipo": '',"foto": ''   });
-				  localStorage.setItem("lasboletas{{ $ideven }}",JSON.stringify (Papeletas));
-				  renderizarselecciones();
-        }
-      });
+        var datoz = $.grep(aspirtantesall, function (n, i) {
+          return (n.id_delegado == dato );
+        }); 
+  
+
+
+
+    Papeletas.push({ "id_delegado": datoz[0]['id_delegado'],"num_cliente": datoz[0]['num_cliente'],"nombre": datoz[0]['nombre'],"apellido": datoz[0]['apellido'],"id_area": id_area,"area":area,"tipo": datoz[0]['tipo'],"foto": datoz[0]['foto']   });
+    localStorage.setItem("lasboletas{{ $ideven }}",JSON.stringify (Papeletas));
+    renderizarselecciones();
 
 }
 
@@ -706,68 +705,36 @@ function votosxarea()
 	}
 
 }
+
   
-</script>        
-      <script type="text/javascript">
-         $(document).ready(function() {
-
-         });
-      </script>
-      <style>
-         .my-4 tags-bar nav nav-pills
-         {
-         margin-bottom: 20px; !important;
-         }
-      </style>
-        
-        
-        <script>
-        
-              $(document).ready(function(){
-
-                  /*if(isMobile.mobilecheck() == false){
-                      $('.navbar-toggler').trigger( "click" );
-
-                  }	*/
-
-                  var Papeletastex1 = localStorage.getItem("lasboletas{{ $ideven }}");
-
-                  if(Papeletastex1!=""){
-                    var Papeletastex = localStorage.getItem("lasboletas{{ $ideven }}");
-                    Papeletas = JSON.parse(Papeletastex);
-                    //console.log(Papeletas);
-                  PapeletasIniciales('');		
-                  }
-                  else{
-                  PapeletasIniciales('');	
-                  }
-
-                
   
-  /*
-             $('.gallery').mauGallery({
-                 columns: {
-                     xs: 1,
-                     sm: 1,
-                     md: 3,
-                     lg: 4,
-                     xl: 4
-                 },
-                 lightBox: true,
-                 lightboxId: 'myAwesomeLightbox',
-                 showTags: true,
-                 tagsPosition: 'top'
-             });     */               
-                  localStorage.setItem("aspirantes{{ $ideven }}",[]);
-
-              });
-          
-          
-
-     
-          
-        </script>
 
 
+  
+  $(document).ready(function()
+  {
+
+        if(isMobile.mobilecheck() == false){
+            $('.navbar-toggler').trigger( "click" );
+
+        }	
+
+        var Papeletastex1 = localStorage.getItem("lasboletas{{ $ideven }}");
+
+
+        if(Papeletastex1!=""){
+          var Papeletastex = localStorage.getItem("lasboletas{{ $ideven }}");
+          Papeletas = JSON.parse(Papeletastex);
+          PapeletasIniciales('');		
+        }
+        else{
+          PapeletasIniciales('');	
+        }
+
+        localStorage.setItem("aspirantes{{ $ideven }}",[]);
+
+  });
+  
+</script>
 
 @stop

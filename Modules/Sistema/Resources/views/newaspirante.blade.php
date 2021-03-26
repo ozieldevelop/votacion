@@ -23,7 +23,7 @@
 
 
          <div class="card" >
-              <div class="card-header bg-light resaltado"> IMPORTAR LISTADO CSV </div>
+              <div class="card-header bg-light resaltado"> IMPORTAR LISTADO CSV (columna solamente con los c&oacute;digos de asociados)</div>
                   <div class="card-body" >
                                   <!-- dropzone  -->
                                   <form action="{{ url('/sistema/subirlistadoaspirantes') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">

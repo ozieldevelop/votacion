@@ -2,6 +2,8 @@
 
 namespace Modules\Sistema\Http\Controllers;
 
+
+
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -30,6 +32,10 @@ use App\Models\DataClientes;
 use Auth;
 use DB;
 use Config;
+
+
+use App\Export\ExportarXLS;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ConfEnvioController extends Controller
 {
@@ -66,7 +72,7 @@ class ConfEnvioController extends Controller
              
         $tipo_invitacion = $request->input('tipo_invitacion');
              
-				$results1 = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$buscando)->get();
+				$results1 = eventoModel::select(['id','nombre', 'maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$buscando)->get();
 				
 
              
@@ -117,10 +123,11 @@ class ConfEnvioController extends Controller
              
              //dd("2");
 			  $id_evento = $request->input('id_evento');  
+ 
              
+        $resultsevento  = eventoModel::select(['id','nombre', 'maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$id_evento)->get();
              
-        $resultsevento  = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$id_evento)->get();
-             
+
 			  $tipo_envio = trim($request->input('tipo_invitacion'));  
         $tipo_envio = filter_var( $tipo_envio, FILTER_SANITIZE_NUMBER_INT);
         $tipo_envio = intval(  $tipo_envio );   
@@ -128,19 +135,20 @@ class ConfEnvioController extends Controller
         switch($tipo_envio)
           {
           case 1:
-              $etiquetatipoenvio = $resultsevento[0]->rangofecha1;
+              $etiquetatipoenvio = "";
               $laimagenicono ="";
           break;
           case 2:
               $etiquetatipoenvio = "Acceso al evento - ";
-              $laimagenicono ="<br/><img style='height:328px;width:352px' src='http://portal.cooprofesionales.com.pa/mercadeo/files/98aee5_accede.png'>";
+              $laimagenicono ="<br/>";
           break;   
         }
 			  
 			  // datos de contenido de correo
 			  $documento_resultados = documento_envioModel::select(['asunto','texto'])->where('id_evento','=',$id_evento)->get();
 			  
-			  
+			               
+             
 			  $configuraciones =DB::select('select modo,correopruebas from conf');
 			  //$configuraciones[0]->correopruebas
 			  $desarvari = "";
@@ -150,13 +158,14 @@ class ConfEnvioController extends Controller
 			  {
 				  $desarvari =" limit 1";
 			  }
-			  //dd($desarvari);
+             
+		
 
 			  // datos de contenido de correo
 			  
 			  // modo desarrollo
 			  
-		      $datos1 = \DB::connection('mysql')->select("select * from envios where tipo_envio=".$tipo_envio." and id_evento=".$id_evento." and accion=3  order by cldoc desc ".$desarvari." ");
+		    $datos1 =DB::select("select * from envios where tipo_envio=".$tipo_envio." and id_evento=".$id_evento." and accion=3  order by cldoc desc ".$desarvari." ");
 
 			  $CantRegistros = count($datos1);  	
 			  
@@ -240,7 +249,7 @@ class ConfEnvioController extends Controller
 		break;
 		}
 
-		
+		  
 				foreach ($datos1 as $registrosenvio)
 				{
 					//dd($registrosenvio);
@@ -250,7 +259,7 @@ class ConfEnvioController extends Controller
 					$contenido = '<!DOCTYPE html>
 						<html>
 						 <head>
-						  <title>How Send an Email in Laravel</title>
+						  <title>Email</title>
 						  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 						  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 						  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -288,32 +297,27 @@ class ConfEnvioController extends Controller
 						  
               <img src="https://portal.cooprofesionales.com.pa/mercadeo/files/333f41_newlogo1.png" style="width: 470px;">
 						
-							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE;
+							<br/><label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '&nbsp;'.$registrosenvio->NOMBRE;
                
-        switch($tipo_envio)
-          {
+         switch($tipo_envio)
+         {
           case 1:
-              $contenido .= ' <br/> Te hemos colocado un enlace al siguiente evento con hora establecida para el evento:   '.  $resultsevento[0]->nombre .' - '. $resultsevento[0]->rangofecha1;
+              $contenido .= ' <br/> Te hemos colocado un enlace para ver y administrar propuestas:' ;
           break;
           case 2:
-              $contenido .= ' <br/> Te damos la bienvenida al siguiente evento:   ';
+              $contenido .= ' <br/> Te damos la bienvenida a la  '.  $resultsevento[0]->nombre ;
           break;   
-        }           
-        
-              //$contenido .=  $documento_resultados[0]->asunto .' &nbsp; - &nbsp; '.$etiquetatipoenvio .'</label>';
-
-
-
-              switch($tipo_envio)
-                {
-                case 1:
-                   $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
-                break;
-                case 2:
-                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
-                break;   
-              }
+        } 
                
+      
+      $contenido .= '<br/><br/>';
+      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'">Conozca a los candidatos a puestos directivos y ejerza su voto.</a>';
+      $contenido .= '<br/><br/>';
+      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> Ingrese su propuesta y revise las de otros Delegados </a>';          
+          
+          
+          
+      $contenido .=$documento_resultados[0]->texto;          
                
                
               $contenido .= '</p>
@@ -330,7 +334,7 @@ class ConfEnvioController extends Controller
 							 $correenviar = $registrosenvio->CORREO;
 						}
       
-          
+ 
 /*
 MAIL_MAILER=smtp
 MAIL_HOST=email-smtp.us-east-2.amazonaws.com
@@ -393,10 +397,55 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 	
     public function prueba()
     {
-		return view('sistema::prueba'); 		
+		    return view('sistema::prueba'); 		
     }	
 		 
 
+  	public function pruebaenvio(Request $request)
+    {
+
+			     $configuraciones =DB::select('select correopruebas from conf');
+
+			      
+           //dd($configuraciones[0]->correopruebas );
+          
+          
+      
+            Config::set('mail.encryption',env('MAIL_MAILER'));
+            Config::set('mail.host',env('MAIL_HOST'));
+            Config::set('mail.port',env('MAIL_PORT'));
+            Config::set('mail.username',env('MAIL_USERNAME'));
+            Config::set('mail.password',env('MAIL_PASSWORD'));
+            Config::set('mail.from',  ['address' => env('MAIL_FROM_ADDRESS') , 'name' =>  env('MAIL_FROM_NAME')]);
+
+						$details =[
+							'title' => 'test',
+							'correo' => array( "eaguilars@gmail.com",$configuraciones[0]->correopruebas ) ,
+							'contenido' => 'test'
+						];
+	
+						Mail::send([], [], function($message) use ($details) {
+							$message->from(env('MAIL_FROM_ADDRESS'),  env('APP_AUTOR'));
+							$message->to($details["correo"] );
+							$message->subject($details["title"]);
+							$message->setBody($details["contenido"] , 'text/html');
+						});				  
+
+								
+						if( count(Mail::failures()) > 0 ) 
+            {
+						    foreach(Mail::failures() as $email_address) 
+                {
+							   dd($email_address);
+						    }
+
+						} else {
+							  dd("enviado");
+						}
+
+}
+  
+  
 	public function cargardetalleenvios(Request $request)
 	{
 		
@@ -462,7 +511,7 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 			  $cldoc = $request->input('cldoc');   
 			  $id_evento = $request->input('id_evento');  
              
-         $resultsevento  = eventoModel::select(['id','nombre','rangofecha1','rangofecha2','maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$id_evento)->get();
+         $resultsevento  = eventoModel::select(['id','nombre', 'maxvotos','capitulos','estadosasoc','status','tipo'])->where('id',$id_evento)->get();
              
              
 			  $tipo_envio = trim($request->input('tipo_invitacion'));  
@@ -473,12 +522,12 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
         switch($tipo_envio)
           {
           case 1:
-              $etiquetatipoenvio = $resultsevento[0]->rangofecha1;
+              $etiquetatipoenvio = "";
               $laimagenicono ="";
           break;
           case 2:
               $etiquetatipoenvio = "Acceso al evento - ";
-              $laimagenicono ="<br/><img style='height:328px;width:352px' src='http://cooperativa.eaguilars.com/images/accede.png'>";
+              $laimagenicono ="<br/>";
           break;   
         }
              
@@ -628,29 +677,25 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
 						
 							<br/>
               
-              <label style="font-size:20px;color:#202020;font-style: italic;">'.  $time. '; '.$registrosenvio->NOMBRE;
+              <label style="font-size:20px;color:#202020;font-style: italic;">'.$registrosenvio->NOMBRE;
 
           
         switch($tipo_envio)
           {
           case 1:
-              $contenido .= ' <br/> Te hemos colocado un enlace al siguiente evento con hora establecida para el evento:   '.  $resultsevento[0]->nombre .' - '. $resultsevento[0]->rangofecha1;
+              $contenido .= ' <br/> Te hemos colocado un enlace para ver y administrar propuestas:' ;
           break;
           case 2:
-              $contenido .= ' <br/> Te damos la bienvenida al siguiente evento:   ';
+              $contenido .= ' <br/> Te damos la bienvenida a la  '.  $resultsevento[0]->nombre ;
           break;   
         } 
-          
-          
-               switch($tipo_envio)
-                {
-                case 1:
-                   $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
-                break;
-                case 2:
-                    $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/?dashboardwget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> '.  $documento_resultados[0]->texto .''. $laimagenicono .'</a>';
-                break;   
-              }
+               
+      
+      $contenido .= '<br/><br/>';
+      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'">Conozca a los candidatos a puestos directivos y ejerza su voto.</a>';
+      $contenido .= '<br/><br/>';
+      $contenido .= '<a href="'.env('APP_URL', '127.0.0.1').'/cliente/dashboard/?wget='. GeneralHelper::lara_encriptar( $registrosenvio->CLDOC ).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  ) .'"> Ingrese su propuesta y revise las de otros Delegados </a>';          
+      $contenido .=$documento_resultados[0]->texto;   
 
                $contenido.='</p>
 						  </div>
@@ -758,6 +803,18 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
         return view('sistema::confenvioasamblea')->with('eventos', $eventos)->with('tipos', $tipos)->with('capitulos', $capitulos)->with('asamblea_estructura', $asamblea_estructura)->with('estados_asoc', $estados_asoc); 		
     }	  
   
+    public function vistaenviosoporte()
+    {
+        $capitulos = capitulosModel::select(['IDAGEN','AGENCIA'])->where('IDAGEN','>',0)->get();
+        $asamblea_estructura = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
+        $estados_asoc = estados_asocModel::select(['id_estado','estado'])->where('id_estado','>',0)->get();		
+        $eventos = eventoModel::select(['id','nombre','rangofecha1'])->where('tipo',2)->where('status',1)->orderBy('rangofecha1', 'DESC')->get();
+        $tipos = asamblea_estructuraModel::select(['id_ae','etiqueta'])->where('id_ae','>',0)->get();
+		return view('sistema::confenviosoporte')->with('eventos', $eventos)->with('tipos', $tipos)->with('capitulos', $capitulos)->with('asamblea_estructura', $asamblea_estructura)->with('estados_asoc', $estados_asoc);
+    }	
+  
+  
+    
   public function trabajo($id_evento,$codigos)
   {
 
@@ -851,9 +908,135 @@ MAIL_FROM_NAME="Cooperativa Profesionales, R.L."
                     );
         }
    }
-  
-  
-  
+
+  public function imprimirxls(Request $request)
+     {
+       try 
+       {
+         
+         $listado =$request->input('listado');
+         $osi = json_decode($listado);
+        // dd( $osi);
+         
+         $aaxc = new ExportarXLS($osi);
+                  //$nombre = strtolower("ReporteEnlaces_".date('YmdHms')."_".uniqid('file_'.uniqid()));
+         return Excel::download($aaxc,"aaaaaa.xlsx");
+         
+        } catch (Exception $e) {
+                     $response = array(
+                         'resabit' => '0001',
+                         'status' => 'Listado ERR',
+                         'error' => $e->getMessage()
+                    );
+        }
+   }         
+         
+         
+         
+  public function uploadsoporte(Request $request)
+     {
+       try 
+       {
+             
+             $file = $request->file('file');
+             $id_evento =$request->input('up_id_evento');  
+             $tipo_invitacion =$request->input('tipo_invitacion');  
+
+
+               
+               $dataxxc=[];
+               
+        $datos1 =DataClientes::select(['CLASOC','IDAGEN','AGENCIA','NOMBRE','TELEFONO','CORREO','VALF1','VALF2','id_tipo','tipo','celular','fecha_nac','fecha_ingreso','fecha_retiro','fecha_exp','fecha_reingreso1','fecha_reingreso2','id_sexo','id_estado','estado','id_ocupacion','ocupacion','id_profesion','profesion','id_pais','send_mail','send_mail_coop','send_ec','send_tarj','send_ec_mail','trato'])->orderBy('CLASOC','asc')->get();
+		  
+				foreach ($datos1 as $registrosenvio)
+				{
+              $elcldocval = intval( $registrosenvio["CLASOC"] ); 
+                           //$correo_new = trim($parametros [1]);   
+                           //                    
+                        //    $enlacexx = env('APP_URL', '127.0.0.1').'/votacion/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  );          
+							switch($tipo_invitacion)
+							{
+								case 1:
+									$contenido = '/cliente/dashboard' ;
+								break;
+								case 2:
+									$contenido = '/votacion';
+								break;   
+							} 
+							$enlacexx = env('APP_URL', '127.0.0.1').$contenido.'/?wget='. GeneralHelper::lara_encriptar( $elcldocval).'&id_evento='. GeneralHelper::lara_encriptar( $id_evento  );          
+						  $datoscliente = array_push($dataxxc,["asociado"=>$elcldocval,"Nombre"=>$registrosenvio["NOMBRE"],"Enlace"=> $enlacexx]);
+
+					}
+
+
+					$request->session()->put('dataxxc', null);
+					$request->session()->put('dataxxc', $dataxxc);
+
+					return redirect('/sistema/vistaenviosoporte');
+                //   $aaxc = new ExportarXLS($dataxxc);
+                //   dd( $aaxc );
+
+                  //$nombre = strtolower("ReporteEnlaces_".date('YmdHms')."_".uniqid('file_'.uniqid()));
+                //   return Excel::download($aaxc,"aaaaaa.xlsx");
+                  
+                  //return Excel::download($dataxxc, 'participant-information.xlsx');
+                  
+                  //dd($dataxxc);
+                /*
+                      Excel::create('Listado Asociados', function($excel) use($dataxxc) {
+
+                          $excel->sheet('Listado Asociados', function($sheet) use($dataxxc) {
+
+                              $sheet->loadView('sistema::reportexls',array('cliente' => $dataxxc));
+                            
+                              $sheet->setAutoSize(true);
+                              $sheet->setOrientation('landscape');
+                              $sheet->setStyle(array(
+                                  'font' => array(
+                                      'name'      =>  'Calibri',
+                                      'size'      =>  11,
+                                  )
+                              ));
+                            $sheet->fromArray($dataxxc, null, 'A1', false, false);
+                          });
+                      })->export('xls');
+      */
+                  /*
+                      Excel::create('Seguimientos', function($excel) use($dataxxc) {
+                        // Título
+                        $excel->setTitle('Listado de seguimientos');
+
+                        $excel->sheet('Página 1', function($sheet) use($dataxxc) {
+                          $data = [];
+                          array_push($data, ['Fecha guardado', 'Fecha creación', 'Observaciones']);
+                          foreach ($dataxxc as $key => $value) {
+                            array_push($data, [(string) $value->fechaguardado, (string) $value->fechacreacion, $value->observaciones]);
+                          }
+                          $sheet->fromArray($data, null, 'A1', false, false);
+                        });
+                      })->export('xls');                  
+                  */
+                  
+                  
+
+        } catch (Exception $e) {
+                     $response = array(
+                         'resabit' => '0001',
+                         'status' => 'Listado ERR',
+                         'error' => $e->getMessage()
+                    );
+        }
+   }
+
+   	public function generateReporte(Request $request)
+	{
+		$dataReporte = $request->session()->get('dataxxc');
+
+		$reporte = new ExportarXLS($dataReporte); //dd($aaxc);
+		
+		return Excel::download($reporte,"Listado de Enlaces.xlsx");
+	}
+   
   
   
 

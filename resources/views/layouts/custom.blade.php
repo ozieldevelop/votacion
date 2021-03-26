@@ -102,11 +102,11 @@
   
 </head>
 
-<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-hidden"   onKeyDown="javascript:Verificar()">
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-hidden" onload="nobackbutton()"   onKeyDown="javascript:Verificar()">
   <header class="app-header navbar" style="font-weight: bold;">
 
-		 <div style="width:100%;background:#008d5e;text-align: center;color:white;font-size: 28px;font-weight: bold; ">
-      <a href="{{ env('APP_URL', './') }}/cliente/dashboard/?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}">  {{  isset($nombreevento) ? $nombreevento :  '' }}   </a>
+		 <div style="width:100%;background:#009640;text-align: center;color:white;font-size: 28px;font-weight: bold; ">
+       {{  isset($nombreevento) ? $nombreevento :  '' }} 
        <br/>
         <label style="margin-left: 51px;color:#000;font-size: 16px;font-weight: bold;">Cantidad de candidatos seleccionados:</label><label id="contadorSeleccionados" style="font-weight: bold;color:#000;font-family: Impact;font-size: 28px;">(0)</label>
     </div>

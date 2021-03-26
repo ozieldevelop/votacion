@@ -143,13 +143,20 @@ Route::group(['prefix' => 'sistema', 'middleware' => ['role:soporte']], function
 	Route::post('/reinsertar', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@reinsertar'] );
 	Route::post('/fnreenviarnoti', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@fnreenviarnoti'] );
 	
+	Route::get('/pruebaenvio', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@pruebaenvio'] );  
+  
+  
   
 	Route::get('/vistaenviocapitular', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@vistaenviocapitular'] );						// VISTA
-  Route::get('/vistaenvioasamblea', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@vistaenvioasamblea'] );						// VISTA
+  	Route::get('/vistaenvioasamblea', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@vistaenvioasamblea'] );						// VISTA
+ 	Route::get('/vistaenviosoporte', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@vistaenviosoporte'] );						// VISTA
   
-  Route::post('/upload', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@upload'] );		
-  
-  Route::post('/eliminardelhistorialenvio', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@eliminardelhistorialenvio'] );		
+
+	Route::post('/upload', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@upload'] );		
+	Route::post('/uploadsoporte', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@uploadsoporte'] );	
+	Route::get('/generaReporte', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@generateReporte'] )->name('generaReporte');	
+	Route::post('/eliminardelhistorialenvio', ['middleware' => ['permission:confenvio'], 'uses' => 'ConfEnvioController@eliminardelhistorialenvio'] );		
+
   
   
 });

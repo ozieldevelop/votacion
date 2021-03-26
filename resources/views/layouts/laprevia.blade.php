@@ -43,20 +43,21 @@
           });
   
 
-
-		function nobackbutton(){
-
-
-		   window.location.hash="no-back-button";
-
-
-		   window.location.hash="Again-No-back-button" //chrome
-
-
-		   window.onhashchange=function(){window.location.hash="no-back-button";}
-			
-
-		}
+function verificar(){
+  
+      $.ajax({
+        url: '{{ url("votacion/verificaparticipacion")}}'
+        , method: 'GET'
+        , success: function(result){
+          var retorno = JSON.parse(result);
+				if(retorno)
+					{
+						location.href = '{{ url("votacion/contenedordetalle")}}';
+					}
+        }
+      });
+  
+}
 
 
     </script>
@@ -74,14 +75,14 @@
                     <!-- Logo-->
                     <div>
                         <a href="#" class="logo" style="line-height: 28px;">
-                            <span class="logo-light">
+                            <span class="logo-light"  style="font-size:22px;">
                                     <i class="mdi mdi-folder-open-outline"></i> {{ $nombre }}
 								
-                            </span> <br/> 
+                            </span> <br/>  
 					@if($id_evento == 1)
-					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0p; !important"> Verificaci&oacute;n de su voto para escogencia a delegados</label>
+					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0px; !important"> Estamos verificando sus votos. </label>
 					@else
-					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0p; !important;backgournd: #45793b; !important"> Verificaci&oacute;n de su voto para escogencia a directivos</label>
+					<label style="color:white;font-style: italic;font-size: 12px;line-height: 0px; !important;font-size: 24px !important;backgournd: #009640 !important; "> Verificaci&oacute;n de su voto para escogencia a directivos</label>
 					@endif								
                         </a>
                     </div>
@@ -120,8 +121,6 @@
                                     <i class="mdi mdi-arrow-expand-all noti-icon"></i>
                                 </a>
                             </li-->
-
-                          
 
                         </ul>
 

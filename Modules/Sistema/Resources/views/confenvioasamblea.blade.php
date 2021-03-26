@@ -29,7 +29,7 @@
 		<select id="eventos" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="Cargar(this.value)" >
 							<option value="#"> -- Elegir</option>
 							@foreach ($eventos as $dataeventos)
-								<option value="{{ $dataeventos->id }}">{{ $dataeventos->rangofecha1 }} | {{ $dataeventos->nombre }}</option>
+								<option value="{{ $dataeventos->id }}"> {{ $dataeventos->nombre }}</option>
 							@endforeach
 		</select>
 	  </div> 
@@ -60,8 +60,8 @@
                          <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
                         <label for="inputevento">Seleccione tipo de invitaci&oacute;n </label>
                         <select id="tipo_invitacion" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="selecciontipo(this)" >
-                                  <option value="1"> Registros de puestos directivos</option>
-                                  <option value="2"> Invitaci&oacute;n al evento (Zoom) </option>
+                                  <option value="1"> Acceso a Propuestas</option>
+                                  <option value="2"> Invitaci&oacute;n Votaci&oacute;n </option>
                         </select>
                         </div> 
                       </div>
@@ -74,7 +74,7 @@
               <div class="col-md-12">
 
                             <div class="card" >
-                              <div class="card-header bg-light resaltado">IMPORTAR LISTADO CSV</div>
+                              <div class="card-header bg-light resaltado">IMPORTAR LISTADO CSV (2 columnas una con el c&oacute;digos de asociado y la siguiente columna con el correo del asociado) </div>
                               <div class="card-body" >
                                 <!-- dropzone  -->
                                 <form action="{{ url('/sistema/upload') }}" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
@@ -100,13 +100,13 @@
 		<input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="nombre" disabled placeholder="Ingrese el nombre del evento">
 	  </div> 
 	</div>
-	<div class="row">
+	<div class="row"  style="display:none">
   <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
     <label for="inputnumasociado">Inicia</label>
     <input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="rangofecha1"  disabled placeholder="2020-11-01 00:00:00">
   </div>
 </div>
-<div class="row">
+<div class="row"  style="display:none">
     <div class="form-group col-sm-12 col-md-12 col-lg-12 ">
     <label for="inputnombreasoc">Termina</label>
     <input type="text" class="form-control col-sm-12 col-md-12 col-lg-12 " id="rangofecha2" disabled placeholder="2020-11-01 00:00:00">
@@ -313,8 +313,8 @@ function Cargar()
 			 
 	$('#id_evento').val('');
 	$('#nombre').val('');
-	$('#rangofecha1').val('');
-	$('#rangofecha2').val('');
+	//$('#rangofecha1').val('');
+	//$('#rangofecha2').val('');
 	$('#maxvotos').val('');
   $('#id_zoom').val('');
 		
@@ -340,8 +340,8 @@ function Cargar()
 				  var n1 = datoz[0]['nombre'];	
 				  var mvotos = datoz[0]['maxvotos'];	
           var id_zoom = datoz[0]['veri_id_zoom'];	
-				  var f1 = datoz[0]['rangofecha1'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha1'].length - 3);
-				  var f2 = datoz[0]['rangofecha2'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha2'].length - 3);
+				  //var f1 = datoz[0]['rangofecha1'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha1'].length - 3);
+				  //var f2 = datoz[0]['rangofecha2'].replace(/-/g, "/").substring(0,datoz[0]['rangofecha2'].length - 3);
 				  
 				  
 				  var capitulos =  JSON.parse(datoz[0]['capitulos']);	
@@ -353,8 +353,8 @@ function Cargar()
 
 				  $('#id_evento').val(id_evento);
 				  $('#nombre').val(n1);
-				  $('#rangofecha1').val(f1);
-				  $('#rangofecha2').val(f2);
+				  //$('#rangofecha1').val(f1);
+				  //$('#rangofecha2').val(f2);
 				  $('#maxvotos').val(mvotos);
 				  $("#secciones").val(tipo).change();
           $('#id_zoom').val(id_zoom);    
@@ -586,6 +586,7 @@ function format ( d )
 function fnreinsertar(evento,cldoc,tipo_invitacion)
 {
 	espere('Cargando');	
+  
 	$.ajax({
        url: '{{ url("sistema/reinsertar")}}' 
 		  , data: {"id_evento": evento ,  "cldoc":cldoc,  "tipo_invitacion":tipo_invitacion}

@@ -69,7 +69,7 @@ class ClienteController extends Controller
                   $request->session()->flush();
                   $mensaje = "";
                   $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'><h3>Notificaci&oacute;n</h3></div>";
-                  $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>Periodo de actualización de datos a expirado</div> ";
+                  $mensaje .= "<div class='col-xs-4 text-center' style='vertical-align: middle;'>El periodo de inscripci&oacute;n a puestos directivos ha finalizado.</div> ";
                   return view('votacion::advertencia')
                       ->with('mensaje', $mensaje)
                       ->with('enlace', $request->all())
@@ -475,6 +475,7 @@ class ClienteController extends Controller
         //Auth::logout();
         //$request->session()->flush();
 
+        //                        Auth::loginUsingId(3);
         $cldoc_temp = $request->input('wget');
 
         $ideven = $request->input('id_evento');
@@ -482,7 +483,7 @@ class ClienteController extends Controller
         $cldoc_temp = isset($cldoc_temp) ? urldecode($cldoc_temp) : 0;
         $cldoc = GeneralHelper::lara_desencriptar($cldoc_temp);
         //$cldoc= 1;
-
+      
         $ideven = isset($ideven) ? urldecode($ideven) : 0;
         $idevendesc = GeneralHelper::lara_desencriptar($ideven);
         //$idevendesc= 5;
@@ -494,22 +495,32 @@ class ClienteController extends Controller
         if ($cldoc > 0 && $idevendesc > 0) {
             // si todo va bien
 
-            $results = eventoModel::select(['id', 'nombre', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
+            $results = eventoModel::select(['id', 'nombre',  'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
                 ->where('id', $idevendesc)
                 ->get();
 
             if (count($results) > 0) {
-                $results2 = eventoModel::select(['id', 'nombre', 'rangofecha1', 'rangofecha2', 'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
+                $results2 = eventoModel::select(['id', 'nombre',  'maxvotos', 'capitulos', 'estadosasoc', 'status', 'tipo'])
                     ->where('id', $idevendesc)
                     ->where('status', 1)
                     ->get();
 
+              
+  
+              
+                   if ($results2[0]["votacionActivo"]==1)
+                   {   
+                       $pactivo = 1;
+                   } else {
+                       $pactivo = 0;
+                   } 
+                     
                 //dd($results2);
 
-                $carbon = new \Carbon\Carbon();
+                /*$carbon = new \Carbon\Carbon();
                 $date = $carbon->now();
                 $dateServer = $date->format('Y-m-d');
-
+        
                 $startDate = $carbon::createFromFormat('Y-m-d H:i:s', trim($results2[0]["rangofecha1"]))->format('Y-m-d');
                 $endDate = $carbon::createFromFormat('Y-m-d H:i:s', trim($results2[0]["rangofecha2"]))->format('Y-m-d');
                 $pactivo = 0;
@@ -517,7 +528,7 @@ class ClienteController extends Controller
                     $pactivo = 1;
                 } else {
                     $pactivo = 0;
-                }
+                }*/
 
                 /*
                   $xdato = DB::select("select *  from votantes where id_evento=".$idevendesc." and (cast(aes_decrypt(`asociado`,'xyz123') as char charset utf8mb4)=".$cldoc.")");
@@ -1349,5 +1360,10 @@ class ClienteController extends Controller
         } catch (Exception $e) {
             return json(['error' => $e->getMessage()]);
         }
+    }
+
+    public function adminDashboard()
+    {
+        return view('cliente::admin');
     }
 }

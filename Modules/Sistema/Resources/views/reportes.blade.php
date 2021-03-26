@@ -120,7 +120,7 @@
 		<select id="eventos" class="form-control col-sm-12 col-md-12 col-lg-12" onchange="Cargar(this.value)" >
 							<option value=""> -- Elegir</option>
 							@foreach ($eventos as $dataeventos)
-								<option value="{{ $dataeventos->id }}">{{ $dataeventos->rangofecha1 }} | {{ $dataeventos->nombre }}</option>
+								<option value="{{ $dataeventos->id }}">{{ $dataeventos->nombre }}</option>
 							@endforeach
 		</select>
 	  </div> 
@@ -155,6 +155,17 @@ function Cargar(dato)
 	terminar_espere()
 }
 
+  function ocultarfooter(){
+    $('.footer').css('display','none');
+  }
+  
+  
+ $(document).ready(function () { 
+ 
+    ocultarfooter();
+});
+
+  
 </script>
 
 

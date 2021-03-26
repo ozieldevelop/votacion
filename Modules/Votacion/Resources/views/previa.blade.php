@@ -15,7 +15,7 @@
 
 
 	<div class="row">
-					<label style="color:black;font-weight: bold;margin-left: 17px;">Valide su selección de candidatos en esta pantalla. Si desea corregir algo de clic al bot&oacute;n "Regresar". Para confirmar su voto de clic al bot&oacute;n de "Votar".</label>
+					<label style="color:black;font-weight: bold;margin-left: 17px;font-size:19px">Valide sus votos en esta pantalla.  Si desea corregir, de CLIC al bot&oacute;n REGRESAR. Para confirmar sus votos, de CLIC al bot&oacute;n VOTAR.</label>
 
 			        <div class="col-md-12 DirectivosDir">
   
@@ -46,41 +46,79 @@
  
 <script>
 
-
-
-
-
-
-function imprimir()
+  
+function imprimir(  )
 {
-		var lasPapeletas = JSON.parse(localStorage.getItem("lasboletas{{ $id_evento }}"));
-		console.log(lasPapeletas);
-		
-							$.ajax({
-								url: '{{ url("votacion/coopexe3")}}'  
-								, data: { 'campos': JSON.stringify(lasPapeletas) }
-								, method: 'post'
-								, headers: {
-										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-								},
-								success: function(result){
-											Lobibox.notify('info', {
-												msg: 'Gracias por su voto.'
-											});		
-											//localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
+    $('#botonimprimir').hide();
+  
+    espere("Emitiendo su voto!");
+  
+  
+  var lasPapeletasStorage = localStorage.getItem("lasboletas{{ $id_evento }}")  || [];
+  lasPapeletasStorage = JSON.parse(lasPapeletasStorage);      
+  
+  //console.log(lasPapeletasStorage);
 
-                    setTimeout(function(){ window.location.href = '{{ url("votacion/finalizada")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 5000);
-                      //setTimeout(function(){ location.reload();  }, 2000);
-								},
-								error: function (r) {
-										console.log("ERROR");
-										console.log(r);
-								}
-							});
-							
+  //alert(lasPapeletasStorage);
+  
+	 if( lasPapeletasStorage.length <=0)
+    {
+
+                      $.ajax({
+                        url: '{{ url("votacion/coopexe33")}}'  
+                        , data: { 'campos': '' }
+                        , method: 'post'
+                        , headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(result){
+                              Lobibox.notify('info', {
+                                msg: 'Gracias por su voto.'
+                              });		
+                          
+                             window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ;
+                              //localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
+                            //setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                            //setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                              //setTimeout(function(){ location.reload();  }, 2000);
+                        },
+                        error: function (r) {
+                            console.log("ERROR");
+                            console.log(r);
+                        }
+                      });
+    }
+    else
+    {   
+      
+      console.log(JSON.stringify(lasPapeletasStorage));
+
+                      $.ajax({
+                        url: '{{ url("votacion/coopexe3")}}'  
+                        , data: { 'campos': JSON.stringify(lasPapeletasStorage) }
+                        , method: 'post'
+                        , headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(result){
+                              Lobibox.notify('info', {
+                                msg: 'Gracias por su voto.'
+                              });		
+                              //localStorage.setItem('sysvot {{! Session::get('idevendesc') }}', '1');
+                            setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                            //setTimeout(function(){ window.location.href = '{{ url("votacion/")}}?wget={{ $enlace["wget"] }}&id_evento={{ $enlace["id_evento"] }}' ; }, 1000);
+                              //setTimeout(function(){ location.reload();  }, 2000);
+                        },
+                        error: function (r) {
+                            console.log("ERROR");
+                            console.log(r);
+                        }
+                      });
+
+    }
+
 }
 
-  
   
 function regresar(){
 	console.log('regresar');
@@ -89,12 +127,27 @@ function regresar(){
 }
 
 
-	var lasPapeletas='';
+var lasPapeletas='';
+  
+  
+function GetSortOrder(prop) {    
+    return function(a, b) {    
+        if (a[prop] > b[prop]) {    
+            return 1;    
+        } else if (a[prop] < b[prop]) {    
+            return -1;    
+        }    
+        return 0;    
+    }    
+}    
+    
+
+  
+  
 function visualizarselecciones()
 	{  		
 	
 	var contenedor = localStorage.getItem("lasboletas{{ $id_evento }}");
-	//alert( typeof (contenedor));
 	if( contenedor.length <=0)
 	{
 			location.reload();
@@ -102,9 +155,7 @@ function visualizarselecciones()
 	}
 	else
 	{
-//alert('contenedor vacio2');
 			lasPapeletas = JSON.parse(localStorage.getItem("lasboletas{{ $id_evento }}"));
-		  	console.log(lasPapeletas);
 			$.ajax({
 			 url: '{{ url("votacion/categoriaslist") }}' 
 			, data: { 'campos': JSON.stringify(lasPapeletas) }
@@ -117,24 +168,24 @@ function visualizarselecciones()
 				{  
 					var TodosValoresEntradostemp = $.grep(lasPapeletas, function (n, i) {
 						return (n.id_area == result[ii].id_area );
-					});
+				});
+
+
+          TodosValoresEntradostemp = TodosValoresEntradostemp.sort(GetSortOrder("apellido"));
+          
 					if((TodosValoresEntradostemp.length) >0){
 						
-						  html += "<div class='col-md-12 d-flex justify-content-center' ><div class='list-group  col-md-6'><a href='#' class='list-group-item list-group-item-action active'><i class='fa-shield '></i> "+ result[ii].nombrearea +"</a>";	
+						  html += "<div class='col-md-12 d-flex justify-content-center' ><div class='list-group  col-md-6'><a href='#' class='list-group-item list-group-item-action active' style='font-size:22px;'><i class='fa-shield '></i> "+ result[ii].nombrearea +"</a>";	
 		
 						  for (var i = 0; i < TodosValoresEntradostemp.length; i++){  
-					 
-							//html += "<li><b style='font-family: Ordinary;font-size: 32px;'> "+ lasPapeletas[i].apellido +'  '  + lasPapeletas[i].nombre + "</b></li>";
-							
 
-							html += "<label style='font-size: 28px'><i class='fa fa-book fa-fw' aria-hidden='true'></i> "+ TodosValoresEntradostemp[i].apellido + ", &nbsp;"  + TodosValoresEntradostemp[i].nombre+ ",&nbsp;" + TodosValoresEntradostemp[i].num_cliente+" </label>";
+							html += "<label style='font-size: 18px;margin-top: 18px;'><i class='fa fa-book fa-fw' aria-hidden='true'></i> "+ TodosValoresEntradostemp[i].apellido + ", &nbsp;"  + TodosValoresEntradostemp[i].nombre+ ",&nbsp;" + TodosValoresEntradostemp[i].num_cliente+" </label>";
 							
 							@if($tipo == 2)
 								var iddel = (TodosValoresEntradostemp[i].id_delegado);
 							    var valoresfiltro = $.grep(losaspirantes, function (n, i) {
 											return (n.id_delegado == iddel );
 								});		
-								//console.log( valoresfiltro );
 								
 								if(valoresfiltro.length<0)
 								{
@@ -145,11 +196,9 @@ function visualizarselecciones()
 									elavatar = "../../adjuntos/"+valoresfiltro[0]['foto'];
 								} 
 
-								//elavatar = "../../images/logo-footer.png";
-								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' style='border:solid 2px #c5c5c5;margin-right: unset !important;margin-top: -47px;width: 90px;height:90px;cursor:pointer' src='"+elavatar+"'>";
+								html +="<img   class='img-fluid  mx-auto d-block avatardisplay' style='border:solid 2px #c5c5c5;margin-right: unset !important;margin-top: -47px;width: 90px;height:90px;cursor:auto' src='"+elavatar+"'>";
 
 							@endif 							
-
 
 						  }
 						  html+="</div>";  
@@ -164,12 +213,12 @@ function visualizarselecciones()
 }
 	var losaspirantes = '';
 	
-$( document ).ready(function() {
+$( document ).ready(function() 
+{
 
 	visualizarselecciones();
 	losaspirantes = JSON.parse(localStorage.getItem("aspirantes{{ $id_evento }}")); 
-	console.log(losaspirantes);
-	//validando();		  
+	  
 });	
 
 </script>
