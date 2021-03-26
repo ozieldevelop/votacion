@@ -20,6 +20,7 @@ after.sh
 aliases
 Vagrantfile
 Modules/.DS_Store
+Modules/Cliente/.DS_Store
 Modules/Cliente/Resources/.DS_Store
 Modules/Cliente/Resources/assets/.DS_Store
 Modules/Cliente/Resources/assets/js/.DS_Store
