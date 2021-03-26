@@ -40,12 +40,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"> </script>
 
     <script>
+/*
+          var socket = io("{{ env('PUBLISHER_URL') }}:{{ env('BROADCAST_PORT') }}");
 
-          /* var socket = io("{{ env('PUBLISHER_URL') }}:{{ env('BROADCAST_PORT') }}");*/
 
-
-          /**************************** FUNCIONES ESCUCHAS *************************/
-          /*socket.on('connect', function() {
+          socket.on('connect', function() {
 
             var parametros = ({ 'num_cliente' : 0 ,'nombre' : 'Administrador','agencia' : 'Sede','sala' : 1 ,'name_evento' : 'administrador'   });
             //console.log(parametros);
@@ -112,7 +111,7 @@
             }
             socket.emit('mensajedirecto', parametros, function(err) { });      
           }     
-      */
+*/
       
       
     </script>
