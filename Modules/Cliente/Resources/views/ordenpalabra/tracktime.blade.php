@@ -67,17 +67,7 @@
                 .fail(function(info) {
                     console.log('erro '+JSON.stringify(info) );
                 });
-
-			
-
-  			// If the count down is finished, write some text
-  			//if (distance < 0) {
-    		//	clearInterval(x);
-    		//	
-  			//}
-		}, 1000);
-
-			
+		      }, 1000);
         })(jQuery);
     </script>
 @endpush

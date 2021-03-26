@@ -71,8 +71,12 @@ Route::prefix('ordenpab')->group(function() {
 
     //Ruta Suscribir a Temas
     Route::get('/suscriptores', 'OrdenPalabraController@suscriptoresHome')->name('orden.suscriptores');
+    
     //Ruta Agregar Suscriptor al tema
     Route::post('/suscriptores/add', 'OrdenPalabraController@suscriptoresAdd')->name('orden.suscriptores.add');
+
+    //Ruta Eliminar Suscriptores
+    Route::get('/suscriptores/delete/{subsId}', 'OrdenPalabraController@suscriptoresDelete')->name('orden.suscriptores.delete');
 
     //Ruta Trackear tiempo
     Route::any('/suscriptores/tiempo/subs/{id_suscriptor}/cldoc/{cldoc}', 'OrdenPalabraController@trackTime')->name('orden.suscriptores.tiempo');

@@ -20,7 +20,7 @@
             <div class="panel-heading">Añadir tema al árbol</div>
 
             <div class="panel-body">
-                <p class="lead"><a href="#newModal" class="btn btn-success pull-right" data-toggle="modal"><span class="glyphicon glyphicon-plus-sign"></span> new menu item</a> Menu:</p>
+                <p class="lead"><a href="#newModal" class="btn btn-success pull-right" data-toggle="modal"><span class="glyphicon glyphicon-plus-sign"></span> Nuevo Tema</a> Lista</p>
                 <div class="dd" id="nestable">
                     {!!$tema!!}
                 </div>

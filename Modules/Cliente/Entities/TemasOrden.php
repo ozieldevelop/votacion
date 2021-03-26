@@ -90,11 +90,14 @@ class TemasOrden extends Model
                                         <div class='pull-right'>
                                             <a href='".route('orden.suscriptores.tiempo', [$itemsub->id_suscriptor, $itemsub->CLDOC])."' class='label label-warning nt-15'>
                                                 Tiempo <i class='fa fa-clock-o'></i>
+                                            </a> &nbsp;| 
+                                            <a href='".route('orden.suscriptores.delete', [$itemsub->id_suscriptor])."' class='label label-danger nt-15'>
+                                                <i class='fa fa-trash'></i>
                                             </a>
                                         </div>
                                     </div>
                                 </li>
-                            ";//url('ordenpab/suscriptores/tiempo/'.$itemsub->id_suscriptor.'/'.$itemsub->CLDOC)
+                            ";
                         }
                     }
                     $result .= $this->buildTemaSuscriptores($tema, $item->id).

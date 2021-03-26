@@ -181,6 +181,14 @@ class OrdenPalabraController extends Controller
         return $message;
     }
 
+    public function suscriptoresDelete(Request $request, $subsId){
+
+        $item = TemasSuscriptores::findOrFail($subsId);
+        $item->delete();
+
+        return redirect()->route('orden.suscriptores')->with('deleted', 'Eliminado correctamente');
+    }
+
     public function trackTime(Request $request, $subsId, $cldocId){
 
         //Obtengo los id de la subscripcion
@@ -256,6 +264,5 @@ class OrdenPalabraController extends Controller
         }
 
         return $gmdate;
-
     }
 }
