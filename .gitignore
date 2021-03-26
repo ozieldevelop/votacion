@@ -19,3 +19,5 @@ yarn-error.log
 after.sh
 aliases
 Vagrantfile
+Modules/.DS_Store
+/.DS_Store/
