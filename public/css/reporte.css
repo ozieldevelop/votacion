@@ -1,4 +1,5 @@
 				@page {
+          /*
 								size: 8.5in 11in;
 								margin-top:8%;
 								margin-right:15%;
@@ -9,6 +10,7 @@
 								background-repeat: no-repeat;
 								background-image-resize: 3;
 								background-image-resolution: from-image;
+          */
 				}
 				.margen{
 								margin-bottom: 0px;
