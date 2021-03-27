@@ -58,12 +58,10 @@
                     
                     if (data == '00:00:00') {
                         clearInterval(x);
-                        document.getElementById("demo").innerHTML = "Tiempo Expirado";
+                        document.getElementById("demo").innerHTML = "00:00:00";
                     }
                 })
-                .done(function(infod) {
-                    //$( "#success-indicator" ).fadeIn(300).delay(3000).fadeOut();
-                })
+                .done(function(infod) {})
                 .fail(function(info) {
                     console.log('erro '+JSON.stringify(info) );
                 });

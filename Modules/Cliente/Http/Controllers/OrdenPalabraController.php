@@ -32,9 +32,6 @@ use Modules\Cliente\Entities\TemasOrden;
 use Modules\Cliente\Entities\TemasSuscriptores;
 use Modules\Cliente\Entities\ViewSuscriptores;
 use Modules\Cliente\Entities\TimeTrack;
-use Modules\Sistema\Entities\vt_enviosModel;
-
-
 
 
 class OrdenPalabraController extends Controller
@@ -149,8 +146,8 @@ class OrdenPalabraController extends Controller
 
         $items = TemasOrden::orderby('order', 'asc')->get();
         
-        //$datacliente = ViewSuscriptores::orderby('CLDOC', 'asc')->get();
-        $datacliente = vt_enviosModel::all();//orderby('CLDOC', 'asc')->get();
+        //Get a clientes 
+        $datacliente = DB::table('data_clientes')->get();
 
         $tema = new TemasOrden;
         $tema = $tema->getHTML($items, 1);
