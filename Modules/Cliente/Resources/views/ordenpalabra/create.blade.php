@@ -30,17 +30,7 @@
                     <!--<p>This is a green callout.</p>-->
                 </div>
             </div><!-- end panel-body -->
-            <div class="panel-footer">
-                <!--
-                <button type="button" id="btnUpdate" class="btn btn-primary">
-                    <i class="fa fa-refresh"></i> actualizar
-                </button>
-
-                <button type="button" id="btnAdd" class="btn btn-success">
-                    <i class="fa fa-plus"></i> agregar
-                </button>
-                -->
-            </div><!-- end panel-footer -->
+            <div class="panel-footer"></div><!-- end panel-footer -->
         </div>
     </div>
 </div> <!-- end row -->
@@ -186,7 +176,6 @@
                 e.preventDefault();
                 var tema = JSON.parse( $(this).attr('rel') );
                 $.each(tema, function(key, value) {
-                    console.log(key);
                     $('#editModal').find('input[name='+key+']').val(value);
                 });
             });

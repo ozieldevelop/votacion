@@ -19,7 +19,7 @@
 @section('header')
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <h1>Crear árbol de temas<small>crear temas y subtemas</small></h1>
+    <h1>Suscripción<small>agregar suscripción</small></h1>
 </section>
 @endsection
 
@@ -29,7 +29,7 @@
     <div class="col-md-8">
         
         <div class="panel panel-primary">
-            <div class="panel-heading">Añadir tema al árbol</div>
+            <div class="panel-heading">Listado de temas</div>
 
             <div class="panel-body">
                 <div class="dd" id="nestable">
@@ -58,7 +58,7 @@
                         <div class="col-lg-10">
                             <select name="suscriptores[]" class="form-control select2" multiple="multiple" data-placeholder="Selecciona los Asocidos" id="subs" style="width: 100%;">
                                 @foreach ($datacliente as $cli)
-                                    <option value="{{ $cli->CLDOC }}">{{ $cli->NOMBRE }}</option>
+                                    <option value="{{ $cli->CLDOC }}">{{ $cli->trato }}. {{ $cli->NOMBRE }}</option>
                                 @endforeach
                             </select>
                         </div>
