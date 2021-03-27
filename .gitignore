@@ -19,5 +19,15 @@ yarn-error.log
 after.sh
 aliases
 Vagrantfile
+<<<<<<< HEAD
+Modules/.DS_Store
+Modules/Cliente/.DS_Store
+Modules/Cliente/Resources/.DS_Store
+Modules/Cliente/Resources/assets/.DS_Store
+Modules/Cliente/Resources/assets/js/.DS_Store
+
+.DS_Store
+=======
 .ftpconfig
 .ftpignore
+>>>>>>> b85a10a47b452326391f5594a6233dfaad69986f
