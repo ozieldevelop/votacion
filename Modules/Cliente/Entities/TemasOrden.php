@@ -16,12 +16,7 @@ class TemasOrden extends Model
 
     public $timestamps = false;
 
-    /**
-     * [buildMenu construye el html]
-     *
-     * @method    buildMenu
-     *
-    */
+    /** [buildMenu construye el html] */
     public function buildTema($tema, $parentid = 0)
     { 
         
@@ -59,9 +54,6 @@ class TemasOrden extends Model
 
         foreach ($tema as $item) {
 
-            
-            //orderby('id_suscriptor', 'asc')->get();
-            
             if ($item->parent_id === $parentid) { 
                 
                 $result .= "
@@ -82,10 +74,9 @@ class TemasOrden extends Model
 
                         foreach ($items_subs as $itemsub) {
                             $result .="
-                
                                 <li class='dd-item nested-list-item' data-order='{}' data-id='$itemsub->id_suscriptor'>
                                     <div class='nested-list-content-subscriptores'>
-                                        $itemsub->CLDOC - $itemsub->NOMBRE
+                                        $itemsub->CLDOC - $itemsub->trato . $itemsub->NOMBRE
 
                                         <div class='pull-right'>
                                             <a href='".route('orden.suscriptores.tiempo', [$itemsub->id_suscriptor, $itemsub->CLDOC])."' class='label label-warning nt-15'>
@@ -100,20 +91,15 @@ class TemasOrden extends Model
                             ";
                         }
                     }
-                    $result .= $this->buildTemaSuscriptores($tema, $item->id).
-                "</li>"; 
+                    $result .= $this->buildTemaSuscriptores($tema, $item->id)."</li>"; 
             }
         }
         return $result  ?  "\n<ol class=\"dd-list\">\n$result</ol>\n" : null;
     }
 
-    /**
-     * [getHTML obtiene el html de la funcion buildTema()]
-     *
-     * @method    getHTML
-     */
-    public function getHTML($items, $change = 0){
-
+    /** [getHTML obtiene el html de la funcion buildTema()] */
+    public function getHTML($items, $change = 0)
+    {
         return ($change != 0) ? $this->buildTemaSuscriptores($items) : $this->buildTema($items);
     }
 
