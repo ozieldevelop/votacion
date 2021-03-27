@@ -7,8 +7,8 @@
         <div class="card-body">
             <div id="control_table">
                 <template>
-                <table class="table table-bordered">
-                    <thead>
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Título</th>
@@ -24,7 +24,7 @@
                         <tr v-for="(item, index) in propuestas" :key="index">
                             <th scope="row">@{{ item.id }}</th>
                             <td>@{{ item.titulo }}</td>
-                            <td class="wrapper">@{{ item.detalle }}</td>
+                            <td>@{{ item.detalle }}</td>
                             <td>@{{ item.user_name }}</td>
                             <td>@{{ item.user_id }}</td>
                             <td>@{{ item.secunda_asoc }}</td>
@@ -58,12 +58,12 @@
         margin-bottom: 0px;
     }
     
-    td.wrapper {
+    /* td.wrapper {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 200px;
-    }
+    } */
 
     /* td.wrapper:hover {
         overflow: visible;
