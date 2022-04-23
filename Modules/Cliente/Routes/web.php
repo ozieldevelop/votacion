@@ -47,4 +47,43 @@ Route::prefix('cliente')->group(function()
     });
 });
 
+/**
+ * Grupo de Rutas para el Orden de la palabra
+ */
+Route::prefix('ordenpab')->group(function() {
+
+    Route::get('/', 'OrdenPalabraController@index')->name('ordendash');
+    
+    //Pantalla Crear Temas
+    Route::get('/crear', 'OrdenPalabraController@create')->name('orden.create');
+    
+    //Ruta para el draw and drop
+    Route::post('/reorder', 'OrdenPalabraController@postIndex')->name('orden.reorder');
+    
+    //Ruta guardar tema
+    Route::post('/insert', 'OrdenPalabraController@store')->name('orden.insert');
+
+    //Ruta actualizar tema
+    Route::put('/update', 'OrdenPalabraController@postEdit')->name('orden.update');
+
+    //Ruta eliminar tema
+    Route::delete('/delete', 'OrdenPalabraController@postDelete')->name('orden.delete');
+
+    //Ruta Suscribir a Temas
+    Route::get('/suscriptores', 'OrdenPalabraController@suscriptoresHome')->name('orden.suscriptores');
+    
+    //Ruta Agregar Suscriptor al tema
+    Route::post('/suscriptores/add', 'OrdenPalabraController@suscriptoresAdd')->name('orden.suscriptores.add');
+
+    //Ruta Eliminar Suscriptores
+    Route::get('/suscriptores/delete/{subsId}', 'OrdenPalabraController@suscriptoresDelete')->name('orden.suscriptores.delete');
+
+    //Ruta Trackear tiempo
+    Route::any('/suscriptores/tiempo/subs/{id_suscriptor}/cldoc/{cldoc}', 'OrdenPalabraController@trackTime')->name('orden.suscriptores.tiempo');
+
+    //Ruta Trakear tiempo post ajax
+    Route::post('/traking', 'OrdenPalabraController@trakingTime')->name('orden.traking');
+
+});
+
 
